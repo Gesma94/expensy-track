@@ -1,0 +1,182 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+enum UserProvider {
+  GOOGLE
+  NATIVE
+}
+
+enum CategoryType {
+  EXPANSE
+  INCOME
+  TRANSFER
+}
+
+enum TransactionFrequency {
+  ONE_DAY
+  TWO_DAYS
+  WEEKDAYS
+  HOLIDAYS
+  ONE_WEEK
+  TWO_WEEK
+  FOUR_WEEK
+  ONE_MONTH
+  TWO_MONTHS
+  THREE_MONTHS
+  SIX_MONTHS
+  ONE_YEAR
+}
+
+enum BudgetSpan {
+  ONCE
+  DAILY
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  ANNUAL
+}
+
+model User {
+  id            String            @id @default(uuid())
+  provider      UserProvider
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  firstName     String            @unique
+  lastName      String            @unique
+  password      String?           @unique
+  firebase_uid  String?           @unique
+  email         String            @unique
+  wallets       Wallet[]
+  sharedWallets GuestsOnWallets[]
+  categories    Category[]
+  labels        Label[]
+  transactions  Transaction[]
+  budgets       Budget[]
+}
+
+model Label {
+  id           String                 @id @default(uuid())
+  displayName  String
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  user         User                   @relation(fields: [userId], references: [id])
+  userId       String
+  transactions LabelsOnTransactions[]
+}
+
+model Category {
+  id           String                @id @default(uuid())
+  displayName  String
+  type         CategoryType
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  user         User                  @relation(fields: [userId], references: [id])
+  userId       String
+  transactions Transaction[]
+  budgets      BudgetsOnCategories[]
+}
+
+model Wallet {
+  id               String             @id @default(uuid())
+  displayName      String
+  initialBalance   Float              @default(0)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  owner            User               @relation(fields: [ownerId], references: [id])
+  ownerId          String
+  guests           GuestsOnWallets[]
+  budgets          BudgetsOnWallets[]
+  transactions     Transaction[]      @relation("walletOwner")
+  transactionsFrom Transaction[]      @relation("walletFrom")
+  transactionsTo   Transaction[]      @relation("walletTo")
+}
+
+model GuestsOnWallets {
+  wallet    Wallet   @relation(fields: [walletId], references: [id])
+  walletId  String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, walletId])
+}
+
+model Transaction {
+  id                  String                 @id @default(uuid())
+  amount              Float
+  walletFromId        String?
+  walletFrom          Wallet?                @relation(name: "walletFrom", fields: [walletFromId], references: [id])
+  walletToId          String?
+  walletTo            Wallet?                @relation(name: "walletTo", fields: [walletToId], references: [id])
+  note                String
+  date                DateTime               @db.Date
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+  isRecurrentTemplate Boolean
+  isRecurring         Boolean
+  frequency           TransactionFrequency
+  startDate           DateTime
+  endDate             DateTime?
+  userId              String
+  user                User                   @relation(fields: [userId], references: [id])
+  walletId            String
+  wallet              Wallet                 @relation(name: "walletOwner", fields: [walletId], references: [id])
+  categoryId          String?
+  category            Category?              @relation(fields: [categoryId], references: [id])
+  labels              LabelsOnTransactions[]
+}
+
+model LabelsOnTransactions {
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  labelId       String
+  label         Label       @relation(fields: [labelId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@id([labelId, transactionId])
+}
+
+model Budget {
+  id           String   @id @default(uuid())
+  amount       Float
+  displayName  String
+  userId       String
+  startingDate DateTime @db.Date
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user       User                  @relation(fields: [userId], references: [id])
+  wallets    BudgetsOnWallets[]
+  categories BudgetsOnCategories[]
+}
+
+model BudgetsOnWallets {
+  budgetId  String
+  budget    Budget   @relation(fields: [budgetId], references: [id])
+  walletId  String
+  wallet    Wallet   @relation(fields: [walletId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([budgetId, walletId])
+}
+
+model BudgetsOnCategories {
+  budgetId   String
+  budget     Budget   @relation(fields: [budgetId], references: [id])
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@id([budgetId, categoryId])
+}

@@ -1,0 +1,43 @@
+{
+  "name": "expensy-track",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "prepare": "husky",
+    "test": "pnpm recursive run test",
+    "lint": "pnpm exec eslint . --fix",
+    "format": "pnpm exec prettier . --write"
+  },
+  "author": "Matteo Gesmundo",
+  "license": "AGPL-3.0-only",
+  "devDependencies": {
+    "@commitlint/cli": "^19.4.1",
+    "@commitlint/config-conventional": "^19.4.1",
+    "@eslint/js": "^9.10.0",
+    "eslint": "^9.10.0",
+    "eslint-plugin-react": "^7.35.2",
+    "globals": "^15.9.0",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.5.0"
+  },
+  "lint-staged": {
+    "./**/*.{js,jsx,ts,tsx,json}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "prettier": {
+    "printWidth": 120,
+    "jsxSingleQuote": true,
+    "arrowParens": "avoid",
+    "tabWidth": 2
+  }
+}

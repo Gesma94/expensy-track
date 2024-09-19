@@ -1,0 +1,11 @@
+{
+  "extends": "./../../tsconfig.json",
+  "compilerOptions": {
+    /* TSC transpiling */
+    "outDir": "./dist",
+    "rootDir": "./",
+    "lib": ["ES2022"]
+  },
+  "include": ["./process-env.d.ts", "graphql.codegen.ts", "./src"],
+  "exclude": ["node_modules", "**/*.graphql"]
+}

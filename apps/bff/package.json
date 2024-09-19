@@ -1,0 +1,51 @@
+{
+  "name": "@expensy-track/bff",
+  "version": "0.0.1",
+  "main": "dist/entry.js",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist",
+    "clean:codegen": "rimraf ./src/@types/graphql-generated.ts",
+    "dev": "tsx watch src/entry.ts",
+    "start": "node dist/entry.js",
+    "lint": "pnpm exec eslint . --fix",
+    "format": "pnpm exec prettier . --write",
+    "typecheck": "tsc --noEmit",
+    "build": "pnpm run clean && tsc",
+    "test": "vitest",
+    "graphql-codegen": "pnpm run clean:codegen && npx graphql-code-generator --config ./graphql.codegen.ts"
+  },
+  "keywords": [],
+  "author": "Matteo Gesmundo",
+  "license": "AGPL-3.0-only",
+  "dependencies": {
+    "@expensy-track/prisma": "workspace:^",
+    "@fastify/autoload": "^6.0.0",
+    "@fastify/cookie": "^10.0.0",
+    "@fastify/cors": "^10.0.0",
+    "@fastify/env": "^5.0.0",
+    "@fastify/jwt": "^9.0.0",
+    "@graphql-tools/load-files": "^7.0.0",
+    "@graphql-tools/merge": "^9.0.7",
+    "@graphql-tools/schema": "^10.0.6",
+    "@graphql-tools/utils": "^10.5.4",
+    "@sinclair/typebox": "^0.33.9",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^5.0.0",
+    "fastify-plugin": "^5.0.0",
+    "firebase-admin": "^12.4.0",
+    "graphql": "^16.9.0",
+    "mercurius": "^15.0.0",
+    "minimatch": "^10.0.1"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript-resolvers": "^4.2.1",
+    "@graphql-eslint/eslint-plugin": "^3.20.1",
+    "@types/bcrypt": "^5.0.2",
+    "cross-env": "^7.0.3",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.19.1"
+  }
+}

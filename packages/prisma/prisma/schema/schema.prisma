@@ -9,8 +9,8 @@ generator client {
 }
 
 enum UserProvider {
+  EMAIL
   GOOGLE
-  NATIVE
 }
 
 enum CategoryType {

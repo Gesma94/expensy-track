@@ -27,6 +27,10 @@
   "author": "Matteo Gesmundo",
   "license": "AGPL-3.0-only",
   "devDependencies": {
-    "prisma": "^5.19.1"
+    "prisma": "^5.19.1",
+    "rimraf": "^6.0.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.19.1"
   }
 }

@@ -6,8 +6,8 @@ export function getUserPayload(user: User): UserPayload {
   return {
     id: user.id,
     email: user.email,
-    firstName: user.firstName,
     lastName: user.lastName,
+    firstName: user.firstName,
     provider: mapDbUserProvider(user.provider),
   };
 }

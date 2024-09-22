@@ -44,6 +44,9 @@ importers:
 
   apps/bff:
     dependencies:
+      '@expensy-track/common':
+        specifier: workspace:^
+        version: link:../../packages/common
       '@expensy-track/prisma':
         specifier: workspace:^
         version: link:../../packages/prisma
@@ -126,6 +129,12 @@ importers:
 
   apps/webapp:
     dependencies:
+      '@tanstack/react-query':
+        specifier: ^5.56.2
+        version: 5.56.2(react@18.3.1)
+      ky:
+        specifier: ^1.7.2
+        version: 1.7.2
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -172,6 +181,16 @@ importers:
       vite:
         specifier: ^5.4.1
         version: 5.4.7(@types/node@22.5.5)
+
+  packages/common:
+    dependencies:
+      '@sinclair/typebox':
+        specifier: ^0.33.9
+        version: 0.33.12
+    devDependencies:
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
 
   packages/prisma:
     dependencies:
@@ -1494,6 +1513,14 @@ packages:
 
   '@sinclair/typebox@0.33.12':
     resolution: {integrity: sha512-d5KrXIdPolLp8VpGpZAQvEz8ioVtFlUQSyCIS2sEBi7FKhceIB7nj9BlNfqqvp5wmOfg8v8bP1rAvYYkjz21/Q==}
+
+  '@tanstack/query-core@5.56.2':
+    resolution: {integrity: sha512-gor0RI3/R5rVV3gXfddh1MM+hgl0Z4G7tj6Xxpq6p2I03NGPaJ8dITY9Gz05zYYb/EJq9vPas/T4wn9EaDPd4Q==}
+
+  '@tanstack/react-query@5.56.2':
+    resolution: {integrity: sha512-SR0GzHVo6yzhN72pnRhkEFRAHMsUo5ZPzAxfTMvUxFIDVS6W9LYUp6nXW3fcHVdg0ZJl8opSH85jqahvm6DSVg==}
+    peerDependencies:
+      react: ^18 || ^19
 
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -3101,6 +3128,10 @@ packages:
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
+
+  ky@1.7.2:
+    resolution: {integrity: sha512-OzIvbHKKDpi60TnF9t7UUVAF1B4mcqc02z5PIvrm08Wyb+yOcz63GRvEuVxNT18a9E1SrNouhB4W2NNLeD7Ykg==}
+    engines: {node: '>=18'}
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -6090,6 +6121,13 @@ snapshots:
 
   '@sinclair/typebox@0.33.12': {}
 
+  '@tanstack/query-core@5.56.2': {}
+
+  '@tanstack/react-query@5.56.2(react@18.3.1)':
+    dependencies:
+      '@tanstack/query-core': 5.56.2
+      react: 18.3.1
+
   '@tootallnate/once@2.0.0':
     optional: true
 
@@ -8127,6 +8165,8 @@ snapshots:
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
+
+  ky@1.7.2: {}
 
   levn@0.4.1:
     dependencies:

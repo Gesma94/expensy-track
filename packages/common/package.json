@@ -1,0 +1,30 @@
+{
+  "name": "@expensy-track/common",
+  "version": "0.0.1",
+  "description": "",
+  "exports": {
+    "./utils": "./dist/index.utils.js",
+    "./enums": "./dist/index.enums.js",
+    "./schemas": "./dist/index.schemas.js"
+  },
+  "types": "dist",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "pnpm run clean && tsc",
+    "build:dev": "pnpm run clean && tsc -p ./tsconfig.dev.json",
+    "lint": "pnpm exec eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "format": "pnpm exec prettier . --write",
+    "test": "echo \"Passed\""
+  },
+  "keywords": [],
+  "author": "Matteo Gesmundo",
+  "license": "AGPL-3.0-only",
+  "devDependencies": {
+    "rimraf": "^6.0.1"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.33.9"
+  }
+}

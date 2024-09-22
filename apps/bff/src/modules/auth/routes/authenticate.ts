@@ -1,10 +1,7 @@
 import type { FastifyPluginAsync, FastifySchema } from "fastify";
-import type { Static } from "@sinclair/typebox";
-import { getReplySchemaWithError, hasErrorSchema } from "@expensy-track/common/utils";
-import { ResponseErrorSchema, UserPayloadSchema } from "@expensy-track/common/schemas";
+import { hasErrorSchema } from "@expensy-track/common/utils";
+import { ResponseErrorSchema, UserPayloadSchema, type ReplyAuthenticate } from "@expensy-track/common/schemas";
 import { ErrorCode } from "@expensy-track/common/enums";
-
-const ReplySchema = getReplySchemaWithError(UserPayloadSchema);
 
 const schema: FastifySchema = {
   response: {
@@ -14,7 +11,7 @@ const schema: FastifySchema = {
 };
 
 type RouteInterface = {
-  Reply: Static<typeof ReplySchema>;
+  Reply: ReplyAuthenticate;
 };
 
 const authenticateRoute: FastifyPluginAsync = async fastify => {

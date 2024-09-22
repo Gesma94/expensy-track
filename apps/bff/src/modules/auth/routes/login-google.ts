@@ -3,7 +3,7 @@ import type { FastifyPluginAsync, FastifySchema } from "fastify";
 import { getUserPayload } from "../../../common/utils/get-user-payload.js";
 import { $Enums } from "@expensy-track/prisma";
 import { getReplySchemaWithError } from "@expensy-track/common/utils";
-import { ResponseErrorSchema, UserPayloadSchema } from "@expensy-track/common/schemas";
+import { ErrorSchema, UserPayloadSchema } from "@expensy-track/common/schemas";
 import { ErrorCode } from "@expensy-track/common/enums";
 
 const ReplySchema = getReplySchemaWithError(UserPayloadSchema);
@@ -18,7 +18,7 @@ const schema: FastifySchema = {
   body: BodySchema,
   response: {
     200: UserPayloadSchema,
-    400: ResponseErrorSchema,
+    400: ErrorSchema,
   },
 };
 
@@ -34,12 +34,10 @@ const loginGoogleRoute: FastifyPluginAsync = async fastify => {
 
     if (!decodedToken.email) {
       return reply.code(400).send({
-        error: {
-          code: ErrorCode.ET_InvalidGoogleIdToken,
-          message: "Invalid google ID token",
-          name: "InvalidGoogleIdToken",
-          statusCode: 401,
-        },
+        code: ErrorCode.ET_InvalidGoogleIdToken,
+        message: "Invalid google ID token",
+        name: "InvalidGoogleIdToken",
+        statusCode: 401,
       });
     }
 
@@ -62,12 +60,10 @@ const loginGoogleRoute: FastifyPluginAsync = async fastify => {
         fastify.log.error(error, "could not register the new user when logging via Google");
 
         return reply.status(400).send({
-          error: {
-            statusCode: 400,
-            name: "UserRegistrationFailed",
-            code: ErrorCode.ET_UserRegistrationFailed,
-            message: "Could not register the new user",
-          },
+          statusCode: 400,
+          name: "UserRegistrationFailed",
+          code: ErrorCode.ET_UserRegistrationFailed,
+          message: "Could not register the new user",
         });
       }
     }

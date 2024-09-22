@@ -3,7 +3,7 @@ import type { FastifyPluginAsync, FastifySchema } from "fastify";
 import { getUserPayload } from "../../../common/utils/get-user-payload.js";
 import { $Enums } from "@expensy-track/prisma";
 import { getReplySchemaWithError, isErrorSchema } from "@expensy-track/common/utils";
-import { ResponseErrorSchema, UserPayloadSchema } from "@expensy-track/common/schemas";
+import { ErrorSchema, UserPayloadSchema } from "@expensy-track/common/schemas";
 import { ErrorCode } from "@expensy-track/common/enums";
 
 const ReplySchema = getReplySchemaWithError(UserPayloadSchema);
@@ -19,7 +19,7 @@ const schema: FastifySchema = {
   body: BodySchema,
   response: {
     200: UserPayloadSchema,
-    400: ResponseErrorSchema,
+    400: ErrorSchema,
   },
 };
 
@@ -40,12 +40,10 @@ const signUpRoute: FastifyPluginAsync = async fastify => {
 
     if (alreadyExistingUser) {
       return reply.status(400).send({
-        error: {
-          statusCode: 400,
-          name: "EmailAlreadyUsed",
-          message: "Email is already used",
-          code: ErrorCode.ET_EmailAlreadyUsed,
-        },
+        statusCode: 400,
+        name: "EmailAlreadyUsed",
+        message: "Email is already used",
+        code: ErrorCode.ET_EmailAlreadyUsed,
       });
     }
 
@@ -63,16 +61,14 @@ const signUpRoute: FastifyPluginAsync = async fastify => {
       return reply.getAndSetAuthCookies(newUser).status(200).send(getUserPayload(newUser));
     } catch (error) {
       if (isErrorSchema(error)) {
-        return reply.status(400).send({ error });
+        return reply.status(400).send(error);
       }
 
       return reply.status(400).send({
-        error: {
-          statusCode: 400,
-          name: "UserRegistrationFailed",
-          code: ErrorCode.ET_UserRegistrationFailed,
-          message: "Could not register the new user",
-        },
+        statusCode: 400,
+        name: "UserRegistrationFailed",
+        code: ErrorCode.ET_UserRegistrationFailed,
+        message: "Could not register the new user",
       });
     }
   });

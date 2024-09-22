@@ -129,6 +129,9 @@ importers:
 
   apps/webapp:
     dependencies:
+      '@expensy-track/common':
+        specifier: workspace:^
+        version: link:../../packages/common
       '@tanstack/react-query':
         specifier: ^5.56.2
         version: 5.56.2(react@18.3.1)

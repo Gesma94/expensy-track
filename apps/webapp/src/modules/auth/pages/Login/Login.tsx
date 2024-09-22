@@ -9,6 +9,8 @@ import { isSchema } from "@expensy-track/common/utils";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../hooks/useAuth";
+import { useTranslation } from "react-i18next";
+import { ErrorCode } from "@expensy-track/common/enums";
 
 const schema = z.object({
   email: z.string().email("email format missing"),
@@ -32,6 +34,7 @@ async function mutationFn(json: Schema): Promise<UserPayload> {
 export function Login() {
   const auth = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation("modules", { keyPrefix: "auth.pages.login" });
   const { register, handleSubmit, formState } = useForm<Schema>({ resolver: zodResolver(schema) });
   const { mutate, error } = useMutation<UserPayload, ResponseError, Schema>({
     onSuccess,
@@ -49,11 +52,11 @@ export function Login() {
   }
 
   function getErrorMessage() {
-    if (isSchema(ErrorSchema, error)) {
-      return error.message;
+    if (error?.error.code === ErrorCode.ET_InvalidCredentials) {
+      return t("errors.invalid-credentials");
     }
 
-    return "unknown error";
+    return t("errors.cannot-login");
   }
 
   return (

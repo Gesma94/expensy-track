@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "pages": {
+      "login": {
+        "errors": {
+          "invalid-credentials": "credenziali non valide",
+          "cannot-login": "qualcosa è andato storto. Riprova"
+        }
+      }
+    }
+  }
+}

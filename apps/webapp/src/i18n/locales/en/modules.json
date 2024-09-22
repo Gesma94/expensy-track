@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "pages": {
+      "login": {
+        "errors": {
+          "invalid-credentials": "no user found with provided credentials",
+          "cannot-login": "something unexpected happened"
+        }
+      }
+    }
+  }
+}

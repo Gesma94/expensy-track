@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "UserProvider" AS ENUM ('GOOGLE', 'NATIVE');
+CREATE TYPE "UserProvider" AS ENUM ('EMAIL', 'GOOGLE');
 
 -- CreateEnum
 CREATE TYPE "CategoryType" AS ENUM ('EXPANSE', 'INCOME', 'TRANSFER');
@@ -18,7 +18,7 @@ CREATE TABLE "User" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
-    "password" TEXT,
+    "password" VARCHAR(60),
     "firebase_uid" TEXT,
     "email" TEXT NOT NULL,
 

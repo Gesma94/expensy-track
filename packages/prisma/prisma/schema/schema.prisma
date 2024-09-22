@@ -50,7 +50,7 @@ model User {
   updatedAt     DateTime          @updatedAt
   firstName     String            @unique
   lastName      String            @unique
-  password      String?           @unique
+  password      String?           @unique @db.VarChar(60)
   firebase_uid  String?           @unique
   email         String            @unique
   wallets       Wallet[]

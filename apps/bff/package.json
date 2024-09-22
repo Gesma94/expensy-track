@@ -19,6 +19,7 @@
   "author": "Matteo Gesmundo",
   "license": "AGPL-3.0-only",
   "dependencies": {
+    "@expensy-track/common": "workspace:^",
     "@expensy-track/prisma": "workspace:^",
     "@fastify/autoload": "^6.0.0",
     "@fastify/cookie": "^10.0.0",

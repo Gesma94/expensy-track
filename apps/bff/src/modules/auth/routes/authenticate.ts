@@ -1,12 +1,8 @@
 import type { FastifyPluginAsync, FastifySchema } from "fastify";
 import type { Static } from "@sinclair/typebox";
-import {
-  getReplySchemaWithError,
-  hasErrorSchema,
-  ResponseErrorSchema,
-} from "../../../common/schemas/response-error-schema.js";
-import { UserPayloadSchema } from "../../../common/schemas/user-schema.js";
-import { ErrorCode } from "../../../common/enums/error-code.js";
+import { getReplySchemaWithError, hasErrorSchema } from "@expensy-track/common/utils";
+import { ResponseErrorSchema, UserPayloadSchema } from "@expensy-track/common/schemas";
+import { ErrorCode } from "@expensy-track/common/enums";
 
 const ReplySchema = getReplySchemaWithError(UserPayloadSchema);
 

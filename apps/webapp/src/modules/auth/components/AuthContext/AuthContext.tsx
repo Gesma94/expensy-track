@@ -3,18 +3,19 @@ import { AuthContext } from "../../utils/authContext";
 import { useQuery } from "@tanstack/react-query";
 import { kyInstance } from "../../../fetch/utils/kyInstance";
 import { UserPayloadSchema, type ReplyAuthenticate, type UserPayload } from "@expensy-track/common/schemas";
-import { IsSchema } from "@expensy-track/common/utils";
+import { isSchema } from "@expensy-track/common/utils";
 
 async function fetchData(): Promise<ReplyAuthenticate> {
-  return kyInstance.get("authenticate", { retry: 0 }).json();
+  return kyInstance.get("authenticate").json();
 }
 
 export function AuthProvider({ children }: React.PropsWithChildren) {
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [user, setUser] = useState<UserPayload | undefined>(undefined);
   const { isPending, data } = useQuery({
+    retry: false,
     queryKey: ["auth"],
     queryFn: fetchData,
-    retry: false,
     refetchOnWindowFocus: false,
   });
 
@@ -27,15 +28,21 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
   }, [user, setUser]);
 
   useEffect(() => {
-    if (IsSchema(UserPayloadSchema, data)) {
+    if (isPending) {
+      return;
+    }
+
+    if (isSchema(UserPayloadSchema, data)) {
       setUser(data);
     }
-  }, [data]);
+
+    setIsInitialized(true);
+  }, [data, isPending]);
 
   return (
     <AuthContext.Provider value={authContextValueMemoized}>
-      {isPending && <p>laoding</p>}
-      {!isPending && children}
+      {!isInitialized && <p>laoding</p>}
+      {isInitialized && children}
     </AuthContext.Provider>
   );
 }

@@ -1,5 +1,5 @@
 import type { FastifyPluginAsync, FastifySchema } from "fastify";
-import { hasErrorSchema } from "@expensy-track/common/utils";
+import { isErrorSchema } from "@expensy-track/common/utils";
 import { ResponseErrorSchema, UserPayloadSchema, type ReplyAuthenticate } from "@expensy-track/common/schemas";
 import { ErrorCode } from "@expensy-track/common/enums";
 
@@ -20,7 +20,7 @@ const authenticateRoute: FastifyPluginAsync = async fastify => {
       await request.jwtVerify({ onlyCookie: true });
       return reply.send({ ...request.user });
     } catch (error) {
-      if (hasErrorSchema(error)) {
+      if (isErrorSchema(error)) {
         if (error.code !== ErrorCode.FST_JwyAuthorizationTokenExpired) {
           return reply.status(401).send({ error });
         }

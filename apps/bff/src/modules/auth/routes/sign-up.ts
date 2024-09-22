@@ -2,7 +2,7 @@ import { Type, type Static } from "@sinclair/typebox";
 import type { FastifyPluginAsync, FastifySchema } from "fastify";
 import { getUserPayload } from "../../../common/utils/get-user-payload.js";
 import { $Enums } from "@expensy-track/prisma";
-import { getReplySchemaWithError, hasErrorSchema } from "@expensy-track/common/utils";
+import { getReplySchemaWithError, isErrorSchema } from "@expensy-track/common/utils";
 import { ResponseErrorSchema, UserPayloadSchema } from "@expensy-track/common/schemas";
 import { ErrorCode } from "@expensy-track/common/enums";
 
@@ -62,7 +62,7 @@ const signUpRoute: FastifyPluginAsync = async fastify => {
 
       return reply.getAndSetAuthCookies(newUser).status(200).send(getUserPayload(newUser));
     } catch (error) {
-      if (hasErrorSchema(error)) {
+      if (isErrorSchema(error)) {
         return reply.status(400).send({ error });
       }
 

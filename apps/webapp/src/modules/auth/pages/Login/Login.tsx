@@ -2,10 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../../common/consts/routes";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { ErrorSchema, type ResponseError, type UserPayload } from "@expensy-track/common/schemas";
+import { type Error, type UserPayload } from "@expensy-track/common/schemas";
 import { kyInstance } from "../../../fetch/utils/kyInstance";
 import { HTTPError } from "ky";
-import { isSchema } from "@expensy-track/common/utils";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../../hooks/useAuth";
@@ -24,7 +23,7 @@ async function mutationFn(json: Schema): Promise<UserPayload> {
     return await kyInstance.post<UserPayload>("login", { json }).json();
   } catch (error) {
     if (error instanceof HTTPError) {
-      throw await error.response.json<ResponseError>();
+      throw await error.response.json<Error>();
     }
 
     throw error;
@@ -36,7 +35,7 @@ export function Login() {
   const navigate = useNavigate();
   const { t } = useTranslation("modules", { keyPrefix: "auth.pages.login" });
   const { register, handleSubmit, formState } = useForm<Schema>({ resolver: zodResolver(schema) });
-  const { mutate, error } = useMutation<UserPayload, ResponseError, Schema>({
+  const { mutate, error } = useMutation<UserPayload, Error, Schema>({
     onSuccess,
     mutationFn,
   });
@@ -52,7 +51,7 @@ export function Login() {
   }
 
   function getErrorMessage() {
-    if (error?.error.code === ErrorCode.ET_InvalidCredentials) {
+    if (error?.code === ErrorCode.ET_InvalidCredentials) {
       return t("errors.invalid-credentials");
     }
 

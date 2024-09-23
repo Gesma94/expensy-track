@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../../common/consts/routes";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { ErrorSchema, type Error, type ResponseError, type UserPayload } from "@expensy-track/common/schemas";
+import { ErrorSchema, type Error, type UserPayload } from "@expensy-track/common/schemas";
 import { kyInstance } from "../../../fetch/utils/kyInstance";
 import { z } from "zod";
 import { HTTPError } from "ky";
@@ -23,7 +23,7 @@ async function mutationFn(json: FormSchema): Promise<UserPayload> {
     return await kyInstance.post("sign-up", { json }).json();
   } catch (error) {
     if (error instanceof HTTPError) {
-      throw await error.response.json<ResponseError>();
+      throw await error.response.json<Error>();
     }
 
     throw error;

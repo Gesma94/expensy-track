@@ -1,7 +1,7 @@
 import fp from "fastify-plugin";
 import type { FastifyInstance } from "fastify";
-import type { UserPayload } from "../common/schemas/user-schema.js";
 import { FastifyPluginName } from "../common/enums/fastify-plugin-name.js";
+import type { UserPayload } from "@expensy-track/common/schemas";
 
 type TokensDecorator = {
   generateAccessToken: (userPayload: UserPayload) => string;

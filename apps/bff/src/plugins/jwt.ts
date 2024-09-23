@@ -1,9 +1,9 @@
 import fp from "fastify-plugin";
 import fastifyJwt from "@fastify/jwt";
 import type { FastifyInstance } from "fastify";
-import type { UserPayload } from "../common/schemas/user-schema.js";
 import { CookieName } from "../common/enums/cookie-name.js";
 import { FastifyPluginName } from "../common/enums/fastify-plugin-name.js";
+import type { UserPayload } from "@expensy-track/common/schemas";
 
 declare module "@fastify/jwt" {
   interface FastifyJWT {

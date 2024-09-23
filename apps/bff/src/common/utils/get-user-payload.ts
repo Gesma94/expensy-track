@@ -1,6 +1,6 @@
 import type { User } from "@expensy-track/prisma";
-import type { UserPayload } from "../schemas/user-schema.js";
 import { mapDbUserProvider } from "./map-db-user-provider.js";
+import type { UserPayload } from "@expensy-track/common/schemas";
 
 export function getUserPayload(user: User): UserPayload {
   return {

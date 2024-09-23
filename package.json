@@ -32,7 +32,24 @@
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
-    ]
+    ],
+    "rules": {
+      "scope-empty": [
+        2,
+        "never"
+      ],
+      "scope-enum": [
+        2,
+        "always",
+        [
+          "webapp",
+          "bff",
+          "prisma",
+          "common",
+          "core"
+        ]
+      ]
+    }
   },
   "prettier": {
     "printWidth": 120,

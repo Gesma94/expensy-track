@@ -1,11 +1,19 @@
 import fp from "fastify-plugin";
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance, FastifyRequest } from "fastify";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { mergeResolvers, mergeTypeDefs } from "@graphql-tools/merge";
 import path from "path";
 import { fileURLToPath } from "url";
 import mercurius from "mercurius";
 import { loadFilesSync } from "@graphql-tools/load-files";
+import type { UserPayload } from "@expensy-track/common/schemas";
+import { categoryResolvers } from "../modules/category/graphql/resolvers.js";
+
+declare module "mercurius" {
+  interface MercuriusContext {
+    user: UserPayload | null;
+  }
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,12 +24,30 @@ const typeDefArray = loadFilesSync(path.join(__dirname, "./../modules/**/schema.
 
 const schema = makeExecutableSchema({
   typeDefs: mergeTypeDefs(typeDefArray),
-  resolvers: mergeResolvers([]),
+  resolvers: mergeResolvers([categoryResolvers]),
 });
+
+type MercuriusAdditionalContext = {
+  user: UserPayload | null;
+};
+
+async function buildContext(request: FastifyRequest): Promise<MercuriusAdditionalContext> {
+  try {
+    await request.jwtVerify({ onlyCookie: true });
+    return {
+      user: request.user,
+    };
+  } catch (error) {
+    return {
+      user: null,
+    };
+  }
+}
 
 export default fp(async (fastify: FastifyInstance) => {
   fastify.register(mercurius, {
     schema,
-    graphiql: true,
+    context: buildContext,
+    graphiql: fastify.env.NODE_ENV === "development",
   });
 });

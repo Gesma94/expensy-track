@@ -37,6 +37,7 @@
     "fastify-plugin": "^5.0.0",
     "firebase-admin": "^12.4.0",
     "graphql": "^16.9.0",
+    "graphql-scalars": "^1.23.0",
     "mercurius": "^15.0.0",
     "minimatch": "^10.0.1"
   },

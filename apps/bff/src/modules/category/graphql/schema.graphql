@@ -1,0 +1,54 @@
+enum CategoryType {
+  EXPANSE
+  INCOME
+  TRANSFER
+}
+
+enum CategoryErrorCode {
+  USER_NOT_FOUND
+  CATEGORY_ID_NOT_EXIST
+}
+
+type Category {
+  id: ID!
+  displayName: String!
+  type: CategoryType!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: ID!
+}
+  
+type CategoryError  {
+  message: String!
+  error: CategoryErrorCode
+}
+
+type CategoryResult {
+  category: Category
+}
+
+type CategoriesResult {
+  categories: [Category!]!
+}
+
+input CategoryInput {
+  id: ID!
+}
+
+input CreateCategoryInput {
+  type: CategoryType!
+  displayName: String!
+}
+
+union CategoryOutput = CategoryError | CategoryResult
+union CategoriesOutput = CategoryError | CategoriesResult
+union CreateCategoryOutput = CategoryError | CategoryResult
+
+type Query {
+  category(input: CategoryInput!): CategoryOutput
+  categories: CategoriesOutput
+}
+
+type Mutation {
+  createCategory(input: CreateCategoryInput!): CreateCategoryOutput
+}

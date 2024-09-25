@@ -17,7 +17,7 @@ type Category {
   updatedAt: DateTime!
   userId: ID!
 }
-  
+
 type CategoryError  {
   message: String!
   error: CategoryErrorCode
@@ -35,6 +35,10 @@ input CategoryInput {
   id: ID!
 }
 
+input CatagoriesInput {
+  type: CategoryType
+}
+
 input CreateCategoryInput {
   type: CategoryType!
   displayName: String!
@@ -46,7 +50,7 @@ union CreateCategoryOutput = CategoryError | CategoryResult
 
 type Query {
   category(input: CategoryInput!): CategoryOutput
-  categories: CategoriesOutput
+  categories(input: CatagoriesInput): CategoriesOutput
 }
 
 type Mutation {

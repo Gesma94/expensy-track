@@ -1,0 +1,35 @@
+enum UserProvider {
+    EMAIL
+    GOOGLE
+}
+
+enum UserErrorCode {
+  USER_NOT_FOUND
+}
+
+type User {
+    id: ID!
+    provider: UserProvider!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    firstName: String!
+    lastName: String!
+    firebaseUid: String
+    email: String!
+    categories(input: CatagoriesInput): [Category!]
+}
+
+type UserError  {
+  message: String!
+  error: UserErrorCode
+}
+
+type UserResult {
+  user: User
+}
+
+union UserOutput = UserResult | UserError
+
+type Query {
+    user: UserOutput
+}

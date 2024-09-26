@@ -16,6 +16,7 @@ type User {
     lastName: String!
     firebaseUid: String
     email: String!
+    labels: [Label!]
     categories(input: CatagoriesInput): [Category!]
 }
 

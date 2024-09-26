@@ -1,0 +1,41 @@
+enum LabelErrorCode {
+  USER_NOT_FOUND
+  LABEL_ID_NOT_EXIST
+}
+
+type Label {
+  id: ID!
+  displayName: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: ID!
+  user: User
+}
+
+type LabelsError  {
+  message: String!
+  error: LabelErrorCode
+}
+
+type LabelResult {
+  label: Label
+}
+
+type LabelsResult {
+  labels: [Label!]!
+}
+
+input CreateLabelInput {
+  displayName: String!
+}
+
+union LabelsOutput = LabelsError | LabelsResult
+union CreateLabelOutput = LabelsError | LabelResult
+
+type Query {
+  labels: LabelsOutput
+}
+
+type Mutation {
+  createLabel(input: CreateLabelInput!): CreateLabelOutput
+}

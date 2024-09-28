@@ -1,0 +1,8 @@
+enum GraphqlErrorCode {
+  UNAUTHORIZED_USER
+}
+
+type GraphqlError {
+    message: String!
+    code: GraphqlErrorCode!
+}

@@ -23,7 +23,7 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "env": {
-        "TS_NODE_PROJECT": "${workspaceFolder}/bff/server/tsconfig.json"
+        "TS_NODE_PROJECT": "${workspaceFolder}/apss/bff/tsconfig.json"
       }
     }
   ],

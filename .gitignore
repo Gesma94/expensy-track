@@ -17,3 +17,4 @@ dist
 
 # Codegen files
 graphql-generated.ts
+apps/webapp/src/gql

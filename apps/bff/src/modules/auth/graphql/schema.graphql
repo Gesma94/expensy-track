@@ -17,7 +17,7 @@ type User {
     firebaseUid: String
     email: String!
     labels: [Label!]
-    categories(input: CatagoriesInput): [Category!]
+    categories: [Category!]
 }
 
 type UserError  {

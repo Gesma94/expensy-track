@@ -1,11 +1,10 @@
-enum CategoryType {
+ enum CategoryType {
   EXPANSE
   INCOME
   TRANSFER
 }
 
-enum CategoryErrorCode {
-  USER_NOT_FOUND
+extend enum GraphqlErrorCode {
   CATEGORY_ID_NOT_EXIST
 }
 
@@ -18,25 +17,16 @@ type Category {
   userId: ID!
 }
 
-type CategoryError  {
-  message: String!
-  error: CategoryErrorCode
+type CategoriesResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: [Category!]
 }
 
-type CategoryResult {
-  category: Category
-}
-
-type CategoriesResult {
-  categories: [Category!]!
-}
-
-input CategoryInput {
-  id: ID!
-}
-
-input CatagoriesInput {
-  type: CategoryType
+type CreateCategoryResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Category
 }
 
 input CreateCategoryInput {
@@ -44,15 +34,10 @@ input CreateCategoryInput {
   displayName: String!
 }
 
-union CategoryOutput = CategoryError | CategoryResult
-union CategoriesOutput = CategoryError | CategoriesResult
-union CreateCategoryOutput = CategoryError | CategoryResult
-
 type Query {
-  category(input: CategoryInput!): CategoryOutput
-  categories(input: CatagoriesInput): CategoriesOutput
+  categories: CategoriesResult
 }
 
 type Mutation {
-  createCategory(input: CreateCategoryInput!): CreateCategoryOutput
+  createCategory(input: CreateCategoryInput!): CreateCategoryResult
 }

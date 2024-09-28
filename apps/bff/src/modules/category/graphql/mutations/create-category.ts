@@ -1,7 +1,9 @@
 import type { MercuriusContext } from "mercurius";
-import { CategoryErrorCode, type MutationResolvers } from "../../../../@types/graphql-generated.js";
+import { type MutationResolvers } from "../../../../@types/graphql-generated.js";
 import { CategoryTypeMapper } from "../mappers/category-type.js";
 import { CategoryMapper } from "../mappers/category.js";
+import { getGqlUnauthorizedResponse } from "../../../../common/utils/get-gql-unauthorized-response.js";
+import { getGqlSuccessResponse } from "../../../../common/utils/get-gql-success-response.js";
 
 export const mutationCreateCategory: MutationResolvers<MercuriusContext>["createCategory"] = async (
   _parent,
@@ -11,11 +13,7 @@ export const mutationCreateCategory: MutationResolvers<MercuriusContext>["create
   const { displayName, type } = args.input;
 
   if (!contextValue.user) {
-    return {
-      __typename: "CategoryError",
-      message: "user not found",
-      error: CategoryErrorCode.UserNotFound,
-    };
+    return getGqlUnauthorizedResponse();
   }
 
   const category = await contextValue.app.prisma.category.create({
@@ -26,8 +24,5 @@ export const mutationCreateCategory: MutationResolvers<MercuriusContext>["create
     },
   });
 
-  return {
-    __typename: "CategoryResult",
-    category: CategoryMapper.toGraphql(category),
-  };
+  return getGqlSuccessResponse(CategoryMapper.toGraphql(category));
 };

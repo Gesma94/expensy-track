@@ -4,6 +4,28 @@
   TRANSFER
 }
 
+ enum CategoryIcon {
+  SUBSCRIPTION
+  GROCERY
+  MISCELLANEOUS
+  ACTIVITY
+  BEER
+  GAS
+  CREDIT_CARD
+  CREDIT
+  INVESTMENT
+  MUSIC
+  RESTOURANT
+  SHOPPING
+  MEDICAL
+  DEBT_COLLECTION
+  STAR
+  MONEY_1
+  MONEY_2
+  MONEY_3
+  SALARY
+}
+
 extend enum GraphqlErrorCode {
   CATEGORY_ID_NOT_EXIST
 }
@@ -12,6 +34,7 @@ type Category {
   id: ID!
   displayName: String!
   type: CategoryType!
+  icon: CategoryIcon!
   createdAt: DateTime!
   updatedAt: DateTime!
   userId: ID!

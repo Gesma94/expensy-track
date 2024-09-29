@@ -8,6 +8,7 @@ import { z } from "zod";
 import { HTTPError } from "ky";
 import { useAuth } from "../../hooks/useAuth";
 import { isSchema } from "@expensy-track/common/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const formSchema = z.object({
   lastName: z.string(),
@@ -33,7 +34,7 @@ async function mutationFn(json: FormSchema): Promise<UserPayload> {
 export function SignUp() {
   const auth = useAuth();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<FormSchema>();
+  const { register, handleSubmit } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
   const { mutate, error } = useMutation<UserPayload, Error, FormSchema>({
     onSuccess,
     mutationFn,

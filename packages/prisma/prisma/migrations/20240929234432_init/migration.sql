@@ -43,6 +43,7 @@ CREATE TABLE "Label" (
 CREATE TABLE "Category" (
     "id" TEXT NOT NULL,
     "displayName" TEXT NOT NULL,
+    "color" TEXT NOT NULL,
     "type" "CategoryType" NOT NULL,
     "icon" "CategoryIcon" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

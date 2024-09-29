@@ -96,6 +96,7 @@ model Label {
 model Category {
   id           String                @id @default(uuid())
   displayName  String
+  color        String
   type         CategoryType
   icon         CategoryIcon
   createdAt    DateTime              @default(now())

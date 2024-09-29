@@ -33,6 +33,7 @@ extend enum GraphqlErrorCode {
 type Category {
   id: ID!
   displayName: String!
+  color: String!
   type: CategoryType!
   icon: CategoryIcon!
   createdAt: DateTime!
@@ -53,7 +54,9 @@ type CreateCategoryResult implements Response {
 }
 
 input CreateCategoryInput {
+  color: String!
   type: CategoryType!
+  icon: CategoryIcon!
   displayName: String!
 }
 

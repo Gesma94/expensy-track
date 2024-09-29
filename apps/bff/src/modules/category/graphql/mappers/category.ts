@@ -11,6 +11,7 @@ export class CategoryMapper {
 
     return {
       id: graphqlEntity.id,
+      color: graphqlEntity.color,
       userId: graphqlEntity.userId,
       createdAt: graphqlEntity.createdAt,
       updatedAt: graphqlEntity.updatedAt,
@@ -27,6 +28,7 @@ export class CategoryMapper {
 
     return {
       id: prismaEntity.id,
+      color: prismaEntity.color,
       userId: prismaEntity.userId,
       createdAt: prismaEntity.createdAt,
       updatedAt: prismaEntity.updatedAt,

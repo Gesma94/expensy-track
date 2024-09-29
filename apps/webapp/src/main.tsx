@@ -6,6 +6,7 @@ import { AuthProvider } from "./modules/auth/components/AuthContext/AuthContext"
 import { ReactQueryProvider } from "./modules/fetch/components/ReactQueryProvider/ReactQueryProvider";
 import "./i18n/config";
 import { ReactApolloProvider } from "./modules/fetch/components/ReactApolloProvider/ReactApolloProvider";
+import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

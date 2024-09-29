@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { getGroupedCategories } from "../../utils/getGroupedCategories";
 import { useFragment } from "../../../../gql";
 import { MyCategoryFragmentDoc } from "../../../../gql/graphql";
+import { CategoryIcon } from "@components/CategoryIcon/CategoryIcon";
 
 export const Categories = () => {
   const { loading, data, error } = useQuery(GET_MY_CATEGORIES);
@@ -26,7 +27,8 @@ export const Categories = () => {
             <h2>Expanses</h2>
             <ul>
               {groupedCategories.EXPANSE.map(expanse => (
-                <li key={expanse.id}>
+                <li key={expanse.id} className='flex flex-row'>
+                  <CategoryIcon icon={expanse.icon} />
                   <p>{expanse.displayName}</p>
                 </li>
               ))}

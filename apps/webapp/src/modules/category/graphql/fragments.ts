@@ -5,6 +5,7 @@ export const MY_CATEGORY_FRAGMENT = gql(`
     id
     displayName
     type
+    color
     icon
   }
 `);

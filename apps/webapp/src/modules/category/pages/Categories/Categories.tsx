@@ -5,14 +5,20 @@ import { getGroupedCategories } from "../../utils/getGroupedCategories";
 import { useFragment } from "../../../../gql";
 import { MyCategoryFragmentDoc } from "../../../../gql/graphql";
 import { CategoryIcon } from "@components/CategoryIcon/CategoryIcon";
+import { CreateCategoryForm } from "../../components/CreateCategoryForm/CreateCategoryForm";
+import { CategoryList } from "../../components/CategoryList/CategoryList";
 
 export const Categories = () => {
-  const { loading, data, error } = useQuery(GET_MY_CATEGORIES);
+  const { loading, data, error, refetch } = useQuery(GET_MY_CATEGORIES);
   const categoriesFragment = useFragment(MyCategoryFragmentDoc, data?.categories?.result);
 
   const groupedCategories = useMemo(() => {
     return getGroupedCategories(categoriesFragment);
   }, [categoriesFragment]);
+
+  function handleCreateSuccess() {
+    refetch();
+  }
 
   return (
     <div>
@@ -21,28 +27,11 @@ export const Categories = () => {
       {!loading && (
         <>
           <div>
-            <p>Add new category</p>
+            <CreateCategoryForm onSuccess={handleCreateSuccess} />
           </div>
           <div>
-            <h2>Expanses</h2>
-            <ul>
-              {groupedCategories.EXPANSE.map(expanse => (
-                <li key={expanse.id} className='flex flex-row'>
-                  <CategoryIcon icon={expanse.icon} />
-                  <p>{expanse.displayName}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h2>Incomes</h2>
-            <ul>
-              {groupedCategories.INCOME.map(income => (
-                <li key={income.id}>
-                  <p>{income.displayName}</p>
-                </li>
-              ))}
-            </ul>
+            <CategoryList title='Expanses' categories={groupedCategories.EXPANSE} />
+            <CategoryList title='Incomes' categories={groupedCategories.INCOME} />
           </div>
         </>
       )}

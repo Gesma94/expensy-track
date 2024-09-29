@@ -18,7 +18,19 @@ const authenticateRoute: FastifyPluginAsync = async fastify => {
   fastify.get<RouteInterface>("/authenticate", { schema }, async (request, reply) => {
     try {
       await request.jwtVerify({ onlyCookie: true });
-      return reply.send({ ...request.user });
+
+      const user = await fastify.prisma.user.findUnique({ where: { id: request.user.id } });
+
+      if (user) {
+        return reply.send({ ...request.user });
+      } else {
+        return reply.status(401).send({
+          code: ErrorCode.ET_InvalidAccessToken,
+          message: "Invalid access token was found in request.cookies",
+          name: "InvalidAccessToken",
+          statusCode: 401,
+        });
+      }
     } catch (error) {
       if (isErrorSchema(error)) {
         if (error.code !== ErrorCode.FST_JwyAuthorizationTokenExpired) {

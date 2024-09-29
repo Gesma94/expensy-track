@@ -5,6 +5,9 @@ CREATE TYPE "UserProvider" AS ENUM ('EMAIL', 'GOOGLE');
 CREATE TYPE "CategoryType" AS ENUM ('EXPANSE', 'INCOME', 'TRANSFER');
 
 -- CreateEnum
+CREATE TYPE "CategoryIcon" AS ENUM ('SUBSCRIPTION', 'GROCERY', 'MISCELLANEOUS', 'ACTIVITY', 'BEER', 'GAS', 'CREDIT_CARD', 'CREDIT', 'INVESTMENT', 'MUSIC', 'RESTOURANT', 'SHOPPING', 'MEDICAL', 'DEBT_COLLECTION', 'STAR', 'MONEY_1', 'MONEY_2', 'MONEY_3', 'SALARY');
+
+-- CreateEnum
 CREATE TYPE "TransactionFrequency" AS ENUM ('ONE_DAY', 'TWO_DAYS', 'WEEKDAYS', 'HOLIDAYS', 'ONE_WEEK', 'TWO_WEEK', 'FOUR_WEEK', 'ONE_MONTH', 'TWO_MONTHS', 'THREE_MONTHS', 'SIX_MONTHS', 'ONE_YEAR');
 
 -- CreateEnum
@@ -41,6 +44,7 @@ CREATE TABLE "Category" (
     "id" TEXT NOT NULL,
     "displayName" TEXT NOT NULL,
     "type" "CategoryType" NOT NULL,
+    "icon" "CategoryIcon" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,

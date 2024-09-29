@@ -19,6 +19,28 @@ enum CategoryType {
   TRANSFER
 }
 
+enum CategoryIcon {
+  SUBSCRIPTION
+  GROCERY
+  MISCELLANEOUS
+  ACTIVITY
+  BEER
+  GAS
+  CREDIT_CARD
+  CREDIT
+  INVESTMENT
+  MUSIC
+  RESTOURANT
+  SHOPPING
+  MEDICAL
+  DEBT_COLLECTION
+  STAR
+  MONEY_1
+  MONEY_2
+  MONEY_3
+  SALARY
+}
+
 enum TransactionFrequency {
   ONE_DAY
   TWO_DAYS
@@ -75,6 +97,7 @@ model Category {
   id           String                @id @default(uuid())
   displayName  String
   type         CategoryType
+  icon         CategoryIcon
   createdAt    DateTime              @default(now())
   updatedAt    DateTime              @updatedAt
   user         User                  @relation(fields: [userId], references: [id])

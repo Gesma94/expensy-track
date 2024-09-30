@@ -1,5 +1,5 @@
 projects:
   webapp:
-    schema: ./apps/bff/src/**/*.graphql
+    schema: ./apps/bff/src/**/*.{graphql,ts}
   bff:
     schema: ./apps/bff/src/**/*.graphql

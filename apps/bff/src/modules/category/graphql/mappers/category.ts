@@ -1,40 +1,38 @@
-import type { Category as CategoryPrisma } from "@expensy-track/prisma";
-import type { Category as CategoryGraphql } from "../../../../@types/graphql-generated.js";
-import { CategoryTypeMapper } from "./category-type.js";
-import { CategoryIconMapper } from "./category-icon.js";
+import type { Category as CategoryPrisma } from '@expensy-track/prisma';
+import type { Category as CategoryGraphql } from '../../../../@types/graphql-generated.js';
+import { CategoryIconToGraphql, CategoryIconToPrisma } from './category-icon.js';
+import { CategoryTypeToGraphql, CategoryTypeToPrisma } from './category-type.js';
 
-export class CategoryMapper {
-  public static toPrisma(graphqlEntity: CategoryGraphql | null): CategoryPrisma | null {
-    if (graphqlEntity === null) {
-      return null;
-    }
-
-    return {
-      id: graphqlEntity.id,
-      color: graphqlEntity.color,
-      userId: graphqlEntity.userId,
-      createdAt: graphqlEntity.createdAt,
-      updatedAt: graphqlEntity.updatedAt,
-      displayName: graphqlEntity.displayName,
-      icon: CategoryIconMapper.toPrisma(graphqlEntity.icon),
-      type: CategoryTypeMapper.toPrisma(graphqlEntity.type),
-    };
+export function CategoryToPrisma(category: CategoryGraphql | null): CategoryPrisma | null {
+  if (category === null) {
+    return null;
   }
 
-  public static toGraphql(prismaEntity: CategoryPrisma | null): CategoryGraphql | null {
-    if (prismaEntity === null) {
-      return null;
-    }
+  return {
+    id: category.id,
+    color: category.color,
+    userId: category.userId,
+    createdAt: category.createdAt,
+    updatedAt: category.updatedAt,
+    displayName: category.displayName,
+    icon: CategoryIconToPrisma(category.icon),
+    type: CategoryTypeToPrisma(category.type)
+  };
+}
 
-    return {
-      id: prismaEntity.id,
-      color: prismaEntity.color,
-      userId: prismaEntity.userId,
-      createdAt: prismaEntity.createdAt,
-      updatedAt: prismaEntity.updatedAt,
-      displayName: prismaEntity.displayName,
-      icon: CategoryIconMapper.toGraphql(prismaEntity.icon),
-      type: CategoryTypeMapper.toGraphql(prismaEntity.type),
-    };
+export function CategoryToGraphql(category: CategoryPrisma | null): CategoryGraphql | null {
+  if (category === null) {
+    return null;
   }
+
+  return {
+    id: category.id,
+    color: category.color,
+    userId: category.userId,
+    createdAt: category.createdAt,
+    updatedAt: category.updatedAt,
+    displayName: category.displayName,
+    icon: CategoryIconToGraphql(category.icon),
+    type: CategoryTypeToGraphql(category.type)
+  };
 }

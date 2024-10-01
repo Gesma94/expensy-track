@@ -1,18 +1,18 @@
-import type { CodegenConfig } from "@graphql-codegen/cli";
+import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  schema: ["./src/**/*.graphql"],
+  schema: ['./src/**/*.graphql'],
   config: {
     useTypeImports: true,
     scalars: {
-      DateTime: "Date",
-    },
+      DateTime: 'Date'
+    }
   },
   generates: {
-    "./src/@types/graphql-generated.ts": {
-      plugins: ["typescript", "typescript-resolvers"],
-    },
-  },
+    './src/@types/graphql-generated.ts': {
+      plugins: ['typescript', 'typescript-resolvers']
+    }
+  }
 };
 
 export default config;

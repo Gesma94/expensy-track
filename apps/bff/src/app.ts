@@ -1,11 +1,11 @@
-import autoLoad from "@fastify/autoload";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-import Fastify from "fastify";
-import { minimatch } from "minimatch";
-import envPlugin from "./plugins/env.js";
-import type { Environment } from "./common/schemas/env-schema.js";
-import { getLogLevel } from "./common/utils/get-log-level.js";
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import autoLoad from '@fastify/autoload';
+import Fastify from 'fastify';
+import { minimatch } from 'minimatch';
+import type { Environment } from './common/schemas/env-schema.js';
+import { getLogLevel } from './common/utils/get-log-level.js';
+import envPlugin from './plugins/env.js';
 
 type BuildOptions = {
   customEnvs?: Partial<Environment>;
@@ -17,17 +17,17 @@ export async function buildFastify(options?: BuildOptions) {
   const __dirname = dirname(__filename);
 
   const fastify = Fastify({
-    logger: true,
+    logger: true
   });
 
   // registering all routes in 'routes' folder with prefix "/api"
   await fastify.register(autoLoad, {
-    dir: join(__dirname, "modules"),
+    dir: join(__dirname, 'modules'),
     dirNameRoutePrefix: false,
-    matchFilter: path => minimatch(path, "**/routes/*.ts"),
+    matchFilter: path => minimatch(path, '**/routes/*.ts'),
     options: {
-      prefix: "/api",
-    },
+      prefix: '/api'
+    }
   });
 
   // registering env plugin first
@@ -38,12 +38,12 @@ export async function buildFastify(options?: BuildOptions) {
 
   // registering all plugins in 'plugins' folder, except "env" which is registered before
   await fastify.register(autoLoad, {
-    dir: join(__dirname, "plugins"),
-    ignorePattern: /env.ts/,
+    dir: join(__dirname, 'plugins'),
+    ignorePattern: /env.ts/
   });
 
-  fastify.get("/ping", (_, reply) => {
-    reply.send({ ping: "pong" });
+  fastify.get('/ping', (_, reply) => {
+    reply.send({ ping: 'pong' });
   });
 
   return fastify;

@@ -1,25 +1,25 @@
-import { Type, type Static } from "@sinclair/typebox";
-import type { FastifyPluginAsync, FastifySchema } from "fastify";
-import { getUserPayload } from "../../../common/utils/get-user-payload.js";
-import { $Enums } from "@expensy-track/prisma";
-import { getReplySchemaWithError } from "@expensy-track/common/utils";
-import { ErrorSchema, UserPayloadSchema } from "@expensy-track/common/schemas";
-import { ErrorCode } from "@expensy-track/common/enums";
+import { ErrorCode } from '@expensy-track/common/enums';
+import { ErrorSchema, UserPayloadSchema } from '@expensy-track/common/schemas';
+import { getReplySchemaWithError } from '@expensy-track/common/utils';
+import { $Enums } from '@expensy-track/prisma';
+import { type Static, Type } from '@sinclair/typebox';
+import type { FastifyPluginAsync, FastifySchema } from 'fastify';
+import { getUserPayload } from '../../../common/utils/get-user-payload.js';
 
 const ReplySchema = getReplySchemaWithError(UserPayloadSchema);
 
 const BodySchema = Type.Object({
   idToken: Type.String(),
   lastName: Type.String(),
-  firstName: Type.String(),
+  firstName: Type.String()
 });
 
 const schema: FastifySchema = {
   body: BodySchema,
   response: {
     200: UserPayloadSchema,
-    400: ErrorSchema,
-  },
+    400: ErrorSchema
+  }
 };
 
 type RouteInterface = {
@@ -28,21 +28,25 @@ type RouteInterface = {
 };
 
 const loginGoogleRoute: FastifyPluginAsync = async fastify => {
-  fastify.post<RouteInterface>("/login/google", { schema }, async (request, reply) => {
+  fastify.post<RouteInterface>('/login/google', { schema }, async (request, reply) => {
     const { firstName, idToken, lastName } = request.body;
     const decodedToken = await fastify.firebase.auth.verifyIdToken(idToken);
 
     if (!decodedToken.email) {
       return reply.code(400).send({
         code: ErrorCode.ET_InvalidGoogleIdToken,
-        message: "Invalid google ID token",
-        name: "InvalidGoogleIdToken",
-        statusCode: 401,
+        message: 'Invalid google ID token',
+        name: 'InvalidGoogleIdToken',
+        statusCode: 401
       });
     }
 
     let user = await fastify.prisma.user.findUnique({
-      where: { email: decodedToken.email, firebase_uid: decodedToken.uid, provider: $Enums.UserProvider.GOOGLE },
+      where: {
+        email: decodedToken.email,
+        firebase_uid: decodedToken.uid,
+        provider: $Enums.UserProvider.GOOGLE
+      }
     });
 
     if (!user) {
@@ -53,17 +57,17 @@ const loginGoogleRoute: FastifyPluginAsync = async fastify => {
             firstName,
             email: decodedToken.email,
             firebase_uid: decodedToken.uid,
-            provider: $Enums.UserProvider.GOOGLE,
-          },
+            provider: $Enums.UserProvider.GOOGLE
+          }
         });
       } catch (error) {
-        fastify.log.error(error, "could not register the new user when logging via Google");
+        fastify.log.error(error, 'could not register the new user when logging via Google');
 
         return reply.status(400).send({
           statusCode: 400,
-          name: "UserRegistrationFailed",
+          name: 'UserRegistrationFailed',
           code: ErrorCode.ET_UserRegistrationFailed,
-          message: "Could not register the new user",
+          message: 'Could not register the new user'
         });
       }
     }

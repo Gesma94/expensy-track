@@ -1,6 +1,6 @@
 enum UserProvider {
-    EMAIL
-    GOOGLE
+  EMAIL
+  GOOGLE
 }
 
 enum UserErrorCode {
@@ -8,19 +8,19 @@ enum UserErrorCode {
 }
 
 type User {
-    id: ID!
-    provider: UserProvider!
-    createdAt: DateTime!
-    updatedAt: DateTime!
-    firstName: String!
-    lastName: String!
-    firebaseUid: String
-    email: String!
-    labels: [Label!]
-    categories: [Category!]
+  id: ID!
+  provider: UserProvider!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  firstName: String!
+  lastName: String!
+  firebaseUid: String
+  email: String!
+  labels: [Label!]
+  categories: [Category!]
 }
 
-type UserError  {
+type UserError {
   message: String!
   error: UserErrorCode
 }
@@ -32,5 +32,5 @@ type UserResult {
 union UserOutput = UserResult | UserError
 
 type Query {
-    user: UserOutput
+  user: UserOutput
 }

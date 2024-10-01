@@ -1,10 +1,10 @@
-import fp from "fastify-plugin";
-import fastifyEnv from "@fastify/env";
-import type { FastifyInstance } from "fastify";
-import { EnvSchema, type Environment } from "../common/schemas/env-schema.js";
-import { FastifyPluginName } from "../common/enums/fastify-plugin-name.js";
+import fastifyEnv from '@fastify/env';
+import type { FastifyInstance } from 'fastify';
+import fp from 'fastify-plugin';
+import { FastifyPluginName } from '../common/enums/fastify-plugin-name.js';
+import { EnvSchema, type Environment } from '../common/schemas/env-schema.js';
 
-declare module "fastify" {
+declare module 'fastify' {
   interface FastifyInstance {
     [FastifyPluginName.Env]: Environment;
   }
@@ -20,10 +20,10 @@ export default fp<Options>(
       dotenv: true,
       schema: EnvSchema,
       data: Object.assign(process.env, options.customEnvs),
-      confKey: FastifyPluginName.Env,
+      confKey: FastifyPluginName.Env
     });
   },
   {
-    name: FastifyPluginName.Env,
-  },
+    name: FastifyPluginName.Env
+  }
 );

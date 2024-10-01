@@ -3,6 +3,6 @@ enum GraphqlErrorCode {
 }
 
 type GraphqlError {
-    message: String!
-    code: GraphqlErrorCode!
+  message: String!
+  code: GraphqlErrorCode!
 }

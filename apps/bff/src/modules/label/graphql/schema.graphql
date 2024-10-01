@@ -12,7 +12,7 @@ type Label {
   user: User
 }
 
-type LabelsError  {
+type LabelsError {
   message: String!
   error: LabelErrorCode
 }

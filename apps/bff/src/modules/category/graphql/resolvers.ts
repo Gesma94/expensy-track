@@ -1,12 +1,12 @@
-import type { Resolvers } from "../../../@types/graphql-generated.js";
-import { mutationCreateCategory } from "./mutations/create-category.js";
-import { queryCategories } from "./queries/categories.js";
+import type { Resolvers } from '../../../@types/graphql-generated.js';
+import { mutationCreateCategory } from './mutations/create-category.js';
+import { queryCategories } from './queries/categories.js';
 
 export const categoryResolvers: Resolvers = {
   Query: {
-    categories: queryCategories,
+    categories: queryCategories
   },
   Mutation: {
-    createCategory: mutationCreateCategory,
-  },
+    createCategory: mutationCreateCategory
+  }
 };

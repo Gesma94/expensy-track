@@ -1,13 +1,13 @@
-import type { FastifyPluginAsync, FastifySchema } from "fastify";
-import { isErrorSchema } from "@expensy-track/common/utils";
-import { ErrorSchema, UserPayloadSchema, type ReplyAuthenticate } from "@expensy-track/common/schemas";
-import { ErrorCode } from "@expensy-track/common/enums";
+import { ErrorCode } from '@expensy-track/common/enums';
+import { ErrorSchema, type ReplyAuthenticate, UserPayloadSchema } from '@expensy-track/common/schemas';
+import { isErrorSchema } from '@expensy-track/common/utils';
+import type { FastifyPluginAsync, FastifySchema } from 'fastify';
 
 const schema: FastifySchema = {
   response: {
     200: UserPayloadSchema,
-    400: ErrorSchema,
-  },
+    400: ErrorSchema
+  }
 };
 
 type RouteInterface = {
@@ -15,22 +15,24 @@ type RouteInterface = {
 };
 
 const authenticateRoute: FastifyPluginAsync = async fastify => {
-  fastify.get<RouteInterface>("/authenticate", { schema }, async (request, reply) => {
+  fastify.get<RouteInterface>('/authenticate', { schema }, async (request, reply) => {
     try {
       await request.jwtVerify({ onlyCookie: true });
 
-      const user = await fastify.prisma.user.findUnique({ where: { id: request.user.id } });
+      const user = await fastify.prisma.user.findUnique({
+        where: { id: request.user.id }
+      });
 
       if (user) {
         return reply.send({ ...request.user });
-      } else {
-        return reply.status(401).send({
-          code: ErrorCode.ET_InvalidAccessToken,
-          message: "Invalid access token was found in request.cookies",
-          name: "InvalidAccessToken",
-          statusCode: 401,
-        });
       }
+
+      return reply.status(401).send({
+        code: ErrorCode.ET_InvalidAccessToken,
+        message: 'Invalid access token was found in request.cookies',
+        name: 'InvalidAccessToken',
+        statusCode: 401
+      });
     } catch (error) {
       if (isErrorSchema(error)) {
         if (error.code !== ErrorCode.FST_JwyAuthorizationTokenExpired) {
@@ -39,9 +41,9 @@ const authenticateRoute: FastifyPluginAsync = async fastify => {
       } else {
         return reply.status(401).send({
           code: ErrorCode.ET_InvalidAccessToken,
-          message: "Invalid access token was found in request.cookies",
-          name: "InvalidAccessToken",
-          statusCode: 401,
+          message: 'Invalid access token was found in request.cookies',
+          name: 'InvalidAccessToken',
+          statusCode: 401
         });
       }
     }
@@ -51,9 +53,9 @@ const authenticateRoute: FastifyPluginAsync = async fastify => {
     if (!refreshToken) {
       return reply.status(401).send({
         code: ErrorCode.ET_InvalidRefreshToken,
-        message: "Invalid refresh token was found in request.cookies",
-        name: "InvalidRefreshToken",
-        statusCode: 401,
+        message: 'Invalid refresh token was found in request.cookies',
+        name: 'InvalidRefreshToken',
+        statusCode: 401
       });
     }
 
@@ -61,18 +63,18 @@ const authenticateRoute: FastifyPluginAsync = async fastify => {
       const {
         accessToken: newAccessToken,
         refreshToken: newRefreshToken,
-        userPayload,
+        userPayload
       } = fastify.tokens.refreshTokens(refreshToken);
 
       return reply.setAuthCookies(newAccessToken, newRefreshToken).status(200).send(userPayload);
     } catch (error) {
-      fastify.log.error(error, "invalid refresh token in request cookies");
+      fastify.log.error(error, 'invalid refresh token in request cookies');
 
       return reply.status(401).send({
         code: ErrorCode.ET_InvalidRefreshToken,
-        message: "Invalid refresh token was found in request.cookies",
-        name: "InvalidRefreshToken",
-        statusCode: 401,
+        message: 'Invalid refresh token was found in request.cookies',
+        name: 'InvalidRefreshToken',
+        statusCode: 401
       });
     }
   });

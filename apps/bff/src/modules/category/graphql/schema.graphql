@@ -1,10 +1,10 @@
- enum CategoryType {
+enum CategoryType {
   EXPANSE
   INCOME
   TRANSFER
 }
 
- enum CategoryIcon {
+enum CategoryIcon {
   SUBSCRIPTION
   GROCERY
   MISCELLANEOUS

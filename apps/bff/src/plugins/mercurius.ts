@@ -1,16 +1,16 @@
-import fp from "fastify-plugin";
-import type { FastifyInstance, FastifyRequest } from "fastify";
-import { makeExecutableSchema } from "@graphql-tools/schema";
-import { mergeResolvers, mergeTypeDefs } from "@graphql-tools/merge";
-import path from "path";
-import { fileURLToPath } from "url";
-import mercurius from "mercurius";
-import { loadFilesSync } from "@graphql-tools/load-files";
-import type { UserPayload } from "@expensy-track/common/schemas";
-import { categoryResolvers } from "../modules/category/graphql/resolvers.js";
-import { authResolvers } from "../modules/auth/graphql/resolvers.js";
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import type { UserPayload } from '@expensy-track/common/schemas';
+import { loadFilesSync } from '@graphql-tools/load-files';
+import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import type { FastifyInstance, FastifyRequest } from 'fastify';
+import fp from 'fastify-plugin';
+import mercurius from 'mercurius';
+import { authResolvers } from '../modules/auth/graphql/resolvers.js';
+import { categoryResolvers } from '../modules/category/graphql/resolvers.js';
 
-declare module "mercurius" {
+declare module 'mercurius' {
   interface MercuriusContext {
     user: UserPayload | null;
   }
@@ -21,11 +21,11 @@ const __dirname = path.dirname(__filename);
 
 // !WORKAROUND: loadFileSync is not working with vitest and ts files; manually loading all resolvers here
 // const resolverArray = loadFilesSync(path.join(__dirname, "./../modules/**/resolvers.ts"));
-const typeDefArray = loadFilesSync(path.join(__dirname, "./../**/*.graphql"));
+const typeDefArray = loadFilesSync(path.join(__dirname, './../**/*.graphql'));
 
 const schema = makeExecutableSchema({
   typeDefs: mergeTypeDefs(typeDefArray),
-  resolvers: mergeResolvers([categoryResolvers, authResolvers]),
+  resolvers: mergeResolvers([categoryResolvers, authResolvers])
 });
 
 type MercuriusAdditionalContext = {
@@ -36,11 +36,11 @@ async function buildContext(request: FastifyRequest): Promise<MercuriusAdditiona
   try {
     await request.jwtVerify({ onlyCookie: true });
     return {
-      user: request.user,
+      user: request.user
     };
   } catch (error) {
     return {
-      user: null,
+      user: null
     };
   }
 }
@@ -49,6 +49,6 @@ export default fp(async (fastify: FastifyInstance) => {
   fastify.register(mercurius, {
     schema,
     context: buildContext,
-    graphiql: fastify.env.NODE_ENV === "development",
+    graphiql: fastify.env.NODE_ENV === 'development'
   });
 });

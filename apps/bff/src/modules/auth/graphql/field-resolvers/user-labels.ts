@@ -1,10 +1,10 @@
-import type { MercuriusContext } from "mercurius";
-import type { UserResolvers } from "../../../../@types/graphql-generated.js";
+import type { MercuriusContext } from 'mercurius';
+import type { UserResolvers } from '../../../../@types/graphql-generated.js';
 
-export const userLabelsFieldResolvers: UserResolvers<MercuriusContext>["labels"] = async (
+export const userLabelsFieldResolvers: UserResolvers<MercuriusContext>['labels'] = async (
   user,
   _args,
-  contextValue,
+  contextValue
 ) => {
   if (!contextValue.user) {
     contextValue.app.log.warn(`could not retrieve labels for user ${user.id}`);
@@ -12,8 +12,8 @@ export const userLabelsFieldResolvers: UserResolvers<MercuriusContext>["labels"]
 
   const labels = await contextValue.app.prisma.label.findMany({
     where: {
-      userId: user.id,
-    },
+      userId: user.id
+    }
   });
 
   return labels;

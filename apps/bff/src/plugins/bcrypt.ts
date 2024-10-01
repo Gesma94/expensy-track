@@ -1,9 +1,9 @@
-import fp from "fastify-plugin";
-import type { FastifyInstance } from "fastify";
-import bcrypt from "bcrypt";
-import { FastifyPluginName } from "../common/enums/fastify-plugin-name.js";
+import bcrypt from 'bcrypt';
+import type { FastifyInstance } from 'fastify';
+import fp from 'fastify-plugin';
+import { FastifyPluginName } from '../common/enums/fastify-plugin-name.js';
 
-declare module "fastify" {
+declare module 'fastify' {
   interface FastifyInstance {
     [FastifyPluginName.Bcrypt]: typeof passwordHasher;
   }
@@ -23,7 +23,7 @@ const passwordHasher = {
     }
 
     return bcrypt.compareSync(plainText, hash);
-  },
+  }
 };
 
 export default fp(
@@ -31,6 +31,6 @@ export default fp(
     fastify.decorate(FastifyPluginName.Bcrypt, passwordHasher);
   },
   {
-    name: FastifyPluginName.Bcrypt,
-  },
+    name: FastifyPluginName.Bcrypt
+  }
 );

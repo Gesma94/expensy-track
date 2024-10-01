@@ -1,5 +1,5 @@
-import { UserProvider } from "@expensy-track/common/enums";
-import { $Enums } from "@expensy-track/prisma";
+import { UserProvider } from '@expensy-track/common/enums';
+import { $Enums } from '@expensy-track/prisma';
 
 export function mapDbUserProvider(dbUserProvider: $Enums.UserProvider): UserProvider {
   switch (dbUserProvider) {

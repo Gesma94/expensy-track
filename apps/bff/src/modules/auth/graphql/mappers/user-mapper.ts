@@ -1,41 +1,39 @@
-import type { User as UserPrisma } from "@expensy-track/prisma";
-import type { User as UserGraphql } from "../../../../@types/graphql-generated.js";
-import { UserProviderMapper } from "./user-provider-mapper.js";
+import type { User as UserPrisma } from '@expensy-track/prisma';
+import type { User as UserGraphql } from '../../../../@types/graphql-generated.js';
+import { UserProviderToGraphql, UserProviderToPrisma } from './user-provider-mapper.js';
 
-export class UserMapper {
-  public static toPrisma(graphqlEntity: UserGraphql | null): UserPrisma | null {
-    if (graphqlEntity === null) {
-      return null;
-    }
-
-    return {
-      id: graphqlEntity.id,
-      email: graphqlEntity.email,
-      firebase_uid: graphqlEntity.firebaseUid ?? null,
-      firstName: graphqlEntity.firstName,
-      lastName: graphqlEntity.lastName,
-      provider: UserProviderMapper.toPrisma(graphqlEntity.provider),
-      createdAt: graphqlEntity.createdAt,
-      updatedAt: graphqlEntity.updatedAt,
-      password: null,
-    };
+export function UserToPrisma(user: UserGraphql | null): UserPrisma | null {
+  if (user === null) {
+    return null;
   }
 
-  public static toGraphql(prismaEntity: UserPrisma | null): UserGraphql | null {
-    if (prismaEntity === null) {
-      return null;
-    }
+  return {
+    id: user.id,
+    email: user.email,
+    firebase_uid: user.firebaseUid ?? null,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    provider: UserProviderToPrisma(user.provider),
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+    password: null
+  };
+}
 
-    return {
-      id: prismaEntity.id,
-      email: prismaEntity.email,
-      firebaseUid: prismaEntity.firebase_uid,
-      firstName: prismaEntity.firstName,
-      lastName: prismaEntity.lastName,
-      provider: UserProviderMapper.toGraphql(prismaEntity.provider),
-      createdAt: prismaEntity.createdAt,
-      updatedAt: prismaEntity.updatedAt,
-      categories: [],
-    };
+export function UserToGraphql(user: UserPrisma | null): UserGraphql | null {
+  if (user === null) {
+    return null;
   }
+
+  return {
+    id: user.id,
+    email: user.email,
+    firebaseUid: user.firebase_uid,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    provider: UserProviderToGraphql(user.provider),
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+    categories: []
+  };
 }

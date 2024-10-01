@@ -1,0 +1,17 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
+  "extends": ["./../../biome.json"],
+  "files": {
+    "ignore": ["./dist"]
+  },
+  "linter": {
+    "rules": {
+      "correctness": {
+        "useHookAtTopLevel": "error"
+      },
+      "nursery": {
+        "useComponentExportOnlyModules": "error"
+      }
+    }
+  }
+}

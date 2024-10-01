@@ -13,9 +13,9 @@
     "clean": "rimraf dist",
     "build": "pnpm run clean && tsc",
     "build:dev": "pnpm run clean && tsc -p ./tsconfig.dev.json",
-    "lint": "pnpm exec eslint . --fix",
     "typecheck": "tsc --noEmit",
-    "format": "pnpm exec prettier . --write",
+    "lint": "pnpm biome lint --write .",
+    "format": "pnpm biome format --write .",
     "test": "echo \"Passed\""
   },
   "keywords": [],

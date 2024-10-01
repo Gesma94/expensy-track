@@ -1,9 +1,9 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 const apolloClient = new ApolloClient({
   uri: `${import.meta.env.VITE_BFF_ADDRESS}/graphql`,
   cache: new InMemoryCache(),
-  credentials: "include",
+  credentials: 'include'
 });
 
 export function ReactApolloProvider({ children }: React.PropsWithChildren) {

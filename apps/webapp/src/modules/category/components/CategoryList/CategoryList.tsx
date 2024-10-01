@@ -1,5 +1,5 @@
-import { CategoryIcon } from "@components/CategoryIcon/CategoryIcon";
-import type { MyCategoryFragment } from "../../../../gql/graphql";
+import { CategoryIcon } from '@components/CategoryIcon/CategoryIcon';
+import type { MyCategoryFragment } from '../../../../gql/graphql';
 
 type Props = {
   title: string;

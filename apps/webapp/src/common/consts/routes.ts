@@ -1,14 +1,14 @@
 export const ROUTES = {
-  HOME: "/",
-  LOGIN: "/login",
-  SIGNUP: "/signup",
+  HOME: '/',
+  LOGIN: '/login',
+  SIGNUP: '/signup',
   WALLET: {
-    ROOT: "/wallet",
+    ROOT: '/wallet',
     PATHS: {
-      NAME: ":name",
+      NAME: ':name'
     },
     NAME: function (name?: string) {
       return `/wallet/${name ?? this.PATHS.NAME}`;
-    },
-  },
+    }
+  }
 };

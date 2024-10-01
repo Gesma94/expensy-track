@@ -1,10 +1,10 @@
-import { useParams } from "react-router-dom";
-import invariant from "tiny-invariant";
+import { useParams } from 'react-router-dom';
+import invariant from 'tiny-invariant';
 
 export function Wallet() {
   const { name } = useParams();
 
-  invariant(name, "wallet name must be provided");
+  invariant(name, 'wallet name must be provided');
 
   return (
     <>

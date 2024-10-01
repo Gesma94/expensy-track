@@ -1,19 +1,19 @@
-import path from "path";
-import { defineConfig } from "vite";
-import tailwindcss from "tailwindcss";
-import react from "@vitejs/plugin-react";
+import path from 'node:path';
+import react from '@vitejs/plugin-react';
+import tailwindcss from 'tailwindcss';
+import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   css: {
     postcss: {
-      plugins: [tailwindcss()],
-    },
+      plugins: [tailwindcss()]
+    }
   },
   resolve: {
     alias: {
-      "@components": path.resolve(__dirname, "./src/components"),
-    },
-  },
+      '@components': path.resolve(__dirname, './src/components')
+    }
+  }
 });

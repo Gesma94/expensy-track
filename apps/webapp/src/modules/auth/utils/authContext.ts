@@ -1,5 +1,5 @@
-import type { UserPayload } from "@expensy-track/common/schemas";
-import { createContext } from "react";
+import type { UserPayload } from '@expensy-track/common/schemas';
+import { createContext } from 'react';
 
 type AuthContext = {
   isAuthenticated: boolean;

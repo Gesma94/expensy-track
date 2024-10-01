@@ -1,7 +1,7 @@
-import type { RouteObject } from "react-router-dom";
-import { PrivateRoute } from "../auth/components/PrivateRoute/PrivateRoute";
-import { Wallet } from "./pages/Wallet";
-import { ROUTES } from "../../common/consts/routes";
+import type { RouteObject } from 'react-router-dom';
+import { ROUTES } from '../../common/consts/routes';
+import { PrivateRoute } from '../auth/components/PrivateRoute/PrivateRoute';
+import { Wallet } from './pages/Wallet';
 
 export const walletRoutes: RouteObject[] = [
   {
@@ -11,6 +11,6 @@ export const walletRoutes: RouteObject[] = [
       <PrivateRoute>
         <Wallet />
       </PrivateRoute>
-    ),
-  },
+    )
+  }
 ];

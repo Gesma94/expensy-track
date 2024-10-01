@@ -1,16 +1,19 @@
-import { useQuery } from "@apollo/client";
-import { GET_MY_CATEGORIES } from "../../graphql/queries";
-import { useMemo } from "react";
-import { getGroupedCategories } from "../../utils/getGroupedCategories";
-import { useFragment } from "../../../../gql";
-import { MyCategoryFragmentDoc } from "../../../../gql/graphql";
-import { CategoryIcon } from "@components/CategoryIcon/CategoryIcon";
-import { CreateCategoryForm } from "../../components/CreateCategoryForm/CreateCategoryForm";
-import { CategoryList } from "../../components/CategoryList/CategoryList";
+import { useQuery } from '@apollo/client';
+import { CategoryIcon } from '@components/CategoryIcon/CategoryIcon';
+import { useMemo } from 'react';
+import { useFragment } from '../../../../gql';
+import { MyCategoryFragmentDoc } from '../../../../gql/graphql';
+import { CategoryList } from '../../components/CategoryList/CategoryList';
+import { CreateCategoryForm } from '../../components/CreateCategoryForm/CreateCategoryForm';
+import { GET_MY_CATEGORIES } from '../../graphql/queries';
+import { getGroupedCategories } from '../../utils/getGroupedCategories';
 
 export const Categories = () => {
   const { loading, data, error, refetch } = useQuery(GET_MY_CATEGORIES);
-  const categoriesFragment = useFragment(MyCategoryFragmentDoc, data?.categories?.result);
+  const categoriesFragment = useFragment(
+    MyCategoryFragmentDoc,
+    data?.categories?.result
+  );
 
   const groupedCategories = useMemo(() => {
     return getGroupedCategories(categoriesFragment);
@@ -30,8 +33,14 @@ export const Categories = () => {
             <CreateCategoryForm onSuccess={handleCreateSuccess} />
           </div>
           <div>
-            <CategoryList title='Expanses' categories={groupedCategories.EXPANSE} />
-            <CategoryList title='Incomes' categories={groupedCategories.INCOME} />
+            <CategoryList
+              title='Expanses'
+              categories={groupedCategories.EXPANSE}
+            />
+            <CategoryList
+              title='Incomes'
+              categories={groupedCategories.INCOME}
+            />
           </div>
         </>
       )}

@@ -1,15 +1,15 @@
-import type { RouteObject } from "react-router-dom";
-import { Login } from "./pages/Login/Login";
-import { ROUTES } from "../../common/consts/routes";
-import { SignUp } from "./pages/SignUp/SignUp";
+import type { RouteObject } from 'react-router-dom';
+import { ROUTES } from '../../common/consts/routes';
+import { Login } from './pages/Login/Login';
+import { SignUp } from './pages/SignUp/SignUp';
 
 export const authRoutes: RouteObject[] = [
   {
     path: ROUTES.LOGIN,
-    element: <Login />,
+    element: <Login />
   },
   {
     path: ROUTES.SIGNUP,
-    element: <SignUp />,
-  },
+    element: <SignUp />
+  }
 ];

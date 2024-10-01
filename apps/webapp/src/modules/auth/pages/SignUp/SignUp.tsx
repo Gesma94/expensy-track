@@ -1,30 +1,34 @@
-import { Link, useNavigate } from "react-router-dom";
-import { ROUTES } from "../../../../common/consts/routes";
-import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
-import { ErrorSchema, type Error, type UserPayload } from "@expensy-track/common/schemas";
-import { kyInstance } from "../../../fetch/utils/kyInstance";
-import { z } from "zod";
-import { HTTPError } from "ky";
-import { useAuth } from "../../hooks/useAuth";
-import { isSchema } from "@expensy-track/common/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  ErrorSchema,
+  type Error as ExpensyError,
+  type UserPayload
+} from '@expensy-track/common/schemas';
+import { isSchema } from '@expensy-track/common/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { HTTPError } from 'ky';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+import { ROUTES } from '../../../../common/consts/routes';
+import { kyInstance } from '../../../fetch/utils/kyInstance';
+import { useAuth } from '../../hooks/useAuth';
 
 const formSchema = z.object({
   lastName: z.string(),
   firstName: z.string(),
-  email: z.string().email("email format missing"),
-  password: z.string().min(6, "password too short"),
+  email: z.string().email('email format missing'),
+  password: z.string().min(6, 'password too short')
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 async function mutationFn(json: FormSchema): Promise<UserPayload> {
   try {
-    return await kyInstance.post("sign-up", { json }).json();
+    return await kyInstance.post('sign-up', { json }).json();
   } catch (error) {
     if (error instanceof HTTPError) {
-      throw await error.response.json<Error>();
+      throw await error.response.json<ExpensyError>();
     }
 
     throw error;
@@ -34,15 +38,17 @@ async function mutationFn(json: FormSchema): Promise<UserPayload> {
 export function SignUp() {
   const auth = useAuth();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<FormSchema>({ resolver: zodResolver(formSchema) });
-  const { mutate, error } = useMutation<UserPayload, Error, FormSchema>({
+  const { register, handleSubmit } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema)
+  });
+  const { mutate, error } = useMutation<UserPayload, ExpensyError, FormSchema>({
     onSuccess,
-    mutationFn,
+    mutationFn
   });
 
   function onSuccess(userPayload: UserPayload) {
     auth.setUser(userPayload);
-    navigate(ROUTES.WALLET.NAME("test"));
+    navigate(ROUTES.WALLET.NAME('test'));
   }
 
   function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
@@ -55,7 +61,7 @@ export function SignUp() {
       return error.message;
     }
 
-    return "unknown error";
+    return 'unknown error';
   }
 
   return (
@@ -65,17 +71,37 @@ export function SignUp() {
       {error && getErrorMessage()}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label>email</label>
-        <input {...register("email")} defaultValue={""} placeholder='your email' />
+        <label htmlFor='email-input'>email</label>
+        <input
+          id='email-input'
+          {...register('email')}
+          defaultValue={''}
+          placeholder='your email'
+        />
 
-        <label>password</label>
-        <input {...register("password")} defaultValue={""} placeholder='your password' />
+        <label htmlFor='password-input'>password</label>
+        <input
+          id='password-input'
+          {...register('password')}
+          defaultValue={''}
+          placeholder='your password'
+        />
 
-        <label>first name</label>
-        <input {...register("firstName")} defaultValue={""} placeholder='first name' />
+        <label htmlFor='first-name-input'>first name</label>
+        <input
+          id='first-name-input'
+          {...register('firstName')}
+          defaultValue={''}
+          placeholder='first name'
+        />
 
-        <label>last name</label>
-        <input {...register("lastName")} defaultValue={""} placeholder='last name' />
+        <label htmlFor='last-name-input'>last name</label>
+        <input
+          id='last-name-input'
+          {...register('lastName')}
+          defaultValue={''}
+          placeholder='last name'
+        />
 
         <button type='submit'>Signup</button>
       </form>

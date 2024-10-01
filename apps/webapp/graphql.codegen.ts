@@ -1,23 +1,23 @@
-import type { CodegenConfig } from "@graphql-codegen/cli";
+import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  schema: ["./../bff/src/**/*.graphql"],
-  documents: "src/**/*.{ts,tsx}",
+  schema: ['./../bff/src/**/*.graphql'],
+  documents: 'src/**/*.{ts,tsx}',
   config: {
     useTypeImports: true,
     scalars: {
-      DateTime: "Date",
-    },
+      DateTime: 'Date'
+    }
   },
   generates: {
-    "./src/gql/": {
-      preset: "client",
+    './src/gql/': {
+      preset: 'client',
       presetConfig: {
-        gqlTagName: "gql",
-      },
-    },
+        gqlTagName: 'gql'
+      }
+    }
   },
-  ignoreNoDocuments: true,
+  ignoreNoDocuments: true
 };
 
 export default config;

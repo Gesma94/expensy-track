@@ -1,12 +1,12 @@
 import { ErrorCode } from '@expensy-track/common/enums';
-import { ErrorSchema, type ReplyAuthenticate, UserPayloadSchema } from '@expensy-track/common/schemas';
+import { type ReplyAuthenticate, RestErrorSchema, UserPayloadSchema } from '@expensy-track/common/schemas';
 import { isErrorSchema } from '@expensy-track/common/utils';
 import type { FastifyPluginAsync, FastifySchema } from 'fastify';
 
 const schema: FastifySchema = {
   response: {
     200: UserPayloadSchema,
-    400: ErrorSchema
+    400: RestErrorSchema
   }
 };
 

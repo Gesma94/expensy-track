@@ -1,5 +1,5 @@
 import { ErrorCode } from '@expensy-track/common/enums';
-import { ErrorSchema, UserPayloadSchema } from '@expensy-track/common/schemas';
+import { RestErrorSchema, UserPayloadSchema } from '@expensy-track/common/schemas';
 import { getReplySchemaWithError } from '@expensy-track/common/utils';
 import { $Enums } from '@expensy-track/prisma';
 import { type Static, Type } from '@sinclair/typebox';
@@ -18,7 +18,7 @@ const schema: FastifySchema = {
   body: BodySchema,
   response: {
     200: UserPayloadSchema,
-    400: ErrorSchema
+    400: RestErrorSchema
   }
 };
 

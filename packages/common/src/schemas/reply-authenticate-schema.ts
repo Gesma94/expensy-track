@@ -1,6 +1,6 @@
-import type { Static } from "@sinclair/typebox";
-import { getReplySchemaWithError } from "../index.utils.js";
-import { UserPayloadSchema } from "./user-schema.js";
+import type { Static } from '@sinclair/typebox';
+import { getReplySchemaWithError } from '../index.utils.js';
+import { UserPayloadSchema } from './user-schema.js';
 
 export const ReplyAuthenticateSchema = getReplySchemaWithError(UserPayloadSchema);
 

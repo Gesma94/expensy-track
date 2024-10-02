@@ -1,4 +1,4 @@
 export enum UserProvider {
-  Email,
-  Google,
+  Email = 0,
+  Google = 1
 }

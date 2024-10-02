@@ -4,9 +4,7 @@ type ReturnType = {
   [key in CategoryType]: MyCategoryFragment[];
 };
 
-export function getGroupedCategories(
-  categories: MyCategoryFragment[] | undefined | null
-): ReturnType {
+export function getGroupedCategories(categories: MyCategoryFragment[] | undefined | null): ReturnType {
   const result: ReturnType = {
     INCOME: [],
     EXPANSE: [],

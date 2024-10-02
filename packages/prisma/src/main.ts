@@ -1,16 +1,16 @@
-import { PrismaClient, $Enums } from "@prisma/client";
+import { $Enums, PrismaClient } from '@prisma/client';
 import type {
-  Category,
-  Label,
-  User,
   Budget,
   BudgetsOnCategories,
   BudgetsOnWallets,
+  Category,
   GuestsOnWallets,
+  Label,
   LabelsOnTransactions,
   Transaction,
-  Wallet,
-} from "@prisma/client";
+  User,
+  Wallet
+} from '@prisma/client';
 
 export type {
   Category,
@@ -22,6 +22,6 @@ export type {
   GuestsOnWallets,
   LabelsOnTransactions,
   Transaction,
-  Wallet,
+  Wallet
 };
 export { PrismaClient, $Enums };

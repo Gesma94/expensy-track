@@ -1,8 +1,4 @@
-import {
-  type ReplyAuthenticate,
-  type UserPayload,
-  UserPayloadSchema
-} from '@expensy-track/common/schemas';
+import { type ReplyAuthenticate, type UserPayload, UserPayloadSchema } from '@expensy-track/common/schemas';
 import { isSchema } from '@expensy-track/common/utils';
 import { useQuery } from '@tanstack/react-query';
 import { type ContextType, useEffect, useMemo, useState } from 'react';
@@ -23,9 +19,7 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
     refetchOnWindowFocus: false
   });
 
-  const authContextValueMemoized = useMemo<
-    ContextType<typeof AuthContext>
-  >(() => {
+  const authContextValueMemoized = useMemo<ContextType<typeof AuthContext>>(() => {
     return {
       user,
       setUser,

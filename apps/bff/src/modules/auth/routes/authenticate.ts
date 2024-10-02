@@ -1,6 +1,6 @@
 import { ErrorCode } from '@expensy-track/common/enums';
 import { type ReplyAuthenticate, RestErrorSchema, UserPayloadSchema } from '@expensy-track/common/schemas';
-import { isErrorSchema } from '@expensy-track/common/utils';
+import { isRestErrorSchema } from '@expensy-track/common/utils';
 import type { FastifyPluginAsync, FastifySchema } from 'fastify';
 
 const schema: FastifySchema = {
@@ -34,7 +34,7 @@ const authenticateRoute: FastifyPluginAsync = async fastify => {
         statusCode: 401
       });
     } catch (error) {
-      if (isErrorSchema(error)) {
+      if (isRestErrorSchema(error)) {
         if (error.code !== ErrorCode.FST_JwyAuthorizationTokenExpired) {
           return reply.status(401).send(error);
         }

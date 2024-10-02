@@ -1,6 +1,6 @@
 import { ErrorCode } from '@expensy-track/common/enums';
 import { RestErrorSchema, UserPayloadSchema } from '@expensy-track/common/schemas';
-import { getReplySchemaWithError, isErrorSchema } from '@expensy-track/common/utils';
+import { getReplySchemaWithError, isRestErrorSchema } from '@expensy-track/common/utils';
 import { $Enums } from '@expensy-track/prisma';
 import { type Static, Type } from '@sinclair/typebox';
 import type { FastifyPluginAsync, FastifySchema } from 'fastify';
@@ -60,7 +60,7 @@ const signUpRoute: FastifyPluginAsync = async fastify => {
 
       return reply.getAndSetAuthCookies(newUser).status(200).send(getUserPayload(newUser));
     } catch (error) {
-      if (isErrorSchema(error)) {
+      if (isRestErrorSchema(error)) {
         return reply.status(400).send(error);
       }
 

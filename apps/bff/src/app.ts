@@ -1,23 +1,24 @@
+import 'dotenv/config';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import autoLoad from '@fastify/autoload';
 import Fastify from 'fastify';
 import { minimatch } from 'minimatch';
-import type { Environment } from './common/schemas/env-schema.js';
-import { getLogLevel } from './common/utils/get-log-level.js';
-import envPlugin from './plugins/env.js';
+import type { FastifyBuildOptions } from './common/types/fastify-build-options.js';
+import { getFastifyLogger } from './common/utils/get-fastify-logger.js';
 
-type BuildOptions = {
-  customEnvs?: Partial<Environment>;
-};
-
-export async function buildFastify(options?: BuildOptions) {
-  const { customEnvs } = options ?? {};
+export async function buildFastify(options?: FastifyBuildOptions) {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
 
   const fastify = Fastify({
-    logger: true
+    logger: getFastifyLogger(process.env.NODE_ENV)
+  });
+
+  // registering all plugins in 'plugins' folder
+  await fastify.register(autoLoad, {
+    options,
+    dir: join(__dirname, 'plugins')
   });
 
   // registering all routes in 'routes' folder with prefix "/api"
@@ -29,19 +30,6 @@ export async function buildFastify(options?: BuildOptions) {
       prefix: '/api'
     }
   });
-
-  // registering env plugin first
-  await fastify.register(envPlugin, { customEnvs: customEnvs });
-
-  // once we have the environment variables in fastify app, setting the log level
-  fastify.log.level = getLogLevel(fastify.env.NODE_ENV);
-
-  // registering all plugins in 'plugins' folder, except "env" which is registered before
-  await fastify.register(autoLoad, {
-    dir: join(__dirname, 'plugins'),
-    ignorePattern: /env.ts/
-  });
-
   fastify.get('/ping', (_, reply) => {
     reply.send({ ping: 'pong' });
   });

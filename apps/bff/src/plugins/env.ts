@@ -3,6 +3,7 @@ import type { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
 import { FastifyPluginName } from '../common/enums/fastify-plugin-name.js';
 import { EnvSchema, type Environment } from '../common/schemas/env-schema.js';
+import type { FastifyBuildOptions } from '../common/types/fastify-build-options.js';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -10,14 +11,10 @@ declare module 'fastify' {
   }
 }
 
-type Options = {
-  customEnvs?: Partial<Environment>;
-};
-
-export default fp<Options>(
+export default fp<FastifyBuildOptions>(
   async (fastify: FastifyInstance, options) => {
     fastify.register(fastifyEnv, {
-      dotenv: true,
+      dotenv: false,
       schema: EnvSchema,
       data: Object.assign(process.env, options.customEnvs),
       confKey: FastifyPluginName.Env

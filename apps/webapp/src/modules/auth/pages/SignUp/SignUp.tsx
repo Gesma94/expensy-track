@@ -1,9 +1,5 @@
-import {
-  ErrorSchema,
-  type Error as ExpensyError,
-  type UserPayload
-} from '@expensy-track/common/schemas';
-import { isSchema } from '@expensy-track/common/utils';
+import type { RestError, UserPayload } from '@expensy-track/common/schemas';
+import { isRestErrorSchema } from '@expensy-track/common/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { HTTPError } from 'ky';
@@ -28,7 +24,7 @@ async function mutationFn(json: FormSchema): Promise<UserPayload> {
     return await kyInstance.post('sign-up', { json }).json();
   } catch (error) {
     if (error instanceof HTTPError) {
-      throw await error.response.json<ExpensyError>();
+      throw await error.response.json<RestError>();
     }
 
     throw error;
@@ -41,7 +37,7 @@ export function SignUp() {
   const { register, handleSubmit } = useForm<FormSchema>({
     resolver: zodResolver(formSchema)
   });
-  const { mutate, error } = useMutation<UserPayload, ExpensyError, FormSchema>({
+  const { mutate, error } = useMutation<UserPayload, RestError, FormSchema>({
     onSuccess,
     mutationFn
   });
@@ -57,7 +53,7 @@ export function SignUp() {
   }
 
   function getErrorMessage() {
-    if (isSchema(ErrorSchema, error)) {
+    if (isRestErrorSchema(error)) {
       return error.message;
     }
 
@@ -72,36 +68,16 @@ export function SignUp() {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor='email-input'>email</label>
-        <input
-          id='email-input'
-          {...register('email')}
-          defaultValue={''}
-          placeholder='your email'
-        />
+        <input id='email-input' {...register('email')} defaultValue={''} placeholder='your email' />
 
         <label htmlFor='password-input'>password</label>
-        <input
-          id='password-input'
-          {...register('password')}
-          defaultValue={''}
-          placeholder='your password'
-        />
+        <input id='password-input' {...register('password')} defaultValue={''} placeholder='your password' />
 
         <label htmlFor='first-name-input'>first name</label>
-        <input
-          id='first-name-input'
-          {...register('firstName')}
-          defaultValue={''}
-          placeholder='first name'
-        />
+        <input id='first-name-input' {...register('firstName')} defaultValue={''} placeholder='first name' />
 
         <label htmlFor='last-name-input'>last name</label>
-        <input
-          id='last-name-input'
-          {...register('lastName')}
-          defaultValue={''}
-          placeholder='last name'
-        />
+        <input id='last-name-input' {...register('lastName')} defaultValue={''} placeholder='last name' />
 
         <button type='submit'>Signup</button>
       </form>

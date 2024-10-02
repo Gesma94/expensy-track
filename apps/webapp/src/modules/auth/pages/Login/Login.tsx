@@ -1,8 +1,5 @@
 import { ErrorCode } from '@expensy-track/common/enums';
-import type {
-  Error as ExpensyError,
-  UserPayload
-} from '@expensy-track/common/schemas';
+import type { RestError, UserPayload } from '@expensy-track/common/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { HTTPError } from 'ky';
@@ -26,7 +23,7 @@ async function mutationFn(json: Schema): Promise<UserPayload> {
     return await kyInstance.post<UserPayload>('login', { json }).json();
   } catch (error) {
     if (error instanceof HTTPError) {
-      throw await error.response.json<ExpensyError>();
+      throw await error.response.json<RestError>();
     }
 
     throw error;
@@ -40,7 +37,7 @@ export function Login() {
   const { register, handleSubmit, formState } = useForm<Schema>({
     resolver: zodResolver(schema)
   });
-  const { mutate, error } = useMutation<UserPayload, ExpensyError, Schema>({
+  const { mutate, error } = useMutation<UserPayload, RestError, Schema>({
     onSuccess,
     mutationFn
   });
@@ -71,26 +68,12 @@ export function Login() {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor='email-input'>email</label>
-        <input
-          id='email-input'
-          {...register('email')}
-          defaultValue={''}
-          placeholder='your email'
-        />
-        {formState.errors.email && (
-          <span>{formState.errors.email.message}</span>
-        )}
+        <input id='email-input' {...register('email')} defaultValue={''} placeholder='your email' />
+        {formState.errors.email && <span>{formState.errors.email.message}</span>}
 
         <label htmlFor='password-input'>password</label>
-        <input
-          id='password-input'
-          {...register('password')}
-          defaultValue={''}
-          placeholder='your password'
-        />
-        {formState.errors.password && (
-          <span>{formState.errors.password.message}</span>
-        )}
+        <input id='password-input' {...register('password')} defaultValue={''} placeholder='your password' />
+        {formState.errors.password && <span>{formState.errors.password.message}</span>}
 
         <button type='submit'>Login</button>
       </form>

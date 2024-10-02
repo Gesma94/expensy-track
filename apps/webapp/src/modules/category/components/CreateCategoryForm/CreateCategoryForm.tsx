@@ -15,9 +15,7 @@ type Props = {
 const formSchema = z.object({
   type: z.nativeEnum(CategoryType),
   displayName: z.string().min(1, 'must have length 1'),
-  color: z
-    .string()
-    .regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'must be a valid color'),
+  color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'must be a valid color'),
   icon: z.nativeEnum(CategoryIconEnum)
 });
 
@@ -27,8 +25,7 @@ export const CreateCategoryForm = ({ onSuccess }: Props) => {
   const { register, handleSubmit } = useForm<FormSchema>({
     resolver: zodResolver(formSchema)
   });
-  const [createCategoryMutation, { data, loading, error }] =
-    useMutation(CREATE_CATEGORY);
+  const [createCategoryMutation, { error }] = useMutation(CREATE_CATEGORY);
 
   async function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
     event?.preventDefault();
@@ -60,20 +57,10 @@ export const CreateCategoryForm = ({ onSuccess }: Props) => {
         </select>
 
         <label htmlFor='display-name-input'>Name</label>
-        <input
-          id='display-name-input'
-          {...register('displayName')}
-          defaultValue={''}
-          placeholder='display name'
-        />
+        <input id='display-name-input' {...register('displayName')} defaultValue={''} placeholder='display name' />
 
         <label htmlFor='color-input'>Color</label>
-        <input
-          id='color-input'
-          {...register('color')}
-          defaultValue={''}
-          placeholder='color'
-        />
+        <input id='color-input' {...register('color')} defaultValue={''} placeholder='color' />
 
         <button type='submit'>Create</button>
       </form>

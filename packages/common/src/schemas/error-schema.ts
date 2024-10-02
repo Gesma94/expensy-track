@@ -1,11 +1,11 @@
-import { Type, type Static } from "@sinclair/typebox";
-import { ErrorCode } from "../enums/error-code.js";
+import { type Static, Type } from '@sinclair/typebox';
+import { ErrorCode } from '../enums/error-code.js';
 
-export const ErrorSchema = Type.Object({
+export const RestErrorSchema = Type.Object({
   code: Type.Enum(ErrorCode),
   name: Type.String(),
   message: Type.String(),
-  statusCode: Type.Number(),
+  statusCode: Type.Number()
 });
 
-export type Error = Static<typeof ErrorSchema>;
+export type RestError = Static<typeof RestErrorSchema>;

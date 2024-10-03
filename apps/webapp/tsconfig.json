@@ -17,6 +17,8 @@
     "jsx": "react-jsx",
 
     "paths": {
+      "@common/*": ["./src/common/*"],
+      "@modules/*": ["./src/modules/*"],
       "@components/*": ["./src/components/*"]
     }
   },

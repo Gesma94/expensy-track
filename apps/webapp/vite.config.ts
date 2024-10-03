@@ -13,6 +13,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@common': path.resolve(__dirname, './src/common'),
+      '@modules': path.resolve(__dirname, './src/modules'),
       '@components': path.resolve(__dirname, './src/components')
     }
   }

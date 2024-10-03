@@ -1,7 +1,9 @@
+import { LoadingModal } from '@components/LoadingModal/LoadingModal';
 import { type ReplyAuthenticate, type UserPayload, UserPayloadSchema } from '@expensy-track/common/schemas';
 import { isSchema } from '@expensy-track/common/utils';
 import { useQuery } from '@tanstack/react-query';
 import { type ContextType, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { kyInstance } from '../../../fetch/utils/kyInstance';
 import { AuthContext } from '../../utils/authContext';
 
@@ -12,10 +14,12 @@ async function fetchData(): Promise<ReplyAuthenticate> {
 export function AuthProvider({ children }: React.PropsWithChildren) {
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [user, setUser] = useState<UserPayload | undefined>(undefined);
-  const { isPending, data } = useQuery({
+
+  const { t } = useTranslation('modules', { keyPrefix: 'auth.components.auth-context' });
+  const { isPending, data, isError } = useQuery({
     retry: false,
-    queryKey: ['auth'],
     queryFn: fetchData,
+    queryKey: ['authenticate'],
     refetchOnWindowFocus: false
   });
 
@@ -32,16 +36,16 @@ export function AuthProvider({ children }: React.PropsWithChildren) {
       return;
     }
 
-    if (isSchema(UserPayloadSchema, data)) {
+    if (!isError && isSchema(UserPayloadSchema, data)) {
       setUser(data);
     }
 
     setIsInitialized(true);
-  }, [data, isPending]);
+  }, [data, isError, isPending]);
 
   return (
     <AuthContext.Provider value={authContextValueMemoized}>
-      {!isInitialized && <p>laoding</p>}
+      {!isInitialized && <LoadingModal isTransparent message={t('loading-message')} />}
       {isInitialized && children}
     </AuthContext.Provider>
   );

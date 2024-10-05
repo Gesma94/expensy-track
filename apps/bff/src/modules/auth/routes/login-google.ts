@@ -1,26 +1,21 @@
 import { ErrorCode } from '@expensy-track/common/enums';
-import { RestErrorSchema, UserPayloadSchema } from '@expensy-track/common/schemas';
+import { UserPayloadSchema } from '@expensy-track/common/schemas';
 import { getReplySchemaWithError } from '@expensy-track/common/utils';
 import { $Enums } from '@expensy-track/prisma';
 import { type Static, Type } from '@sinclair/typebox';
-import type { FastifyPluginAsync, FastifySchema } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
+import { getFastifySchemaWithError } from '../../../common/utils/get-fastify-schema-with-error.js';
+import { getInvalidCredentialsRestError } from '../../../common/utils/get-invalid-credentials-rest-error.js';
 import { getUserPayload } from '../../../common/utils/get-user-payload.js';
 
 const ReplySchema = getReplySchemaWithError(UserPayloadSchema);
-
 const BodySchema = Type.Object({
   idToken: Type.String(),
   lastName: Type.String(),
   firstName: Type.String()
 });
 
-const schema: FastifySchema = {
-  body: BodySchema,
-  response: {
-    200: UserPayloadSchema,
-    400: RestErrorSchema
-  }
-};
+const schema = getFastifySchemaWithError(UserPayloadSchema, BodySchema);
 
 type RouteInterface = {
   Body: Static<typeof BodySchema>;
@@ -33,12 +28,7 @@ const loginGoogleRoute: FastifyPluginAsync = async fastify => {
     const decodedToken = await fastify.firebase.auth.verifyIdToken(idToken);
 
     if (!decodedToken.email) {
-      return reply.code(400).send({
-        code: ErrorCode.ET_InvalidGoogleIdToken,
-        message: 'Invalid google ID token',
-        name: 'InvalidGoogleIdToken',
-        statusCode: 401
-      });
+      return reply.code(400).send(getInvalidCredentialsRestError());
     }
 
     let user = await fastify.prisma.user.findUnique({

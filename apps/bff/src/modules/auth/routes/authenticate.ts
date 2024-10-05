@@ -1,82 +1,17 @@
-import { ErrorCode } from '@expensy-track/common/enums';
-import { type ReplyAuthenticate, RestErrorSchema, UserPayloadSchema } from '@expensy-track/common/schemas';
-import { isRestErrorSchema } from '@expensy-track/common/utils';
-import type { FastifyPluginAsync, FastifySchema } from 'fastify';
-
-const schema: FastifySchema = {
-  response: {
-    200: UserPayloadSchema,
-    400: RestErrorSchema
-  }
-};
+import { type ReplyAuthenticate, UserPayloadSchema } from '@expensy-track/common/schemas';
+import type { FastifyPluginAsync } from 'fastify';
+import { getFastifySchemaWithError } from '../../../common/utils/get-fastify-schema-with-error.js';
+import { authHook } from '../hooks/auth-hook.js';
 
 type RouteInterface = {
   Reply: ReplyAuthenticate;
 };
 
+const schema = getFastifySchemaWithError(UserPayloadSchema);
+
 const authenticateRoute: FastifyPluginAsync = async fastify => {
-  fastify.get<RouteInterface>('/authenticate', { schema }, async (request, reply) => {
-    try {
-      await request.jwtVerify({ onlyCookie: true });
-
-      const user = await fastify.prisma.user.findUnique({
-        where: { id: request.user.id }
-      });
-
-      if (user) {
-        return reply.send({ ...request.user });
-      }
-
-      return reply.status(401).send({
-        code: ErrorCode.ET_InvalidAccessToken,
-        message: 'Invalid access token was found in request.cookies',
-        name: 'InvalidAccessToken',
-        statusCode: 401
-      });
-    } catch (error) {
-      if (isRestErrorSchema(error)) {
-        if (error.code !== ErrorCode.FST_JwyAuthorizationTokenExpired) {
-          return reply.status(401).send(error);
-        }
-      } else {
-        return reply.status(401).send({
-          code: ErrorCode.ET_InvalidAccessToken,
-          message: 'Invalid access token was found in request.cookies',
-          name: 'InvalidAccessToken',
-          statusCode: 401
-        });
-      }
-    }
-
-    const { refreshToken } = request.cookies;
-
-    if (!refreshToken) {
-      return reply.status(401).send({
-        code: ErrorCode.ET_InvalidRefreshToken,
-        message: 'Invalid refresh token was found in request.cookies',
-        name: 'InvalidRefreshToken',
-        statusCode: 401
-      });
-    }
-
-    try {
-      const {
-        accessToken: newAccessToken,
-        refreshToken: newRefreshToken,
-        userPayload
-      } = fastify.tokens.refreshTokens(refreshToken);
-
-      return reply.setAuthCookies(newAccessToken, newRefreshToken).status(200).send(userPayload);
-    } catch (error) {
-      fastify.log.error(error, 'invalid refresh token in request cookies');
-
-      return reply.status(401).send({
-        code: ErrorCode.ET_InvalidRefreshToken,
-        message: 'Invalid refresh token was found in request.cookies',
-        name: 'InvalidRefreshToken',
-        statusCode: 401
-      });
-    }
+  fastify.get<RouteInterface>('/authenticate', { schema, onRequest: [authHook] }, (request, reply) => {
+    return reply.send({ ...request.user });
   });
 };
 

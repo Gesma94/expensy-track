@@ -1,25 +1,19 @@
-import { ErrorCode } from '@expensy-track/common/enums';
-import { RestErrorSchema, UserPayloadSchema } from '@expensy-track/common/schemas';
+import { UserPayloadSchema } from '@expensy-track/common/schemas';
 import { getReplySchemaWithError } from '@expensy-track/common/utils';
 import { $Enums } from '@expensy-track/prisma';
 import { type Static, Type } from '@sinclair/typebox';
-import type { FastifyPluginAsync, FastifySchema } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
+import { getFastifySchemaWithError } from '../../../common/utils/get-fastify-schema-with-error.js';
+import { getInvalidCredentialsRestError } from '../../../common/utils/get-invalid-credentials-rest-error.js';
 import { getUserPayload } from '../../../common/utils/get-user-payload.js';
 
 const ReplySchema = getReplySchemaWithError(UserPayloadSchema);
-
 const BodySchema = Type.Object({
   email: Type.String({ format: 'email' }),
   password: Type.String({ minLength: 6 })
 });
 
-const schema: FastifySchema = {
-  body: BodySchema,
-  response: {
-    200: UserPayloadSchema,
-    400: RestErrorSchema
-  }
-};
+const schema = getFastifySchemaWithError(UserPayloadSchema, BodySchema);
 
 type RouteInterface = {
   Body: Static<typeof BodySchema>;
@@ -35,12 +29,7 @@ const loginRoute: FastifyPluginAsync = async fastify => {
     });
 
     if (!user || !fastify.bcrypt.compareSync(password, user.password)) {
-      return reply.status(400).send({
-        statusCode: 400,
-        name: 'InvalidCredentials',
-        code: ErrorCode.ET_InvalidCredentials,
-        message: 'User not found with provided credentials'
-      });
+      return reply.status(400).send(getInvalidCredentialsRestError());
     }
 
     return reply.getAndSetAuthCookies(user).status(200).send(getUserPayload(user));

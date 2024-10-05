@@ -1,13 +1,13 @@
 import { ErrorCode } from '@expensy-track/common/enums';
-import { RestErrorSchema, UserPayloadSchema } from '@expensy-track/common/schemas';
-import { getReplySchemaWithError, isRestErrorSchema } from '@expensy-track/common/utils';
+import { UserPayloadSchema } from '@expensy-track/common/schemas';
+import { getReplySchemaWithError } from '@expensy-track/common/utils';
 import { $Enums } from '@expensy-track/prisma';
 import { type Static, Type } from '@sinclair/typebox';
-import type { FastifyPluginAsync, FastifySchema } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
+import { getFastifySchemaWithError } from '../../../common/utils/get-fastify-schema-with-error.js';
 import { getUserPayload } from '../../../common/utils/get-user-payload.js';
 
 const ReplySchema = getReplySchemaWithError(UserPayloadSchema);
-
 const BodySchema = Type.Object({
   lastName: Type.String(),
   firstName: Type.String(),
@@ -15,13 +15,7 @@ const BodySchema = Type.Object({
   password: Type.String({ minLength: 6 })
 });
 
-const schema: FastifySchema = {
-  body: BodySchema,
-  response: {
-    200: UserPayloadSchema,
-    400: RestErrorSchema
-  }
-};
+const schema = getFastifySchemaWithError(UserPayloadSchema, BodySchema);
 
 type RouteInterface = {
   Body: Static<typeof BodySchema>;
@@ -60,10 +54,6 @@ const signUpRoute: FastifyPluginAsync = async fastify => {
 
       return reply.getAndSetAuthCookies(newUser).status(200).send(getUserPayload(newUser));
     } catch (error) {
-      if (isRestErrorSchema(error)) {
-        return reply.status(400).send(error);
-      }
-
       return reply.status(400).send({
         statusCode: 400,
         name: 'UserRegistrationFailed',

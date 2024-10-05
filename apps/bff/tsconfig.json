@@ -4,7 +4,13 @@
     /* TSC transpiling */
     "outDir": "./dist",
     "rootDir": "./",
-    "lib": ["ES2022"]
+    "lib": ["ES2022"],
+    "paths": {
+      "#enums/*": ["./src/common/enums/*"],
+      "#schemas/*": ["./src/common/schemas/*"],
+      "#types/*": ["./src/common/types/*"],
+      "#utils/*": ["./src/common/utils/*"]
+    }
   },
   "include": ["graphql.codegen.ts", "./src"],
   "exclude": ["node_modules", "**/*.graphql"]

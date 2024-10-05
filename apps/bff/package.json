@@ -18,6 +18,12 @@
   "keywords": [],
   "author": "Matteo Gesmundo",
   "license": "AGPL-3.0-only",
+  "imports": {
+    "#enums": "./src/common/enums",
+    "#schemas": "./src/common/schemas",
+    "#types": "./src/common/types",
+    "#utils": "./src/common/utils"
+  },
   "dependencies": {
     "@expensy-track/common": "workspace:^",
     "@expensy-track/prisma": "workspace:^",

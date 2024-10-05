@@ -4,8 +4,8 @@ import { getReplySchemaWithError } from '@expensy-track/common/utils';
 import { $Enums } from '@expensy-track/prisma';
 import { type Static, Type } from '@sinclair/typebox';
 import type { FastifyPluginAsync } from 'fastify';
-import { getFastifySchemaWithError } from '../../../common/utils/get-fastify-schema-with-error.js';
-import { getUserPayload } from '../../../common/utils/get-user-payload.js';
+import { getFastifySchemaWithError } from '#utils/get-fastify-schema-with-error.js';
+import { getUserPayload } from '#utils/get-user-payload.js';
 
 const ReplySchema = getReplySchemaWithError(UserPayloadSchema);
 const BodySchema = Type.Object({

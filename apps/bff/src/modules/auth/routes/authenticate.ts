@@ -1,6 +1,6 @@
 import { type ReplyAuthenticate, UserPayloadSchema } from '@expensy-track/common/schemas';
 import type { FastifyPluginAsync } from 'fastify';
-import { getFastifySchemaWithError } from '../../../common/utils/get-fastify-schema-with-error.js';
+import { getFastifySchemaWithError } from '#utils/get-fastify-schema-with-error.js';
 import { authHook } from '../hooks/auth-hook.js';
 
 type RouteInterface = {

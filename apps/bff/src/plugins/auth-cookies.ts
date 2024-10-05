@@ -9,6 +9,7 @@ declare module 'fastify' {
   interface FastifyReply {
     getAndSetAuthCookies: <T extends FastifyReply>(this: T, user: User) => T;
     setAuthCookies: <T extends FastifyReply>(this: T, accessToken: string, refreshToken: string) => T;
+    removeAuthCookies: <T extends FastifyReply>(this: T) => T;
   }
 }
 
@@ -31,6 +32,13 @@ export default fp(
         httpOnly: true,
         secure: fastify.env.NODE_ENV === 'production'
       });
+
+      return this;
+    });
+
+    fastify.decorateReply(FastifyPluginName.RemoveAuthCookies, function (this) {
+      this.clearCookie(CookieName.AccessToken);
+      this.clearCookie(CookieName.RefreshToken);
 
       return this;
     });

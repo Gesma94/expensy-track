@@ -5,6 +5,7 @@ export enum FastifyPluginName {
   Cookie = 'cookie',
   Bcrypt = 'bcrypt',
   SetAuthCookies = 'setAuthCookies',
+  RemoveAuthCookies = 'removeAuthCookies',
   GetAndSetAuthCookies = 'getAndSetAuthCookies',
   Tokens = 'tokens',
   Jwt = 'jwt'

@@ -53,11 +53,21 @@ type CreateCategoryResult implements Response {
   result: Category
 }
 
+type DeleteCategoryResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Category
+}
+
 input CreateCategoryInput {
   color: String!
   type: CategoryType!
   icon: CategoryIcon!
   displayName: String!
+}
+
+input DeleteCategoryInput {
+  id: ID!
 }
 
 type Query {
@@ -66,4 +76,5 @@ type Query {
 
 type Mutation {
   createCategory(input: CreateCategoryInput!): CreateCategoryResult
+  deleteCategory(input: DeleteCategoryInput!): DeleteCategoryResult
 }

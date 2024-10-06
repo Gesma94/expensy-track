@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { CategoryType } from '../../../../gql/graphql';
+import { CategoryType, GetMyCategoriesDocument } from '../../../../gql/graphql';
 import { CategoryIcon as CategoryIconEnum } from './../../../../gql/graphql';
 
 import { useMutation } from '@apollo/client';
@@ -7,10 +7,6 @@ import { CategoryIcon } from '@components/CategoryIcon/CategoryIcon';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { CREATE_CATEGORY } from '../../graphql/mutations';
-
-type Props = {
-  onSuccess: () => void;
-};
 
 const formSchema = z.object({
   type: z.nativeEnum(CategoryType),
@@ -21,19 +17,18 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export const CreateCategoryForm = ({ onSuccess }: Props) => {
+export const CreateCategoryForm = () => {
   const { register, handleSubmit } = useForm<FormSchema>({
     resolver: zodResolver(formSchema)
   });
-  const [createCategoryMutation, { error }] = useMutation(CREATE_CATEGORY);
+  const [createCategoryMutation, { error }] = useMutation(CREATE_CATEGORY, {
+    awaitRefetchQueries: true,
+    refetchQueries: [{ query: GetMyCategoriesDocument }]
+  });
 
-  async function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
+  function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
     event?.preventDefault();
-    const result = await createCategoryMutation({ variables: { input: data } });
-
-    if (result.data?.createCategory?.success === true) {
-      onSuccess();
-    }
+    createCategoryMutation({ variables: { input: data } });
   }
 
   return (

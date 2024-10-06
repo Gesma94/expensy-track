@@ -8,16 +8,12 @@ import { GET_MY_CATEGORIES } from '../../graphql/queries';
 import { getGroupedCategories } from '../../utils/getGroupedCategories';
 
 export const Categories = () => {
-  const { loading, data, error, refetch } = useQuery(GET_MY_CATEGORIES);
+  const { loading, data, error } = useQuery(GET_MY_CATEGORIES);
   const categoriesFragment = useFragment(MyCategoryFragmentDoc, data?.categories?.result);
 
   const groupedCategories = useMemo(() => {
     return getGroupedCategories(categoriesFragment);
   }, [categoriesFragment]);
-
-  function handleCreateSuccess() {
-    refetch();
-  }
 
   return (
     <div>
@@ -26,7 +22,7 @@ export const Categories = () => {
       {!loading && (
         <>
           <div>
-            <CreateCategoryForm onSuccess={handleCreateSuccess} />
+            <CreateCategoryForm />
           </div>
           <div>
             <CategoryList title='Expanses' categories={groupedCategories.EXPANSE} />

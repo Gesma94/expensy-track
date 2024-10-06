@@ -6,7 +6,7 @@ import { FastifyPluginName } from '../common/enums/fastify-plugin-name.js';
 type TokensDecorator = {
   generateAccessToken: (userPayload: UserPayload) => string;
   generateRefreshToken: (userPayload: UserPayload) => string;
-  generateToken: (userPayload: UserPayload, expiresIn: string) => string;
+  generateToken: (userPayload: UserPayload, expiresIn: string, nonce?: string) => string;
   generateTokens: (userPayload: UserPayload) => {
     accessToken: string;
     refreshToken: string;
@@ -24,17 +24,21 @@ declare module 'fastify' {
   }
 }
 
+const refreshTokenDb: { [refreshToken: string]: null } = {};
+
 export default fp(
   async (fastify: FastifyInstance) => {
     const tokens: TokensDecorator = {
-      generateToken: (userPayload: UserPayload, expiresIn: string) => {
-        return fastify.jwt.sign(userPayload, { expiresIn });
+      generateToken: (userPayload: UserPayload, expiresIn: string, nonce?: string) => {
+        return fastify.jwt.sign(userPayload, { expiresIn, nonce });
       },
       generateAccessToken: (userPayload: UserPayload) => {
         return tokens.generateToken(userPayload, '15m');
       },
       generateRefreshToken: (userPayload: UserPayload) => {
-        return tokens.generateToken(userPayload, '7d');
+        const refreshToken = tokens.generateToken(userPayload, '7d', crypto.randomUUID());
+        refreshTokenDb[refreshToken] = null;
+        return refreshToken;
       },
       generateTokens: (userPayload: UserPayload) => {
         return {
@@ -43,6 +47,11 @@ export default fp(
         };
       },
       refreshTokens: (refreshToken: string) => {
+        if (!(refreshToken in refreshTokenDb)) {
+          throw new Error('invalid refresh token');
+        }
+
+        delete refreshTokenDb[refreshToken];
         const userPayload = fastify.jwt.verify<UserPayload>(refreshToken);
 
         return {

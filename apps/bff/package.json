@@ -11,7 +11,7 @@
     "lint": "pnpm biome lint --write .",
     "format": "pnpm biome format --write .",
     "typecheck": "tsc --noEmit",
-    "build": "pnpm run clean && tsc",
+    "build": "pnpm run clean && tsc --project tsconfig.prod.json",
     "test": "vitest",
     "graphql-codegen": "pnpm run clean:codegen && npx graphql-code-generator --config ./graphql.codegen.ts"
   },

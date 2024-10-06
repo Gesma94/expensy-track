@@ -1,0 +1,16 @@
+{
+  "extends": "./../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "lib": ["ES2022"],
+    "paths": {
+      "#enums/*": ["./src/common/enums/*"],
+      "#schemas/*": ["./src/common/schemas/*"],
+      "#types/*": ["./src/common/types/*"],
+      "#utils/*": ["./src/common/utils/*"]
+    }
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "**/*.graphql"]
+}

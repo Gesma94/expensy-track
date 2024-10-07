@@ -3,6 +3,7 @@ import { Button } from '@components/Button/Button';
 import { CategoryIcon } from '@components/CategoryIcon/CategoryIcon';
 import { ConfirmDialog } from '@components/dialogs/ConfirmDialog/ConfirmDialog';
 import { DELETE_CATEGORY } from '@modules/category/graphql/mutations';
+import { useToast } from '@modules/toast/hooks/useToast';
 import { useState } from 'react';
 import { PiTrash } from 'react-icons/pi';
 import { GetMyCategoriesDocument, type MyCategoryFragment } from '../../../../gql/graphql';
@@ -12,7 +13,9 @@ type Props = {
 };
 
 export const CategoryListElement = ({ category }: Props) => {
+  const { successToast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const { icon, id, displayName } = category;
   const [deleteCategoryMutation, { error }] = useMutation(DELETE_CATEGORY, {
     awaitRefetchQueries: true,
@@ -30,6 +33,7 @@ export const CategoryListElement = ({ category }: Props) => {
   async function handleConfirm() {
     await deleteCategoryMutation({ variables: { input: { id } } });
     setIsDialogOpen(false);
+    successToast('Delete', `Category ${category.displayName} delete correctly`);
   }
 
   return (

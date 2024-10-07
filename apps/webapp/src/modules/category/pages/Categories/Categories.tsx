@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import { Heading } from '@components/Heading/Heading';
 import { useMemo } from 'react';
 import { useFragment } from '../../../../gql';
 import { MyCategoryFragmentDoc } from '../../../../gql/graphql';
@@ -15,12 +16,17 @@ export const Categories = () => {
     return getGroupedCategories(categoriesFragment);
   }, [categoriesFragment]);
 
+  const categoriesCount =
+    groupedCategories.EXPANSE.length + groupedCategories.INCOME.length + groupedCategories.TRANSFER.length;
+
   return (
     <div>
       {loading && <p>Loading</p>}
       {error && <p>error while loading</p>}
       {!loading && (
         <>
+          <Heading level={1}>Category</Heading>
+          <p>{categoriesCount} / 500</p>
           <div>
             <CreateCategoryForm />
           </div>

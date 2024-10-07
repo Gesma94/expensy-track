@@ -7,17 +7,20 @@ import './i18n/config';
 import { ReactApolloProvider } from './modules/fetch/components/ReactApolloProvider/ReactApolloProvider';
 import './index.css';
 import { getRouter } from '@modules/routing/utils/getRouter';
+import { ToastProvider } from '@modules/toast/components/ToastProvider/ToastProvider';
 
 const router = getRouter();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ReactApolloProvider>
-      <ReactQueryProvider>
-        <AuthProvider>
-          <RouterProvider router={router} />
-        </AuthProvider>
-      </ReactQueryProvider>
-    </ReactApolloProvider>
+    <ToastProvider>
+      <ReactApolloProvider>
+        <ReactQueryProvider>
+          <AuthProvider>
+            <RouterProvider router={router} />
+          </AuthProvider>
+        </ReactQueryProvider>
+      </ReactApolloProvider>
+    </ToastProvider>
   </StrictMode>
 );

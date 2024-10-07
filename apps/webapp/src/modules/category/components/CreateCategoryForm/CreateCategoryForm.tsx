@@ -1,10 +1,11 @@
 import { z } from 'zod';
-import { CategoryType, GetMyCategoriesDocument } from '../../../../gql/graphql';
+import { CategoryType, type CreateCategoryMutation, GetMyCategoriesDocument } from '../../../../gql/graphql';
 import { CategoryIcon as CategoryIconEnum } from './../../../../gql/graphql';
 
 import { useMutation } from '@apollo/client';
 import { CategoryIcon } from '@components/CategoryIcon/CategoryIcon';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useToast } from '@modules/toast/hooks/useToast';
 import { useForm } from 'react-hook-form';
 import { CREATE_CATEGORY } from '../../graphql/mutations';
 
@@ -18,17 +19,23 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export const CreateCategoryForm = () => {
+  const { successToast } = useToast();
   const { register, handleSubmit } = useForm<FormSchema>({
     resolver: zodResolver(formSchema)
   });
   const [createCategoryMutation, { error }] = useMutation(CREATE_CATEGORY, {
     awaitRefetchQueries: true,
+    onCompleted,
     refetchQueries: [{ query: GetMyCategoriesDocument }]
   });
 
   function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
     event?.preventDefault();
     createCategoryMutation({ variables: { input: data } });
+  }
+
+  function onCompleted(data: CreateCategoryMutation) {
+    successToast('OK', 'category craeted!');
   }
 
   return (

@@ -1,8 +1,10 @@
 import { useMutation } from '@apollo/client';
 import { Button } from '@components/Button/Button';
 import { CategoryIcon } from '@components/CategoryIcon/CategoryIcon';
+import { Checkbox } from '@components/Checkbox/Checkbox';
 import { ConfirmDialog } from '@components/dialogs/ConfirmDialog/ConfirmDialog';
-import { DELETE_CATEGORY } from '@modules/category/graphql/mutations';
+import { DELETE_CATEGORIES } from '@modules/category/graphql/mutations';
+import { useCategorySelection } from '@modules/category/hooks/useCategorySelection';
 import { useToast } from '@modules/toast/hooks/useToast';
 import { useState } from 'react';
 import { PiTrash } from 'react-icons/pi';
@@ -14,10 +16,12 @@ type Props = {
 
 export const CategoryListElement = ({ category }: Props) => {
   const { successToast } = useToast();
+  const { isSelected, toggleCategory } = useCategorySelection();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { icon, id, displayName } = category;
-  const [deleteCategoryMutation, { error }] = useMutation(DELETE_CATEGORY, {
+  const [deleteCategoryMutation, { error }] = useMutation(DELETE_CATEGORIES, {
     awaitRefetchQueries: true,
     refetchQueries: [{ query: GetMyCategoriesDocument }]
   });
@@ -30,8 +34,12 @@ export const CategoryListElement = ({ category }: Props) => {
     setIsDialogOpen(false);
   }
 
+  function handleSelectionChange() {
+    toggleCategory(category);
+  }
+
   async function handleConfirm() {
-    await deleteCategoryMutation({ variables: { input: { id } } });
+    await deleteCategoryMutation({ variables: { input: { ids: [id] } } });
     setIsDialogOpen(false);
     successToast('Delete', `Category ${category.displayName} delete correctly`);
   }
@@ -47,6 +55,7 @@ export const CategoryListElement = ({ category }: Props) => {
         onConfirm={handleConfirm}
       />
       <div className='flex flex-row'>
+        <Checkbox isSelected={isSelected(category)} onChange={handleSelectionChange} />
         <CategoryIcon icon={icon} />
         <p>{displayName}</p>
         <Button onPress={handleDeletePress}>

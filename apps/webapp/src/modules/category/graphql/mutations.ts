@@ -10,12 +10,12 @@ export const CREATE_CATEGORY = gql(`
   }
 `);
 
-export const DELETE_CATEGORY = gql(`
-mutation DeleteCategory($input: DeleteCategoryInput!) {
-  deleteCategory(input: $input) {
+export const DELETE_CATEGORIES = gql(`
+mutation DeleteCategories($input: DeleteCategoriesInput!) {
+  deleteCategories(input: $input) {
       success
       error { ... GraphqlError }
-      result { ... MyCategory }
+      result
   }
 }
 `);

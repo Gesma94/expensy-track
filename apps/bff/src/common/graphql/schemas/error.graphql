@@ -1,5 +1,6 @@
 enum GraphqlErrorCode {
   UNAUTHORIZED_USER
+  DELETE_MANY_FAILED
 }
 
 type GraphqlError {

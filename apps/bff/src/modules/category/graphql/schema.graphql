@@ -26,10 +26,6 @@ enum CategoryIcon {
   SALARY
 }
 
-extend enum GraphqlErrorCode {
-  CATEGORY_ID_NOT_EXIST
-}
-
 type Category {
   id: ID!
   displayName: String!
@@ -53,10 +49,10 @@ type CreateCategoryResult implements Response {
   result: Category
 }
 
-type DeleteCategoryResult implements Response {
+type DeleteCategoriesResult implements Response {
   success: Boolean!
   error: GraphqlError
-  result: Category
+  result: Int
 }
 
 input CreateCategoryInput {
@@ -66,8 +62,8 @@ input CreateCategoryInput {
   displayName: String!
 }
 
-input DeleteCategoryInput {
-  id: ID!
+input DeleteCategoriesInput {
+  ids: [ID!]!
 }
 
 type Query {
@@ -76,5 +72,5 @@ type Query {
 
 type Mutation {
   createCategory(input: CreateCategoryInput!): CreateCategoryResult
-  deleteCategory(input: DeleteCategoryInput!): DeleteCategoryResult
+  deleteCategories(input: DeleteCategoriesInput!): DeleteCategoriesResult
 }

@@ -1,41 +1,42 @@
-enum LabelErrorCode {
-  USER_NOT_FOUND
-  LABEL_ID_NOT_EXIST
-}
-
 type Label {
   id: ID!
   displayName: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   userId: ID!
-  user: User
 }
 
-type LabelsError {
-  message: String!
-  error: LabelErrorCode
+type LabelsResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: [Label!]
 }
 
-type LabelResult {
-  label: Label
+type CreateLabelResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Label
 }
 
-type LabelsResult {
-  labels: [Label!]!
+type DeleteLabelsResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Int
 }
 
 input CreateLabelInput {
   displayName: String!
 }
 
-union LabelsOutput = LabelsError | LabelsResult
-union CreateLabelOutput = LabelsError | LabelResult
+input DeleteLabelsInput {
+  ids: [ID!]!
+}
 
 type Query {
-  labels: LabelsOutput
+  labels: LabelsResult
 }
 
 type Mutation {
-  createLabel(input: CreateLabelInput!): CreateLabelOutput
+  createLabel(input: CreateLabelInput!): CreateLabelResult
+  deleteLabels(input: DeleteLabelsInput!): DeleteLabelsResult
 }

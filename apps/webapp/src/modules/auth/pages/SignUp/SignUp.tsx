@@ -44,7 +44,7 @@ export function SignUp() {
 
   function onSuccess(userPayload: UserPayload) {
     auth.setUser(userPayload);
-    navigate(ROUTES.WALLET.NAME('test'));
+    navigate(ROUTES.WALLETS.NAME('test'));
   }
 
   function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {

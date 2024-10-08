@@ -2,13 +2,16 @@ export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   SIGNUP: '/signup',
-  WALLET: {
-    ROOT: '/wallet',
+  WALLETS: {
+    ROOT: '/wallets',
     PATHS: {
       NAME: ':name'
     },
     NAME: function (name?: string) {
-      return `/wallet/${name ?? this.PATHS.NAME}`;
+      return `/${this.ROOT}/${name ?? this.PATHS.NAME}`;
     }
+  },
+  CATEGORIES: {
+    ROOT: '/categories'
   }
 };

@@ -19,7 +19,7 @@ export function getRouter(): ReturnType<typeof createBrowserRouter> {
         },
         ...authRoutes,
         {
-          path: ROUTES.WALLET.ROOT,
+          path: ROUTES.WALLETS.ROOT,
           children: walletRoutes
         },
         {

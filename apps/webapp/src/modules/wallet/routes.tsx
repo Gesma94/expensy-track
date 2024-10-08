@@ -6,7 +6,7 @@ import { Wallet } from './pages/Wallet';
 export const walletRoutes: RouteObject[] = [
   {
     index: true,
-    path: ROUTES.WALLET.PATHS.NAME,
+    path: ROUTES.WALLETS.PATHS.NAME,
     element: (
       <PrivateRoute>
         <Wallet />

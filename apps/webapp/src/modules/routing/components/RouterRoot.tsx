@@ -1,3 +1,5 @@
+import { ROUTES } from '@common/consts/routes';
+import { Link } from '@components/Link/Link';
 import { RouterProvider as AriaRouterProvider } from 'react-aria-components';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAbsoluteHref } from '../hooks/useAbsoluteHref';
@@ -7,7 +9,16 @@ export function RouterRoot() {
 
   return (
     <AriaRouterProvider navigate={navigate} useHref={useAbsoluteHref}>
-      <Outlet />
+      <div className='flex flex-col'>
+        <nav className='bg-gray-800 text-white flex gap-2'>
+          <Link href={ROUTES.HOME}>Home</Link>
+          <Link href={ROUTES.WALLETS.ROOT}>Wallets</Link>
+          <Link href={ROUTES.CATEGORIES.ROOT}>Categories</Link>
+        </nav>
+        <main>
+          <Outlet />
+        </main>
+      </div>
     </AriaRouterProvider>
   );
 }

@@ -6,7 +6,7 @@ export function Checkbox({ children, ...otherProps }: CheckboxProps) {
     <AriaCheckbox {...otherProps}>
       {({ isSelected }) => (
         <>
-          <div className={clsx('size-4 border-black border bg-white', isSelected && 'bg-black')} />
+          <div className={clsx('size-4 border-black border', isSelected ? 'bg-black' : 'bg-white')} />
           {children}
         </>
       )}

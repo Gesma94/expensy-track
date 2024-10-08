@@ -1,6 +1,6 @@
 import type { Resolvers } from '../../../@types/graphql-generated.js';
 import { mutationCreateCategory } from './mutations/create-category.js';
-import { mutationDeleteCategory } from './mutations/delete-category.js';
+import { mutationDeleteCategories } from './mutations/delete-categories.js';
 import { queryCategories } from './queries/categories.js';
 
 export const categoryResolvers: Resolvers = {
@@ -9,6 +9,6 @@ export const categoryResolvers: Resolvers = {
   },
   Mutation: {
     createCategory: mutationCreateCategory,
-    deleteCategory: mutationDeleteCategory
+    deleteCategories: mutationDeleteCategories
   }
 };

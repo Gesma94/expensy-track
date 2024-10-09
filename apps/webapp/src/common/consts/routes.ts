@@ -13,5 +13,8 @@ export const ROUTES = {
   },
   CATEGORIES: {
     ROOT: '/categories'
+  },
+  LABELS: {
+    ROOT: '/labels'
   }
 };

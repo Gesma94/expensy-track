@@ -14,6 +14,7 @@ export function RouterRoot() {
           <Link href={ROUTES.HOME}>Home</Link>
           <Link href={ROUTES.WALLETS.ROOT}>Wallets</Link>
           <Link href={ROUTES.CATEGORIES.ROOT}>Categories</Link>
+          <Link href={ROUTES.LABELS.ROOT}>Labels</Link>
         </nav>
         <main>
           <Outlet />

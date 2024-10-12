@@ -47,6 +47,9 @@ type DeleteWalletsResult implements Response {
 
 input CreateWalletInput {
   displayName: String!
+  icon: WalletIcon!
+  initialBalance: Float!
+  currencyCode: CurrencyCode!
 }
 
 input DeleteWalletsInput {
@@ -58,6 +61,6 @@ type Query {
 }
 
 type Mutation {
-  createWallet(input: CreateLabelInput!): CreateWalletResult
-  deleteWallets(input: DeleteLabelsInput!): DeleteWalletsResult
+  createWallet(input: CreateWalletInput!): CreateWalletResult
+  deleteWallets(input: DeleteWalletsInput!): DeleteWalletsResult
 }

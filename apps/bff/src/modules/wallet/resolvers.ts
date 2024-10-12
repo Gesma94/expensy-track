@@ -1,4 +1,6 @@
 import type { Resolvers } from '../../@types/graphql-generated.js';
+import { mutationCreateWallet } from './mutations/create-wallet.js';
+import { mutationDeleteWallets } from './mutations/delete-wallet.js';
 import { queryWallets } from './queries/wallets.js';
 
 export const labelResolvers: Resolvers = {
@@ -6,7 +8,7 @@ export const labelResolvers: Resolvers = {
     wallets: queryWallets
   },
   Mutation: {
-    // createWallet: null,
-    // deleteWallets: null
+    createWallet: mutationCreateWallet,
+    deleteWallets: mutationDeleteWallets
   }
 };

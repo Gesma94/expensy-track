@@ -1,0 +1,63 @@
+enum WalletIcon {
+  CREDIT_CARD
+  CONTACTLESS
+  WALLET
+  CARDHOLDER
+  BANK
+  VAULT
+  PIGGY_BANK
+  PAYPAL
+  AMAZON
+}
+
+enum CurrencyCode {
+  EUR
+  USD
+  GBP
+}
+
+type Wallet {
+  id: ID!
+  displayName: String!
+  icon: WalletIcon!
+  initialBalance: Float!
+  createdAt: DateTime!
+  currencyCode: CurrencyCode!
+  updatedAt: DateTime!
+  ownerId: ID!
+}
+
+type WalletsResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: [Wallet!]
+}
+
+type CreateWalletResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Wallet
+}
+
+type DeleteWalletsResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Int
+}
+
+input CreateWalletInput {
+  displayName: String!
+}
+
+input DeleteWalletsInput {
+  ids: [ID!]!
+}
+
+type Query {
+  wallets: WalletsResult
+}
+
+type Mutation {
+  createWallet(input: CreateLabelInput!): CreateWalletResult
+  deleteWallets(input: DeleteLabelsInput!): DeleteWalletsResult
+}

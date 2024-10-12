@@ -4,6 +4,8 @@ import { CategoryIcon as CategoryIconEnum } from './../../../../gql/graphql';
 
 import { useMutation } from '@apollo/client';
 import { CategoryIcon } from '@components/CategoryIcon/CategoryIcon';
+import { Form } from '@components/form/Form/Form';
+import { FormTextInput } from '@components/form/FormTextInput/FormTextInput';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@modules/toast/hooks/useToast';
 import { useForm } from 'react-hook-form';
@@ -11,7 +13,7 @@ import { CREATE_CATEGORY } from '../../graphql/mutations';
 
 const formSchema = z.object({
   type: z.nativeEnum(CategoryType),
-  displayName: z.string().min(1, 'must have length 1'),
+  displayName: z.string().min(1, 'must have length 1').default('test def'),
   color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'must be a valid color'),
   icon: z.nativeEnum(CategoryIconEnum)
 });
@@ -20,8 +22,9 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export const CreateCategoryForm = () => {
   const { successToast } = useToast();
-  const { register, handleSubmit } = useForm<FormSchema>({
-    resolver: zodResolver(formSchema)
+  const { register, handleSubmit, control } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { displayName: '', color: '#FFFFFF', icon: CategoryIconEnum.Activity, type: CategoryType.Expanse }
   });
   const [createCategoryMutation, { error }] = useMutation(CREATE_CATEGORY, {
     awaitRefetchQueries: true,
@@ -44,7 +47,7 @@ export const CreateCategoryForm = () => {
 
       {error?.message}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <select {...register('type')}>
           <option value={CategoryType.Expanse}>Expanse</option>
           <option value={CategoryType.Income}>Income</option>
@@ -58,14 +61,13 @@ export const CreateCategoryForm = () => {
           ))}
         </select>
 
-        <label htmlFor='display-name-input'>Name</label>
-        <input id='display-name-input' {...register('displayName')} defaultValue={''} placeholder='display name' />
+        <FormTextInput label='Name' control={control} name='displayName' />
 
         <label htmlFor='color-input'>Color</label>
         <input id='color-input' {...register('color')} defaultValue={''} placeholder='color' />
 
         <button type='submit'>Create</button>
-      </form>
+      </Form>
     </div>
   );
 };

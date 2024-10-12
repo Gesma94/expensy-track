@@ -1,5 +1,5 @@
 import { Button } from '@components/Button/Button';
-import { Checkbox } from '@components/Checkbox/Checkbox';
+import { Checkbox } from '@components/input/Checkbox/Checkbox';
 import { useLabelRoot } from '@modules/label/hooks/useCategorySelection';
 import { useState } from 'react';
 import { PiTrash } from 'react-icons/pi';

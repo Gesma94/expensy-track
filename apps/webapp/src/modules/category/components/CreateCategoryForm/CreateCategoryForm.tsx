@@ -3,9 +3,9 @@ import { CategoryType, type CreateCategoryMutation, GetMyCategoriesDocument } fr
 import { CategoryIcon as CategoryIconEnum } from './../../../../gql/graphql';
 
 import { useMutation } from '@apollo/client';
-import { CategoryIcon } from '@components/CategoryIcon/CategoryIcon';
 import { Form } from '@components/form/Form/Form';
 import { FormTextInput } from '@components/form/FormTextInput/FormTextInput';
+import { CategoryIcon } from '@components/icon/CategoryIcon/CategoryIcon';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@modules/toast/hooks/useToast';
 import { useForm } from 'react-hook-form';

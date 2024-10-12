@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { Button } from '@components/Button/Button';
-import { CategoryIcon } from '@components/CategoryIcon/CategoryIcon';
 import { ConfirmDialog } from '@components/dialogs/ConfirmDialog/ConfirmDialog';
+import { CategoryIcon } from '@components/icon/CategoryIcon/CategoryIcon';
 import { Checkbox } from '@components/input/Checkbox/Checkbox';
 import { DELETE_CATEGORIES } from '@modules/category/graphql/mutations';
 import { useCategorySelection } from '@modules/category/hooks/useCategorySelection';

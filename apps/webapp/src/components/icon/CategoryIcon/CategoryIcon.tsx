@@ -19,7 +19,7 @@ import {
   PiTrendUp,
   PiWallet
 } from 'react-icons/pi';
-import { CategoryIcon as CategoryIconEnum } from '../../gql/graphql';
+import { CategoryIcon as CategoryIconEnum } from '../../../gql/graphql';
 
 type Props = {
   icon: CategoryIconEnum;

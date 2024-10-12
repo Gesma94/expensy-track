@@ -8,10 +8,16 @@ CREATE TYPE "CategoryType" AS ENUM ('EXPANSE', 'INCOME', 'TRANSFER');
 CREATE TYPE "CategoryIcon" AS ENUM ('SUBSCRIPTION', 'GROCERY', 'MISCELLANEOUS', 'ACTIVITY', 'BEER', 'GAS', 'CREDIT_CARD', 'CREDIT', 'INVESTMENT', 'MUSIC', 'RESTOURANT', 'SHOPPING', 'MEDICAL', 'DEBT_COLLECTION', 'STAR', 'MONEY_1', 'MONEY_2', 'MONEY_3', 'SALARY');
 
 -- CreateEnum
+CREATE TYPE "WalletIcon" AS ENUM ('CREDIT_CARD', 'CONTACTLESS', 'WALLET', 'CARDHOLDER', 'BANK', 'VAULT', 'PIGGY_BANK', 'PAYPAL', 'AMAZON');
+
+-- CreateEnum
 CREATE TYPE "TransactionFrequency" AS ENUM ('ONE_DAY', 'TWO_DAYS', 'WEEKDAYS', 'HOLIDAYS', 'ONE_WEEK', 'TWO_WEEK', 'FOUR_WEEK', 'ONE_MONTH', 'TWO_MONTHS', 'THREE_MONTHS', 'SIX_MONTHS', 'ONE_YEAR');
 
 -- CreateEnum
 CREATE TYPE "BudgetSpan" AS ENUM ('ONCE', 'DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'ANNUAL');
+
+-- CreateEnum
+CREATE TYPE "CurrencyCode" AS ENUM ('EUR', 'USD', 'GBP');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -57,10 +63,12 @@ CREATE TABLE "Category" (
 CREATE TABLE "Wallet" (
     "id" TEXT NOT NULL,
     "displayName" TEXT NOT NULL,
+    "icon" "WalletIcon" NOT NULL,
     "initialBalance" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "ownerId" TEXT NOT NULL,
+    "currencyCode" "CurrencyCode" NOT NULL,
 
     CONSTRAINT "Wallet_pkey" PRIMARY KEY ("id")
 );

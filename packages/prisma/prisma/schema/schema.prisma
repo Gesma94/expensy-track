@@ -41,6 +41,18 @@ enum CategoryIcon {
   SALARY
 }
 
+enum WalletIcon {
+  CREDIT_CARD
+  CONTACTLESS
+  WALLET
+  CARDHOLDER
+  BANK
+  VAULT
+  PIGGY_BANK
+  PAYPAL
+  AMAZON
+}
+
 enum TransactionFrequency {
   ONE_DAY
   TWO_DAYS
@@ -63,6 +75,12 @@ enum BudgetSpan {
   BIWEEKLY
   MONTHLY
   ANNUAL
+}
+
+enum CurrencyCode {
+  EUR
+  USD
+  GBP
 }
 
 model User {
@@ -110,11 +128,13 @@ model Category {
 model Wallet {
   id               String             @id @default(uuid())
   displayName      String
+  icon             WalletIcon
   initialBalance   Float              @default(0)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   owner            User               @relation(fields: [ownerId], references: [id])
   ownerId          String
+  currencyCode         CurrencyCode
   guests           GuestsOnWallets[]
   budgets          BudgetsOnWallets[]
   transactions     Transaction[]      @relation("walletOwner")

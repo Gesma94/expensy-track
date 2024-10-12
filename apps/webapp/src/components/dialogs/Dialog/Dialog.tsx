@@ -1,13 +1,18 @@
-import type { PropsWithChildren } from 'react';
-import { Dialog as AriaDialog, Modal as AriaModal, ModalOverlay as AriaModalOverlay } from 'react-aria-components';
+import {
+  Dialog as AriaDialog,
+  Modal as AriaModal,
+  ModalOverlay as AriaModalOverlay,
+  type DialogProps
+} from 'react-aria-components';
 
 type Props = {
-  isOpen: boolean;
+  isOpen?: boolean;
   isDismissable?: boolean;
+  children: DialogProps['children'];
   isKeyboardDismissDisabled?: boolean;
 };
 
-export function Dialog({ isOpen, isDismissable, isKeyboardDismissDisabled, children }: PropsWithChildren<Props>) {
+export function Dialog({ isOpen, isDismissable, isKeyboardDismissDisabled, children }: Props) {
   return (
     <AriaModalOverlay
       isOpen={isOpen}

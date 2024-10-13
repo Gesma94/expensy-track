@@ -11,7 +11,7 @@ export type TextInputProps = {
   placeholder?: string;
 };
 
-type Props = PropsWithRef<TextFieldProps> & React.RefAttributes<HTMLInputElement> & TextInputProps;
+type Props = TextFieldProps & React.RefAttributes<HTMLInputElement> & TextInputProps;
 
 export const TextInput = forwardRef<HTMLInputElement, Props>(function _TextInput(
   { placeholder, label, ...props },

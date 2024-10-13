@@ -16,7 +16,7 @@ export function FormSelect<
   return (
     <Controller
       {...controllerProps}
-      render={({ field: { value, disabled, ...fieldProps }, fieldState: { invalid, error: _error } }) => (
+      render={({ field: { value, onChange, disabled, ...fieldProps }, fieldState: { invalid, error: _error } }) => (
         <Select
           {...selectProps}
           {...fieldProps}
@@ -24,6 +24,7 @@ export function FormSelect<
           isInvalid={invalid}
           isDisabled={disabled}
           validationBehavior='aria'
+          onSelectionChange={onChange}
         />
       )}
     />

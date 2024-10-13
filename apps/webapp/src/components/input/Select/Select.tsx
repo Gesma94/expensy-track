@@ -24,8 +24,9 @@ export const Select = forwardRef<HTMLSelectElement, Props<object>>(function _Sel
   return (
     <AriaSelect {...props}>
       <AriaLabel>{label}</AriaLabel>
-      <Button>
+      <Button className='flex'>
         <AriaSelectValue ref={ref} />
+        <span aria-hidden='true'>▼</span>
       </Button>
       <AriaPopover>
         <AriaListBox>{children}</AriaListBox>

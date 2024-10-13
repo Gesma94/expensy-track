@@ -8,7 +8,7 @@ import { MyWalletFragmentDoc } from '../../../../gql/graphql';
 
 export function Wallets() {
   const { loading, data, error } = useQuery(GET_MY_WALLETS);
-  const labelsFragment = useFragment(MyWalletFragmentDoc, data?.wallets?.result);
+  const walletFragments = useFragment(MyWalletFragmentDoc, data?.wallets?.result);
 
   return (
     <>
@@ -19,7 +19,7 @@ export function Wallets() {
           <>
             <Heading level={1}>Wallets</Heading>
             <ul>
-              {labelsFragment?.map(wallet => (
+              {walletFragments?.map(wallet => (
                 <li key={wallet.id}>
                   <WalletCard wallet={wallet} />
                 </li>

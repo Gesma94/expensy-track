@@ -10,6 +10,7 @@ import mercurius from 'mercurius';
 import { authResolvers } from '../modules/auth/graphql/resolvers.js';
 import { categoryResolvers } from '../modules/category/graphql/resolvers.js';
 import { labelResolvers } from '../modules/label/graphql/resolvers.js';
+import { walletResolvers } from '../modules/wallet/resolvers.js';
 
 declare module 'mercurius' {
   interface MercuriusContext {
@@ -26,7 +27,7 @@ const typeDefArray = loadFilesSync(path.join(__dirname, './../**/*.graphql'));
 
 const schema = makeExecutableSchema({
   typeDefs: mergeTypeDefs(typeDefArray),
-  resolvers: mergeResolvers([categoryResolvers, authResolvers, labelResolvers])
+  resolvers: mergeResolvers([categoryResolvers, authResolvers, labelResolvers, walletResolvers])
 });
 
 type MercuriusAdditionalContext = {

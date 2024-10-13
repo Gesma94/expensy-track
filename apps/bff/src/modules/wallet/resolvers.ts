@@ -3,7 +3,7 @@ import { mutationCreateWallet } from './mutations/create-wallet.js';
 import { mutationDeleteWallets } from './mutations/delete-wallet.js';
 import { queryWallets } from './queries/wallets.js';
 
-export const labelResolvers: Resolvers = {
+export const walletResolvers: Resolvers = {
   Query: {
     wallets: queryWallets
   },

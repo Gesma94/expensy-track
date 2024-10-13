@@ -1,0 +1,16 @@
+{
+  "useCurrency": {
+    "EUR": {
+      "currency": "Euro",
+      "code": "EUR"
+    },
+    "USD": {
+      "currency": "Dollaro",
+      "code": "USD"
+    },
+    "GBP": {
+      "currency": "Sterlina",
+      "code": "GBP"
+    }
+  }
+}

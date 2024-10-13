@@ -3,16 +3,19 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import commonEn from './locales/en/common.json';
 import componentsEn from './locales/en/components.json';
+import hooksEn from './locales/en/hooks.json';
 import modulesEn from './locales/en/modules.json';
 import commonIt from './locales/it/common.json';
 import componentsIt from './locales/it/components.json';
+import hooksIt from './locales/it/hooks.json';
 import modulesIt from './locales/it/modules.json';
 
 export const defaultNS = 'common';
 export const enResourceLanguage = {
   common: commonEn,
   components: componentsEn,
-  modules: modulesEn
+  modules: modulesEn,
+  hooks: hooksEn
 };
 
 const defaultLocale = 'en';
@@ -21,7 +24,8 @@ const resources = {
   it: {
     common: commonIt,
     components: componentsIt,
-    modules: modulesIt
+    modules: modulesIt,
+    hooks: hooksIt
   }
 };
 
@@ -34,7 +38,7 @@ i18n
     nsSeparator: '.',
     fallbackLng: defaultLocale,
     debug: import.meta.env.DEV,
-    ns: ['common', 'components', 'modules'],
+    ns: ['common', 'components', 'modules', 'hooks'],
     interpolation: {
       escapeValue: false
     }

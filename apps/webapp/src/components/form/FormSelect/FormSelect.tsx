@@ -16,8 +16,15 @@ export function FormSelect<
   return (
     <Controller
       {...controllerProps}
-      render={({ field, fieldState: { invalid, error: _error } }) => (
-        <Select {...selectProps} {...field} isInvalid={invalid} validationBehavior='aria' />
+      render={({ field: { value, disabled, ...fieldProps }, fieldState: { invalid, error: _error } }) => (
+        <Select
+          {...selectProps}
+          {...fieldProps}
+          selectedKey={value}
+          isInvalid={invalid}
+          isDisabled={disabled}
+          validationBehavior='aria'
+        />
       )}
     />
   );

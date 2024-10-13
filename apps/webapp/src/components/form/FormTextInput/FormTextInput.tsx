@@ -1,4 +1,4 @@
-import { TextInput, type TextInputProps } from '@components/input/TextInput/TextInput';
+import { TextInput } from '@components/input/TextInput/TextInput';
 import type { ComponentProps } from 'react';
 import { Controller, type ControllerProps, type FieldPath, type FieldValues } from 'react-hook-form';
 
@@ -16,8 +16,8 @@ export function FormTextInput<
   return (
     <Controller
       {...controllerProps}
-      render={({ field, fieldState: { invalid, error: _error } }) => (
-        <TextInput {...textProps} {...field} isInvalid={invalid} validationBehavior='aria' />
+      render={({ field: { disabled, ...fieldProps }, fieldState: { invalid, error: _error } }) => (
+        <TextInput {...textProps} {...fieldProps} isDisabled={disabled} isInvalid={invalid} validationBehavior='aria' />
       )}
     />
   );

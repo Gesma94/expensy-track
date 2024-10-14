@@ -21,6 +21,7 @@ type Wallet {
   displayName: String!
   icon: WalletIcon!
   initialBalance: Float!
+  currentBalance: Float!
   createdAt: DateTime!
   currencyCode: CurrencyCode!
   updatedAt: DateTime!

@@ -15,6 +15,7 @@ export function WalletToPrisma(wallet: WalletGraphql | null): WalletPrisma | nul
     updatedAt: wallet.updatedAt,
     displayName: wallet.displayName,
     initialBalance: wallet.initialBalance,
+    currentBalance: wallet.currentBalance,
     icon: WalletIconToGraphql(wallet.icon),
     currencyCode: CurrencyCodeToPrisma(wallet.currencyCode)
   };
@@ -32,6 +33,7 @@ export function WalletToGraphql(wallet: WalletPrisma | null): WalletGraphql | nu
     updatedAt: wallet.updatedAt,
     displayName: wallet.displayName,
     initialBalance: wallet.initialBalance,
+    currentBalance: wallet.currentBalance,
     icon: WalletIconToGraphql(wallet.icon),
     currencyCode: CurrencyCodeToGraphql(wallet.currencyCode)
   };

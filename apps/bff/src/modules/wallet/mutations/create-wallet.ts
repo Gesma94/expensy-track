@@ -22,6 +22,7 @@ export const mutationCreateWallet: MutationResolvers<MercuriusContext>['createWa
       displayName,
       initialBalance,
       ownerId: contextValue.user.id,
+      currentBalance: initialBalance,
       currencyCode: CurrencyCodeToPrisma(currencyCode)
     }
   });

@@ -130,11 +130,12 @@ model Wallet {
   displayName      String
   icon             WalletIcon
   initialBalance   Float              @default(0)
+  currentBalance   Float              @default(0)
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
   owner            User               @relation(fields: [ownerId], references: [id])
   ownerId          String
-  currencyCode         CurrencyCode
+  currencyCode     CurrencyCode
   guests           GuestsOnWallets[]
   budgets          BudgetsOnWallets[]
   transactions     Transaction[]      @relation("walletOwner")
@@ -160,21 +161,21 @@ model Transaction {
   walletFrom          Wallet?                @relation(name: "walletFrom", fields: [walletFromId], references: [id])
   walletToId          String?
   walletTo            Wallet?                @relation(name: "walletTo", fields: [walletToId], references: [id])
-  note                String
+  note                String?
   date                DateTime               @db.Date
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
-  isRecurrentTemplate Boolean
-  isRecurring         Boolean
-  frequency           TransactionFrequency
-  startDate           DateTime
+  isRecurrentTemplate Boolean                @default(false)
+  isRecurring         Boolean                @default(false)
+  frequency           TransactionFrequency?
+  startDate           DateTime?
   endDate             DateTime?
   userId              String
   user                User                   @relation(fields: [userId], references: [id])
   walletId            String
   wallet              Wallet                 @relation(name: "walletOwner", fields: [walletId], references: [id])
-  categoryId          String?
-  category            Category?              @relation(fields: [categoryId], references: [id])
+  categoryId          String
+  category            Category              @relation(fields: [categoryId], references: [id])
   labels              LabelsOnTransactions[]
 }
 

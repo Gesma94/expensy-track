@@ -65,6 +65,7 @@ CREATE TABLE "Wallet" (
     "displayName" TEXT NOT NULL,
     "icon" "WalletIcon" NOT NULL,
     "initialBalance" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "currentBalance" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "ownerId" TEXT NOT NULL,
@@ -89,18 +90,18 @@ CREATE TABLE "Transaction" (
     "amount" DOUBLE PRECISION NOT NULL,
     "walletFromId" TEXT,
     "walletToId" TEXT,
-    "note" TEXT NOT NULL,
+    "note" TEXT,
     "date" DATE NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "isRecurrentTemplate" BOOLEAN NOT NULL,
-    "isRecurring" BOOLEAN NOT NULL,
-    "frequency" "TransactionFrequency" NOT NULL,
-    "startDate" TIMESTAMP(3) NOT NULL,
+    "isRecurrentTemplate" BOOLEAN NOT NULL DEFAULT false,
+    "isRecurring" BOOLEAN NOT NULL DEFAULT false,
+    "frequency" "TransactionFrequency",
+    "startDate" TIMESTAMP(3),
     "endDate" TIMESTAMP(3),
     "userId" TEXT NOT NULL,
     "walletId" TEXT NOT NULL,
-    "categoryId" TEXT,
+    "categoryId" TEXT NOT NULL,
 
     CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
 );
@@ -191,7 +192,7 @@ ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_userId_fkey" FOREIGN KEY (
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_walletId_fkey" FOREIGN KEY ("walletId") REFERENCES "Wallet"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "LabelsOnTransactions" ADD CONSTRAINT "LabelsOnTransactions_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

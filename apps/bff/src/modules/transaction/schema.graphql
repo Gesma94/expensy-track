@@ -1,0 +1,33 @@
+type Transaction {
+  id: ID!
+  amount: Float!
+  walletId: ID!
+  wallet: Wallet
+  date: DateTime!
+  note: String
+  categoryId: ID!
+  category: Category
+  labels: [Label!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: ID!
+}
+
+type TransactionsResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: [Transaction!]
+}
+
+input TransactionsInput {
+  walletId: ID!
+}
+
+type Query {
+  transactions(input: TransactionsInput): TransactionsResult
+}
+
+type Mutation {
+  createWallet(input: CreateWalletInput!): CreateWalletResult
+  deleteWallets(input: DeleteWalletsInput!): DeleteWalletsResult
+}

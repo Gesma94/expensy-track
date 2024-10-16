@@ -26,6 +26,7 @@ type Wallet {
   currencyCode: CurrencyCode!
   updatedAt: DateTime!
   ownerId: ID!
+  transactions: [Transaction]
 }
 
 type WalletsResult implements Response {

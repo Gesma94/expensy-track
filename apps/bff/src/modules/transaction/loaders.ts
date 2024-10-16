@@ -5,7 +5,7 @@ import { transactionParentTransactionLoader } from './loaders/parent-transaction
 import { transactionSubTransactionsLoader } from './loaders/sub-transactions.js';
 import { transactionWalletLoader } from './loaders/wallet.js';
 
-export const transactionLoader: MercuriusLoaderTyped = {
+export const transactionLoaders: MercuriusLoaderTyped = {
   Transaction: {
     labels: transactionLabelsLoader,
     wallet: transactionWalletLoader,

@@ -10,8 +10,9 @@ import mercurius from 'mercurius';
 import { authResolvers } from '../modules/auth/graphql/resolvers.js';
 import { categoryResolvers } from '../modules/category/graphql/resolvers.js';
 import { labelResolvers } from '../modules/label/graphql/resolvers.js';
-import { transactionLoader } from '../modules/transaction/loaders.js';
+import { transactionLoaders } from '../modules/transaction/loaders.js';
 import { transactionResolvers } from '../modules/transaction/resolvers.js';
+import { walletLoaders } from '../modules/wallet/loaders.js';
 import { walletResolvers } from '../modules/wallet/resolvers.js';
 
 declare module 'mercurius' {
@@ -53,7 +54,7 @@ export default fp(async (fastify: FastifyInstance) => {
   fastify.register(mercurius, {
     schema,
     context: buildContext,
-    loaders: transactionLoader,
+    loaders: { ...transactionLoaders, ...walletLoaders },
     graphiql: fastify.env.NODE_ENV === 'development'
   });
 });

@@ -157,6 +157,7 @@ model GuestsOnWallets {
 model Transaction {
   id                  String                 @id @default(uuid())
   amount              Float
+  isTransfer          Boolean                @default(false)
   walletFromId        String?
   walletFrom          Wallet?                @relation(name: "walletFrom", fields: [walletFromId], references: [id])
   walletToId          String?
@@ -165,17 +166,16 @@ model Transaction {
   date                DateTime               @db.Date
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
-  isRecurrentTemplate Boolean                @default(false)
-  isRecurring         Boolean                @default(false)
-  frequency           TransactionFrequency?
-  startDate           DateTime?
-  endDate             DateTime?
+  parentTransactionId String?                
+  parentTransaction   Transaction?           @relation("subTransactions", fields: [parentTransactionId], references: [id])
+  isParent            Boolean                @default(false)
+  subTransactions     Transaction[]          @relation("subTransactions") 
   userId              String
   user                User                   @relation(fields: [userId], references: [id])
   walletId            String
   wallet              Wallet                 @relation(name: "walletOwner", fields: [walletId], references: [id])
-  categoryId          String
-  category            Category              @relation(fields: [categoryId], references: [id])
+  categoryId          String?
+  category            Category?              @relation(fields: [categoryId], references: [id])
   labels              LabelsOnTransactions[]
 }
 

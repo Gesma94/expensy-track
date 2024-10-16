@@ -33,7 +33,7 @@ export default fp(
         return fastify.jwt.sign(userPayload, { expiresIn, nonce });
       },
       generateAccessToken: (userPayload: UserPayload) => {
-        return tokens.generateToken(userPayload, '15m');
+        return tokens.generateToken(userPayload, fastify.env.NODE_ENV === 'development' ? '7d' : '15m');
       },
       generateRefreshToken: (userPayload: UserPayload) => {
         const refreshToken = tokens.generateToken(userPayload, '7d', crypto.randomUUID());

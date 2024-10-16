@@ -1,8 +1,16 @@
 import type { MercuriusLoaderTyped } from '#types/graphql-loaders.js';
 import { transactionCategoryLoader } from './loaders/category.js';
+import { transactionLabelsLoader } from './loaders/labels.js';
+import { transactionParentTransactionLoader } from './loaders/parentTransaction.js';
+import { transactionSubTransactionsLoader } from './loaders/subTransactions.js';
+import { transactionWalletLoader } from './loaders/wallet.js';
 
 export const transactionLoader: MercuriusLoaderTyped = {
   Transaction: {
-    category: transactionCategoryLoader
+    labels: transactionLabelsLoader,
+    wallet: transactionWalletLoader,
+    category: transactionCategoryLoader,
+    subTransactions: transactionSubTransactionsLoader,
+    parentTransaction: transactionParentTransactionLoader
   }
 };

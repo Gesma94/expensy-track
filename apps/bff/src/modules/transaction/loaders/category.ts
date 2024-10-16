@@ -6,11 +6,15 @@ export const transactionCategoryLoader: Required<MercuriusLoaderTyped>['Transact
   queries,
   context
 ) => {
-  const categoryIds = queries.map(query => query.obj.categoryId);
+  const categoryIds = queries.map(query => query.obj.categoryId).filter(NotNullOrUndefined);
   const categories = await context.app.prisma.category.findMany({ where: { id: { in: categoryIds } } });
   const graphqlCategories = categories.map(CategoryToGraphql).filter(NotNullOrUndefined);
 
   return queries.map(query => {
+    if (query.obj.categoryId == null) {
+      return null;
+    }
+
     return graphqlCategories.find(category => category.id === query.obj.categoryId) ?? null;
   });
 };

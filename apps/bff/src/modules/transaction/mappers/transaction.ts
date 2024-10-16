@@ -9,20 +9,18 @@ export function TransactionToPrisma(transaction: TransactionGraphql | null): Tra
   return {
     id: transaction.id,
     walletId: transaction.walletId,
-    categoryId: transaction.categoryId,
-    isRecurring: false,
-    isRecurrentTemplate: false,
+    categoryId: transaction.categoryId ?? null,
     note: transaction.note ?? null,
     date: transaction.date,
+    isParent: transaction.isParent,
     amount: transaction.amount,
     userId: transaction.userId,
     createdAt: transaction.createdAt,
     updatedAt: transaction.updatedAt,
-    endDate: null,
-    startDate: null,
-    frequency: null,
     walletFromId: null,
-    walletToId: null
+    walletToId: null,
+    isTransfer: transaction.isTransfer,
+    parentTransactionId: transaction.parentTransactionId ?? null
   };
 }
 
@@ -37,9 +35,12 @@ export function TransactionToGraphql(transaction: TransactionPrisma | null): Tra
     date: transaction.date,
     amount: transaction.amount,
     userId: transaction.userId,
+    isParent: transaction.isParent,
     walletId: transaction.walletId,
     createdAt: transaction.createdAt,
     updatedAt: transaction.updatedAt,
-    categoryId: transaction.categoryId
+    isTransfer: transaction.isTransfer,
+    categoryId: transaction.categoryId,
+    parentTransactionId: transaction.parentTransactionId
   };
 }

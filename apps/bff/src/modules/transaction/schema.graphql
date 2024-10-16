@@ -1,15 +1,20 @@
 type Transaction {
   id: ID!
+  isTransfer: Boolean!
   amount: Float!
   walletId: ID!
   wallet: Wallet
   date: DateTime!
   note: String
-  categoryId: ID!
+  categoryId: ID
   category: Category
   labels: [Label!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  isParent: Boolean!
+  subTransactions: [Transaction!]
+  parentTransactionId: ID
+  parentTransaction: Transaction
   userId: ID!
 }
 
@@ -28,6 +33,6 @@ type Query {
 }
 
 type Mutation {
-  createWallet(input: CreateWalletInput!): CreateWalletResult
-  deleteWallets(input: DeleteWalletsInput!): DeleteWalletsResult
+  createTransaction(input: CreateWalletInput!): CreateWalletResult
+  deleteTransactions(input: DeleteWalletsInput!): DeleteWalletsResult
 }

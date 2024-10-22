@@ -1,3 +1,4 @@
+import type { $Utils } from '@expensy-track/prisma';
 import type { MercuriusLoaderTyped } from '#types/graphql-loaders.js';
 import type { Transaction as GraphqlTransaction } from '../../../@types/graphql-generated.js';
 import { TransactionToGraphql } from '../../transaction/mappers/transaction.js';
@@ -6,11 +7,22 @@ export const walletTransactionsLoader: Required<MercuriusLoaderTyped>['Wallet'][
   queries,
   context
 ) => {
-  const walletIds = queries.map(query => query.obj.id);
-  const transactions = await context.app.prisma.transaction.findMany({
-    where: { walletId: { in: walletIds } }
+  const orClauses: $Utils.OrType<'Transaction'> = [];
+
+  queries.forEach(query => {
+    orClauses.push({
+      AND: [
+        { walletId: query.obj.id },
+        { date: { lte: query.params.dateTimeRange.endTime } },
+        { date: { gte: query.params.dateTimeRange.startTime } }
+      ]
+    });
   });
+
   const graphqlTransactionsByWalletId: { [key: string]: GraphqlTransaction[] } = {};
+  const transactions = await context.app.prisma.transaction.findMany({
+    where: { OR: orClauses }
+  });
 
   transactions.forEach(transaction => {
     const graphqlTransaction = TransactionToGraphql(transaction);

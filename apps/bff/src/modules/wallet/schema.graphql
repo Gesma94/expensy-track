@@ -26,7 +26,7 @@ type Wallet {
   currencyCode: CurrencyCode!
   updatedAt: DateTime!
   ownerId: ID!
-  transactions: [Transaction]
+  transactions(dateTimeRange: DateTimeRange!): [Transaction]
 }
 
 type WalletsResult implements Response {

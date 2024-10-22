@@ -1,0 +1,4 @@
+input DateTimeRange {
+  startTime: DateTime!
+  endTime: DateTime!
+}

@@ -141,6 +141,8 @@ model Wallet {
   transactions     Transaction[]      @relation("walletOwner")
   transactionsFrom Transaction[]      @relation("walletFrom")
   transactionsTo   Transaction[]      @relation("walletTo")
+
+  @@unique([id, displayName])
 }
 
 model GuestsOnWallets {

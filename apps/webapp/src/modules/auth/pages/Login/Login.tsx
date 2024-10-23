@@ -44,7 +44,7 @@ export function Login() {
 
   function onSuccess(userPayload: UserPayload) {
     auth.setUser(userPayload);
-    navigate(ROUTES.WALLETS.NAME('test'));
+    navigate(ROUTES.WALLETS.ROOT);
   }
 
   function onSubmit(data: Schema, event?: React.BaseSyntheticEvent) {

@@ -5,10 +5,10 @@ export const ROUTES = {
   WALLETS: {
     ROOT: '/wallets',
     PATHS: {
-      NAME: ':name'
+      ID: ':id'
     },
-    NAME: function (name?: string) {
-      return `/${this.ROOT}/${name ?? this.PATHS.NAME}`;
+    ID: function (id?: string) {
+      return `${this.ROOT}/${id ?? this.PATHS.ID}`;
     }
   },
   CATEGORIES: {

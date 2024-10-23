@@ -1,4 +1,5 @@
 import type { $Utils } from '@expensy-track/prisma';
+import type { ArrayValues } from 'type-fest';
 import type { MercuriusLoaderTyped } from '#types/graphql-loaders.js';
 import type { Transaction as GraphqlTransaction } from '../../../@types/graphql-generated.js';
 import { TransactionToGraphql } from '../../transaction/mappers/transaction.js';
@@ -10,13 +11,20 @@ export const walletTransactionsLoader: Required<MercuriusLoaderTyped>['Wallet'][
   const orClauses: $Utils.OrType<'Transaction'> = [];
 
   queries.forEach(query => {
-    orClauses.push({
-      AND: [
-        { walletId: query.obj.id },
-        { date: { lte: query.params.dateTimeRange.endTime } },
-        { date: { gte: query.params.dateTimeRange.startTime } }
-      ]
-    });
+    // by default, retrieving based only on the walletId
+    const orClause: ArrayValues<typeof orClauses> = {
+      walletId: query.obj.id
+    };
+
+    // if defined, using the dateTimeRange parameter
+    if (query.params.dateTimeRange) {
+      orClause.date = {
+        lte: query.params.dateTimeRange.endTime,
+        gte: query.params.dateTimeRange.startTime
+      };
+    }
+
+    orClauses.push(orClause);
   });
 
   const graphqlTransactionsByWalletId: { [key: string]: GraphqlTransaction[] } = {};

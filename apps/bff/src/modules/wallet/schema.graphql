@@ -26,13 +26,19 @@ type Wallet {
   currencyCode: CurrencyCode!
   updatedAt: DateTime!
   ownerId: ID!
-  transactions(dateTimeRange: DateTimeRange!): [Transaction]
+  transactions(dateTimeRange: DateTimeRange): [Transaction]
 }
 
 type WalletsResult implements Response {
   success: Boolean!
   error: GraphqlError
   result: [Wallet!]
+}
+
+type WalletResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Wallet
 }
 
 type CreateWalletResult implements Response {
@@ -47,6 +53,10 @@ type DeleteWalletsResult implements Response {
   result: Int
 }
 
+input WalletInput {
+  id: ID!
+}
+
 input CreateWalletInput {
   displayName: String!
   icon: WalletIcon!
@@ -59,6 +69,7 @@ input DeleteWalletsInput {
 }
 
 type Query {
+  wallet(input: WalletInput!): WalletResult
   wallets: WalletsResult
 }
 

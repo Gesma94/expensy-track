@@ -132,9 +132,15 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.1(react@18.3.1))
+      '@react-aria/i18n':
+        specifier: ^3.12.3
+        version: 3.12.3(react@18.3.1)
       '@react-aria/toast':
         specifier: 3.0.0-beta.16
         version: 3.0.0-beta.16(react@18.3.1)
+      '@react-stately/data':
+        specifier: ^3.11.7
+        version: 3.11.7(react@18.3.1)
       '@react-stately/toast':
         specifier: 3.0.0-beta.6
         version: 3.0.0-beta.6(react@18.3.1)
@@ -6149,7 +6155,7 @@ snapshots:
       cross-inspect: 1.0.1
       dset: 3.1.4
       graphql: 16.9.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@graphql-tools/wrap@10.0.5(graphql@16.9.0)':
     dependencies:

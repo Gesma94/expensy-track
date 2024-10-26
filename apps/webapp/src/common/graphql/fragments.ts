@@ -6,3 +6,10 @@ export const GRAPHQL_ERROR_FRAGMENT = gql(`
     code
   }
 `);
+
+export const MY_LABEL_FRAGMENT = gql(`
+  fragment MyLabel on Label {
+    id
+    displayName
+  }
+`);

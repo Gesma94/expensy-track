@@ -1,9 +1,13 @@
 import { useQuery } from '@apollo/client';
+import { Button } from '@components/Button/Button';
+import { CreateTransactionForm } from '@modules/wallet/components/CreateTransactionForm/CreateTransactionForm';
 import { GET_MY_WALLET } from '@modules/wallet/graphql/queries';
+import { DialogTrigger } from 'react-aria-components';
+import { PiPlus } from 'react-icons/pi';
 import { useParams } from 'react-router-dom';
 import invariant from 'tiny-invariant';
 import { useFragment } from '../../../../gql';
-import { MyWalletWithTransactionsFragmentDoc } from '../../../../gql/graphql';
+import { MyLabelFragmentDoc, MyWalletWithTransactionsFragmentDoc } from '../../../../gql/graphql';
 
 export function Wallet() {
   const { id } = useParams();
@@ -20,8 +24,9 @@ export function Wallet() {
     }
   });
   const walletFragments = useFragment(MyWalletWithTransactionsFragmentDoc, data?.wallet?.result);
+  const labelsFragment = useFragment(MyLabelFragmentDoc, data?.labels?.result);
 
-  console.log(walletFragments);
+  console.log(labelsFragment);
 
   return (
     <>
@@ -32,6 +37,18 @@ export function Wallet() {
           <li key={transaction?.id}>{transaction?.amount}</li>
         ))}
       </ul>
+
+      <DialogTrigger>
+        <Button>
+          <div className='relative p-4'>
+            <div className='absolute inset-0 opacity-20'>
+              <PiPlus size={'100%'} />
+            </div>
+            Add new transaction
+          </div>
+        </Button>
+        <CreateTransactionForm labels={labelsFragment ?? []} />
+      </DialogTrigger>
     </>
   );
 }

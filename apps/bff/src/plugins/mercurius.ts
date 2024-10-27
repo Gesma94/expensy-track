@@ -4,7 +4,7 @@ import type { UserPayload } from '@expensy-track/common/schemas';
 import { loadFilesSync } from '@graphql-tools/load-files';
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge';
 import { makeExecutableSchema } from '@graphql-tools/schema';
-import type { FastifyInstance, FastifyRequest } from 'fastify';
+import type { FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 import mercurius from 'mercurius';
 import { authResolvers } from '../modules/auth/graphql/resolvers.js';

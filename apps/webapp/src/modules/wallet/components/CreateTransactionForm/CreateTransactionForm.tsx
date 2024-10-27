@@ -68,7 +68,7 @@ export function CreateTransactionForm({ labels }: Props) {
               control={control}
               name='category'
               label='Category'
-              // selectValueTemplate={a => (a.isPlaceholder ? 'test1' : a.defaultChildren)}
+              selectValueTemplate={a => (a.isPlaceholder ? 'Select Category' : a.defaultChildren)}
             >
               {Object.values(CategoryIconEnum).map(categoryIcon => (
                 <Option id={categoryIcon} key={categoryIcon}>

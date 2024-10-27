@@ -1,4 +1,5 @@
 import type { MercuriusContext } from 'mercurius';
+import type { EmptyObject } from 'type-fest';
 import type {
   Maybe,
   ResolverFn,
@@ -17,7 +18,7 @@ type ExtractArgs<T> = T extends ResolverFn<infer _TResult, infer _TParent, infer
   ? NonNullable<TArgs>
   : T extends ResolverWithResolve<infer _TResult, infer _TParent, infer _TContext, infer TArgs>
     ? NonNullable<TArgs>
-    : never;
+    : EmptyObject;
 
 type LoaderQueriesArg<TObj extends keyof ResolversParentTypes, TParams> = Array<{
   obj: ResolversParentTypes[TObj];

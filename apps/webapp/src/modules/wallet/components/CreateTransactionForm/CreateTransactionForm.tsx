@@ -8,21 +8,22 @@ import { FormNumberInput } from '@components/form/FormNumberInput/FormNumberInpu
 import { FormSelect } from '@components/form/FormSelect/FormSelect';
 import { FormTextInput } from '@components/form/FormTextInput/FormTextInput';
 import { CategoryIcon } from '@components/icon/CategoryIcon/CategoryIcon';
+import { MultiSelect } from '@components/input/MultiSelect/MultiSelect';
 import { Option } from '@components/input/Select/Select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@modules/toast/hooks/useToast';
-import { useListData } from '@react-stately/data';
+import { type ListData, useListData } from '@react-stately/data';
 import { useContext } from 'react';
 import { Label, OverlayTriggerStateContext, SelectValue, Tag } from 'react-aria-components';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { CategoryIcon as CategoryIconEnum, type MyLabelFragment } from '../../../../gql/graphql';
+import { CategoryIcon as CategoryIconEnum, type MyLabelFragment, MyLabelFragmentDoc } from '../../../../gql/graphql';
 const formSchema = z.object({
   category: z.nativeEnum(CategoryIconEnum).nullable(),
   date: z.date(),
   amount: z.number(),
   note: z.string().optional(),
-  labels: z.array(z.string()),
+  labels: z.custom<MyLabelFragment[]>(),
   isParent: z.boolean()
 });
 type FormSchema = z.infer<typeof formSchema>;
@@ -32,6 +33,10 @@ type Props = {
 export function CreateTransactionForm({ labels }: Props) {
   const { successToast } = useToast();
   const dialogState = useContext(OverlayTriggerStateContext);
+  const selectedList = useListData<MyLabelFragment>({
+    initialItems: [],
+    getKey: label => label.id
+  });
   const { handleSubmit, control, getValues } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,11 +48,12 @@ export function CreateTransactionForm({ labels }: Props) {
       isParent: false
     }
   });
-  const selectedList = useListData<MyLabelFragment>({
-    initialItems: []
-  });
+
   function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
     event?.preventDefault();
+    console.log(selectedList);
+    console.log(data);
+
     // createCategoryMutation({ variables: { input: data } });
   }
   function onCompleted() {
@@ -78,15 +84,27 @@ export function CreateTransactionForm({ labels }: Props) {
             </FormSelect>
             <FormNumberInput control={control} name='amount' label='Amount' />
             <FormTextInput control={control} name='note' label='Note' />
-            {/* <FormTextInput control={control} name='displayName' label='Display name' />
-            <FormNumberInput control={control} name='initialBalance' label='initial Balance' />
-            <FormSelect control={control} name='currencyCode' label='Currency'>
-              {Object.values(CurrencyCode).map(currencyCode => (
-                <Option id={currencyCode} key={currencyCode}>
-                  <CurrencyOption code={currencyCode} />
-                </Option>
-              ))}
-            </FormSelect> */}
+
+            <Controller
+              control={control}
+              name='labels'
+              render={({
+                field: { disabled, onChange, value, ...fieldProps },
+                fieldState: { invalid, error: _error }
+              }) => (
+                <MultiSelect
+                  items={labels}
+                  selectedItems={value}
+                  getKey={x => x.id}
+                  getSearchValue={x => x.displayName}
+                  onChange={onChange}
+                  label='labels'
+                  getTagTextValue={x => x.displayName}
+                  itemRender={item => item.displayName}
+                />
+              )}
+            />
+
             <Button type='submit'>Create</Button>
           </Form>
         </>

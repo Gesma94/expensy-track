@@ -1,12 +1,17 @@
 import { Button } from '@components/Button/Button';
 import { useFilter } from '@react-aria/i18n';
+import { useKeyboard } from '@react-aria/interactions';
 import { type ListData, useListData } from '@react-stately/data';
-import React, { useCallback, useContext, useEffect, useLayoutEffect, useState, type PropsWithChildren } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+  type PropsWithChildren,
+  type ReactNode
+} from 'react';
 import {
-  ComboBox,
-  ComboBoxContext,
-  ComboBoxStateContext,
-  Dialog,
   Group,
   GroupContext,
   type GroupProps,
@@ -25,120 +30,57 @@ import {
   TagList,
   composeRenderProps
 } from 'react-aria-components';
-import { twMerge } from 'tailwind-merge';
-export interface MultiSelectProps<T extends object>
-  extends Omit<
-    RACComboBoxProps<T>,
-    | 'children'
-    | 'validate'
-    | 'allowsEmptyCollection'
-    | 'inputValue'
-    | 'selectedKey'
-    | 'inputValue'
-    | 'className'
-    | 'value'
-    | 'onSelectionChange'
-    | 'onInputChange'
-  > {
-  items: Array<T>;
-  itemKeyPath: (item: T) => Key;
-  itemSearchPattern: (item: T) => string;
-  selectedList: ListData<T>;
-  className?: string;
-  onItemAdd?: (key: Key) => void;
-  onItemRemove?: (key: Key) => void;
-  renderEmptyState: (inputValue: string) => React.ReactNode;
-  tag: (item: T) => React.ReactNode;
-  children: React.ReactNode | ((item: T) => React.ReactNode);
-}
-const DescriptionContext = React.createContext<{
-  'aria-describedby'?: string;
-} | null>(null);
-function DescriptionProvider({
-  children
-}: {
-  children: React.ReactNode;
-}) {
-  const descriptionId: string | null = React.useId();
-  const [descriptionRendered, setDescriptionRendered] = React.useState(true);
-  React.useLayoutEffect(() => {
-    if (!document.getElementById(descriptionId)) {
-      setDescriptionRendered(false);
-    }
-  }, [descriptionId]);
-  return (
-    <DescriptionContext.Provider
-      value={{
-        'aria-describedby': descriptionRendered ? descriptionId : undefined
-      }}
-    >
-      {children}
-    </DescriptionContext.Provider>
-  );
-}
-export function MultiSelectField({ children, className, ...props }: GroupProps & { children: React.ReactNode }) {
-  const labelId = React.useId();
-  return (
-    <LabelContext.Provider value={{ id: labelId, elementType: 'span' }}>
-      <GroupContext.Provider {...props} value={{ 'aria-labelledby': labelId }}>
-        <Group>{children}</Group>
-      </GroupContext.Provider>
-    </LabelContext.Provider>
-  );
-}
 
 type Props<T extends object> = {
-  label: string;
   items: T[];
+  label: string;
   getKey: (item: T) => Key;
   getSearchValue: (item: T) => string;
-  children: (item: T) => React.ReactNode;
   selectedItems: T[];
   onChange: (newSelectionList: T[]) => void;
-  textValue: (item: T) => string;
+  getTagTextValue: (item: T) => string;
+  tagRender?: (item: T) => ReactNode;
+  itemRender: (item: T) => ReactNode;
+  renderEmptyState?: (filterValue: string) => ReactNode;
 };
 
 export function MultiSelect<T extends object>({
   label,
   getKey,
-  children,
   items,
-  textValue,
+  getTagTextValue,
+  tagRender,
+  itemRender,
   getSearchValue,
   onChange,
-  selectedItems
+  selectedItems,
+  renderEmptyState: customRenderEmptyState
 }: Props<T>) {
   const labelId = React.useId();
   const triggerRef = React.useRef<HTMLDivElement>(null);
   const listbocRef = React.useRef<HTMLDivElement>(null);
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState<'none' | 'input' | 'open'>('none');
+  const { keyboardProps } = useKeyboard({
+    onKeyDown: e => {
+      if (e.code === 'ArrowDown' || e.code === 'Enter') {
+        setIsPopoverOpen('open');
+      }
+    }
+  });
 
   const { contains } = useFilter({ sensitivity: 'base' });
   const [searchValue, setSearchValue] = useState('');
   const filter = useCallback(
     (item: T, filterText: string) => {
-      return !selectedItems.find(x => getKey(x) === getKey(item)) && contains(getSearchValue(item), searchValue);
+      return !selectedItems.find(x => getKey(x) === getKey(item)) && contains(getSearchValue(item), filterText);
     },
-    [contains, getSearchValue, selectedItems, getKey, searchValue]
+    [contains, getSearchValue, selectedItems, getKey]
   );
   const availableList = useListData({
     initialItems: items,
     getKey,
     filter
   });
-
-  function handleComboBoxSelectionChange(key: Key | null) {
-    if (!key) {
-      return;
-    }
-    const item = availableList.getItem(key);
-
-    const newArray = [...selectedItems];
-    newArray.push(item);
-
-    setSearchValue('');
-    onChange(newArray);
-  }
 
   function handleComboBoxSelectionChange2(keys: Selection) {
     if (!keys) {
@@ -173,14 +115,28 @@ export function MultiSelect<T extends object>({
     onChange(newArray);
   }
 
+  function handleBlurInput() {
+    if (isPopoverOpen === 'input') {
+      setIsPopoverOpen('none');
+    }
+  }
+
   function handleSearchValueChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchValue(e.currentTarget.value);
-    setIsPopoverOpen(true);
+    availableList.setFilterText(e.currentTarget.value);
+    setIsPopoverOpen('input');
+  }
+
+  function renderEmptyState() {
+    if (customRenderEmptyState) {
+      return customRenderEmptyState(availableList.filterText);
+    }
+
+    return availableList.filterText ? `no value for ${availableList.filterText}` : 'no items';
   }
 
   useLayoutEffect(() => {
-    if (isPopoverOpen) {
-      console.log(listbocRef);
+    if (isPopoverOpen === 'open') {
       listbocRef?.current?.focus();
     }
   }, [isPopoverOpen]);
@@ -193,60 +149,46 @@ export function MultiSelect<T extends object>({
           <TagGroup onSelectionChange={e => console.log(e)} onRemove={handleRemoveTag} aria-labelledby={labelId}>
             <TagList items={selectedItems}>
               {item => (
-                <Tag textValue={textValue(item)} className='bg-blue-400 rounded-lg inline-flex'>
-                  {textValue(item)}
+                <Tag textValue={getTagTextValue(item)} className='bg-blue-400 rounded-lg inline-flex'>
+                  {tagRender?.(item) ?? getTagTextValue(item)}
                   <Button slot='remove'> X</Button>
                 </Tag>
               )}
             </TagList>
           </TagGroup>
           <div>
-            {/* <ComboBox
-            aria-labelledby={labelId}
-            onKeyDown={e => console.log(e)}
-            onSelectionChange={handleComboBoxSelectionChange}
-            > */}
-
-            <Input onChange={handleSearchValueChange} value={searchValue} />
-            <Button onPress={() => setIsPopoverOpen(true)}>▼</Button>
+            <Input
+              aria-labelledby={labelId}
+              onBlur={handleBlurInput}
+              {...keyboardProps}
+              onChange={handleSearchValueChange}
+              value={searchValue}
+            />
+            <Button onPress={() => setIsPopoverOpen('open')}>▼</Button>
             <Popover
               placement='bottom start'
               triggerRef={triggerRef}
-              isOpen={isPopoverOpen}
-              onOpenChange={setIsPopoverOpen}
+              isOpen={isPopoverOpen !== 'none'}
+              onOpenChange={e => setIsPopoverOpen(e ? 'open' : 'none')}
             >
-              <Dialog>
-                <ListBox
-                  ref={listbocRef}
-                  selectionMode='single'
-                  items={availableList.items}
-                  onSelectionChange={handleComboBoxSelectionChange2}
-                >
-                  {children}
-                </ListBox>
-              </Dialog>
+              <ListBox
+                renderEmptyState={renderEmptyState}
+                aria-labelledby={labelId}
+                ref={listbocRef}
+                selectionMode='single'
+                items={availableList.items}
+                onSelectionChange={handleComboBoxSelectionChange2}
+              >
+                {item => (
+                  <ListBoxItem key={getKey(item)} id={getKey(item)} textValue={getTagTextValue(item)}>
+                    {itemRender(item)}
+                  </ListBoxItem>
+                )}
+              </ListBox>
             </Popover>
-            {/* </ComboBox> */}
           </div>
         </div>
       </div>
     </>
-  );
-}
-
-export function MultiSelectItem(props: ListBoxItemProps) {
-  return (
-    <ListBoxItem
-      {...props}
-      className={composeRenderProps(props.className, (className, { isFocused }) => {
-        return twMerge([
-          'rounded-lg p-1.5 text-base/6 outline-0 focus-visible:outline-0 sm:text-sm/6',
-          isFocused && 'bg-zinc-100 dark:bg-zinc-700',
-          className
-        ]);
-      })}
-    >
-      {props.children}
-    </ListBoxItem>
   );
 }

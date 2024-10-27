@@ -17,5 +17,11 @@ export const GET_MY_WALLET = gql(`
       error { ... GraphqlError }
       result { ... MyWalletWithTransactions }
   }
+  
+  labels {
+      success
+      error { ... GraphqlError }
+      result { ... MyLabel }
+    }
   }
 `);

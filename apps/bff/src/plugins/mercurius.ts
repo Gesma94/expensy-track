@@ -50,11 +50,13 @@ async function buildContext(request: FastifyRequest): Promise<MercuriusAdditiona
   }
 }
 
-export default fp(async (fastify: FastifyInstance) => {
+export default fp((fastify, _, done) => {
   fastify.register(mercurius, {
     schema,
     context: buildContext,
     loaders: { ...transactionLoaders, ...walletLoaders },
     graphiql: fastify.env.NODE_ENV === 'development'
   });
+
+  done();
 });

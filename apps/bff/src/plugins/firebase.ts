@@ -1,4 +1,3 @@
-import type { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
 import { type App, type ServiceAccount, cert, deleteApp, initializeApp } from 'firebase-admin/app';
 import { type Auth, getAuth } from 'firebase-admin/auth';
@@ -15,7 +14,7 @@ declare module 'fastify' {
 }
 
 export default fp(
-  async (fastify: FastifyInstance) => {
+  (fastify, _, done) => {
     const uniqueAppName = crypto.randomUUID();
     const serviceAccount: ServiceAccount = {
       projectId: fastify.env.FIREBASE_PROJECT_ID,
@@ -34,6 +33,8 @@ export default fp(
       innerFastify.log.info('deleting firebase app');
       await deleteApp(firebaseApp);
     });
+
+    done();
   },
   {
     name: FastifyPluginName.Firebase,

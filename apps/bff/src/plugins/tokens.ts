@@ -27,7 +27,7 @@ declare module 'fastify' {
 const refreshTokenDb: { [refreshToken: string]: null } = {};
 
 export default fp(
-  async (fastify: FastifyInstance) => {
+  (fastify, _, done) => {
     const tokens: TokensDecorator = {
       generateToken: (userPayload: UserPayload, expiresIn: string, nonce?: string) => {
         return fastify.jwt.sign(userPayload, { expiresIn, nonce });
@@ -63,6 +63,8 @@ export default fp(
     };
 
     fastify.decorate(FastifyPluginName.Tokens, tokens);
+
+    done();
   },
   {
     name: FastifyPluginName.Tokens,

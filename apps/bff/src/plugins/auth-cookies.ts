@@ -1,5 +1,4 @@
 import type { User } from '@expensy-track/prisma';
-import type { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
 import { CookieName } from '../common/enums/cookie-name.js';
 import { FastifyPluginName } from '../common/enums/fastify-plugin-name.js';
@@ -14,7 +13,7 @@ declare module 'fastify' {
 }
 
 export default fp(
-  async (fastify: FastifyInstance) => {
+  (fastify, _, done) => {
     fastify.decorateReply(FastifyPluginName.GetAndSetAuthCookies, function (this, user) {
       const { accessToken, refreshToken } = fastify.tokens.generateTokens(getUserPayload(user));
       return this.setAuthCookies(accessToken, refreshToken);
@@ -42,6 +41,8 @@ export default fp(
 
       return this;
     });
+
+    done();
   },
   {
     dependencies: [FastifyPluginName.Env, FastifyPluginName.Tokens]

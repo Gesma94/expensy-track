@@ -1,5 +1,4 @@
 import fastifyEnv from '@fastify/env';
-import type { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
 import { FastifyPluginName } from '../common/enums/fastify-plugin-name.js';
 import { EnvSchema, type Environment } from '../common/schemas/env-schema.js';
@@ -12,13 +11,15 @@ declare module 'fastify' {
 }
 
 export default fp<FastifyBuildOptions>(
-  async (fastify: FastifyInstance, options) => {
+  (fastify, options, done) => {
     fastify.register(fastifyEnv, {
       dotenv: false,
       schema: EnvSchema,
-      data: Object.assign(process.env, options.customEnvs),
-      confKey: FastifyPluginName.Env
+      confKey: FastifyPluginName.Env,
+      data: Object.assign(process.env, options.customEnvs)
     });
+
+    done();
   },
   {
     name: FastifyPluginName.Env

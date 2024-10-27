@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import type { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
 import { FastifyPluginName } from '../common/enums/fastify-plugin-name.js';
 
@@ -27,8 +26,9 @@ const passwordHasher = {
 };
 
 export default fp(
-  async (fastify: FastifyInstance) => {
+  (fastify, _, done) => {
     fastify.decorate(FastifyPluginName.Bcrypt, passwordHasher);
+    done();
   },
   {
     name: FastifyPluginName.Bcrypt

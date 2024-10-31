@@ -1,34 +1,19 @@
 import { Button } from '@components/Button/Button';
 import { useFilter } from '@react-aria/i18n';
-import { useKeyboard } from '@react-aria/interactions';
-import { type ListData, useListData } from '@react-stately/data';
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-  type PropsWithChildren,
-  type ReactNode
-} from 'react';
+import { type PressEvent, useKeyboard, usePress } from '@react-aria/interactions';
+import { useListData } from '@react-stately/data';
+import React, { useCallback, useLayoutEffect, useState, type KeyboardEvent, type ReactNode } from 'react';
 import {
-  Group,
-  GroupContext,
-  type GroupProps,
   Input,
   type Key,
   Label,
-  LabelContext,
   ListBox,
   ListBoxItem,
-  type ListBoxItemProps,
   Popover,
-  type ComboBoxProps as RACComboBoxProps,
   type Selection,
   Tag,
   TagGroup,
-  TagList,
-  composeRenderProps
+  TagList
 } from 'react-aria-components';
 
 type Props<T extends object> = {
@@ -40,7 +25,7 @@ type Props<T extends object> = {
   onChange: (newSelectionList: T[]) => void;
   getTagTextValue: (item: T) => string;
   tagRender?: (item: T) => ReactNode;
-  itemRender: (item: T) => ReactNode;
+  itemRender: (item: T, isSelected: boolean) => ReactNode;
   renderEmptyState?: (filterValue: string) => ReactNode;
 };
 
@@ -58,54 +43,67 @@ export function MultiSelect<T extends object>({
 }: Props<T>) {
   const labelId = React.useId();
   const triggerRef = React.useRef<HTMLDivElement>(null);
-  const listbocRef = React.useRef<HTMLDivElement>(null);
-  const [isPopoverOpen, setIsPopoverOpen] = useState<'none' | 'input' | 'open'>('none');
-  const { keyboardProps } = useKeyboard({
-    onKeyDown: e => {
-      if (e.code === 'ArrowDown' || e.code === 'Enter') {
-        setIsPopoverOpen('open');
-      }
-    }
-  });
+  const listBoxRef = React.useRef<HTMLDivElement>(null);
+
+  const [isPopoverOpen, setIsPopoverOpen] = useState<'no' | 'from-search-value-change' | 'open'>('no');
 
   const { contains } = useFilter({ sensitivity: 'base' });
-  const [searchValue, setSearchValue] = useState('');
-  const filter = useCallback(
-    (item: T, filterText: string) => {
-      return !selectedItems.find(x => getKey(x) === getKey(item)) && contains(getSearchValue(item), filterText);
-    },
-    [contains, getSearchValue, selectedItems, getKey]
-  );
-  const availableList = useListData({
-    initialItems: items,
-    getKey,
-    filter
+  const { keyboardProps } = useKeyboard({ onKeyDown: onInputKeyDown });
+  const { pressProps } = usePress({
+    onPress: onListBoxCustomPress,
+    onPressUp: onListBoxCustomPress,
+    onPressEnd: onPressEventContinuePropagation,
+    onPressStart: onPressEventContinuePropagation
   });
 
-  function handleComboBoxSelectionChange2(keys: Selection) {
-    if (!keys) {
-      return;
-    }
-
-    if (keys === 'all') {
-    } else {
-      const newArray = [...selectedItems];
-      keys.forEach(key => {
-        const item = availableList.getItem(key);
-
-        newArray.push(item);
-
-        setSearchValue('');
-        onChange(newArray);
-      });
+  function onInputKeyDown(e: KeyboardEvent): void {
+    if (e.code === 'ArrowDown' || e.code === 'Enter') {
+      setIsPopoverOpen('open');
     }
   }
 
-  function handleRemoveTag(key: Set<Key>) {
+  function onPressEventContinuePropagation(e: PressEvent) {
+    e.continuePropagation();
+  }
+
+  function onListBoxCustomPress(e: PressEvent) {
+    if (e.target.querySelector('button[slot="remove"]')) {
+      const newArray = [...selectedItems];
+      const key = e.target.parentElement?.getAttribute('data-key');
+
+      if (key) {
+        const index = newArray.findIndex(x => getKey(x) === key);
+
+        if (index !== -1) {
+          newArray.splice(index, 1);
+        }
+
+        onChange(newArray);
+      }
+    } else {
+      e.continuePropagation();
+    }
+  }
+
+  function addKeysInSelected(keys: Key[] | Set<Key>) {
     const newArray = [...selectedItems];
 
-    key.forEach(k => {
-      const index = newArray.findIndex(x => getKey(x) === k);
+    keys.forEach(key => {
+      const item = availableList.getItem(key);
+
+      if (item) {
+        newArray.push(item);
+      }
+    });
+
+    onChange(newArray);
+  }
+
+  function removeKeysInSelected(keys: Key[] | Set<Key>) {
+    const newArray = [...selectedItems];
+
+    keys.forEach(key => {
+      const index = newArray.findIndex(x => getKey(x) === key);
 
       if (index !== -1) {
         newArray.splice(index, 1);
@@ -115,16 +113,27 @@ export function MultiSelect<T extends object>({
     onChange(newArray);
   }
 
+  function handleListBoxSelectionChange(keys: Selection) {
+    if (!keys) {
+      return;
+    }
+
+    const selectedKeys = keys === 'all' ? availableList.items.map(item => getKey(item)) : keys;
+
+    addKeysInSelected(selectedKeys);
+    availableList.setFilterText('');
+  }
+
   function handleBlurInput() {
-    if (isPopoverOpen === 'input') {
-      setIsPopoverOpen('none');
+    if (isPopoverOpen === 'from-search-value-change') {
+      setIsPopoverOpen('no');
     }
   }
 
   function handleSearchValueChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSearchValue(e.currentTarget.value);
+    e.currentTarget.value;
     availableList.setFilterText(e.currentTarget.value);
-    setIsPopoverOpen('input');
+    setIsPopoverOpen('from-search-value-change');
   }
 
   function renderEmptyState() {
@@ -135,9 +144,18 @@ export function MultiSelect<T extends object>({
     return availableList.filterText ? `no value for ${availableList.filterText}` : 'no items';
   }
 
+  const filter = useCallback(
+    (item: T, filterText: string) => {
+      return !selectedItems.find(x => getKey(x) === getKey(item)) && contains(getSearchValue(item), filterText);
+    },
+    [contains, getSearchValue, selectedItems, getKey]
+  );
+
+  const availableList = useListData({ getKey, filter, initialItems: items });
+
   useLayoutEffect(() => {
     if (isPopoverOpen === 'open') {
-      listbocRef?.current?.focus();
+      listBoxRef?.current?.focus();
     }
   }, [isPopoverOpen]);
 
@@ -146,12 +164,12 @@ export function MultiSelect<T extends object>({
       <div ref={triggerRef}>
         <Label id={labelId}>{label}</Label>
         <div className='flex border'>
-          <TagGroup onSelectionChange={e => console.log(e)} onRemove={handleRemoveTag} aria-labelledby={labelId}>
+          <TagGroup onSelectionChange={e => console.log(e)} onRemove={removeKeysInSelected} aria-labelledby={labelId}>
             <TagList items={selectedItems}>
               {item => (
                 <Tag textValue={getTagTextValue(item)} className='bg-blue-400 rounded-lg inline-flex'>
                   {tagRender?.(item) ?? getTagTextValue(item)}
-                  <Button slot='remove'> X</Button>
+                  <Button slot='remove'>X</Button>
                 </Tag>
               )}
             </TagList>
@@ -162,26 +180,26 @@ export function MultiSelect<T extends object>({
               onBlur={handleBlurInput}
               {...keyboardProps}
               onChange={handleSearchValueChange}
-              value={searchValue}
+              value={availableList.filterText}
             />
             <Button onPress={() => setIsPopoverOpen('open')}>▼</Button>
             <Popover
               placement='bottom start'
               triggerRef={triggerRef}
-              isOpen={isPopoverOpen !== 'none'}
-              onOpenChange={e => setIsPopoverOpen(e ? 'open' : 'none')}
+              isOpen={isPopoverOpen !== 'no'}
+              onOpenChange={e => setIsPopoverOpen(e ? 'open' : 'no')}
             >
               <ListBox
                 renderEmptyState={renderEmptyState}
                 aria-labelledby={labelId}
-                ref={listbocRef}
+                ref={listBoxRef}
                 selectionMode='single'
-                items={availableList.items}
-                onSelectionChange={handleComboBoxSelectionChange2}
+                items={[...selectedItems, ...availableList.items]}
+                onSelectionChange={handleListBoxSelectionChange}
               >
                 {item => (
                   <ListBoxItem key={getKey(item)} id={getKey(item)} textValue={getTagTextValue(item)}>
-                    {itemRender(item)}
+                    <div {...pressProps}>{itemRender(item, selectedItems.includes(item))}</div>
                   </ListBoxItem>
                 )}
               </ListBox>

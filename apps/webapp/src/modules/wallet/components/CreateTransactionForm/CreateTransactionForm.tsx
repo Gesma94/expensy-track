@@ -100,7 +100,11 @@ export function CreateTransactionForm({ labels }: Props) {
                   onChange={onChange}
                   label='labels'
                   getTagTextValue={x => x.displayName}
-                  itemRender={item => item.displayName}
+                  itemRender={(item, isSelected) => (
+                    <>
+                      {isSelected && <Button slot='remove'>X</Button>} {item.displayName}
+                    </>
+                  )}
                 />
               )}
             />

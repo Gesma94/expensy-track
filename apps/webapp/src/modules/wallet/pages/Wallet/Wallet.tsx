@@ -26,8 +26,6 @@ export function Wallet() {
   const walletFragments = useFragment(MyWalletWithTransactionsFragmentDoc, data?.wallet?.result);
   const labelsFragment = useFragment(MyLabelFragmentDoc, data?.labels?.result);
 
-  console.log(walletFragments);
-
   return (
     <>
       <h1>Expensy Track - Wallet {walletFragments?.displayName}</h1>

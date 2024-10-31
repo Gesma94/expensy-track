@@ -7,6 +7,7 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import type { FastifyRequest } from 'fastify';
 import fp from 'fastify-plugin';
 import mercurius from 'mercurius';
+import { FastifyPluginName } from '#enums/fastify-plugin-name.js';
 import { authResolvers } from '../modules/auth/graphql/resolvers.js';
 import { categoryResolvers } from '../modules/category/graphql/resolvers.js';
 import { labelResolvers } from '../modules/label/graphql/resolvers.js';
@@ -50,13 +51,18 @@ async function buildContext(request: FastifyRequest): Promise<MercuriusAdditiona
   }
 }
 
-export default fp((fastify, _, done) => {
-  fastify.register(mercurius, {
-    schema,
-    context: buildContext,
-    loaders: { ...transactionLoaders, ...walletLoaders },
-    graphiql: fastify.env.NODE_ENV === 'development'
-  });
+export default fp(
+  (fastify, _, done) => {
+    fastify.register(mercurius, {
+      schema,
+      context: buildContext,
+      loaders: { ...transactionLoaders, ...walletLoaders },
+      graphiql: fastify.env.NODE_ENV === 'development'
+    });
 
-  done();
-});
+    done();
+  },
+  {
+    dependencies: [FastifyPluginName.Env, FastifyPluginName.Jwt]
+  }
+);

@@ -1,3 +1,7 @@
+extend enum GraphqlErrorCode {
+  WALLET_NOT_GOUND
+}
+
 type Transaction {
   id: ID!
   isTransfer: Boolean!
@@ -24,8 +28,24 @@ type TransactionsResult implements Response {
   result: [Transaction!]
 }
 
+type CreateTransactionResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Transaction
+}
+
 input TransactionsInput {
   walletId: ID!
+}
+
+input CreateTransactionInput {
+  walletId: ID!
+  categoryId: ID!
+  date: DateTime!
+  amount: Float!
+  isParent: Boolean!
+  labelsIds: [ID!]
+  note: String
 }
 
 type Query {
@@ -33,6 +53,6 @@ type Query {
 }
 
 type Mutation {
-  createTransaction(input: CreateWalletInput!): CreateWalletResult
+  createTransaction(input: CreateTransactionInput!): CreateTransactionResult
   deleteTransactions(input: DeleteWalletsInput!): DeleteWalletsResult
 }

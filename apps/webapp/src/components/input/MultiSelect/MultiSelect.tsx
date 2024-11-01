@@ -67,7 +67,7 @@ export function MultiSelect<T extends object>({
   }
 
   function onListBoxCustomPress(e: PressEvent) {
-    if (e.target.querySelector('button[slot="remove"]')) {
+    if (e.target.matches('button[slot="remove"]')) {
       const newArray = [...selectedItems];
       const key = e.target.parentElement?.getAttribute('data-key');
 

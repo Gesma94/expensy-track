@@ -1,5 +1,4 @@
 import type { UserPayload } from '@expensy-track/common/schemas';
-import type { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
 import { FastifyPluginName } from '../common/enums/fastify-plugin-name.js';
 

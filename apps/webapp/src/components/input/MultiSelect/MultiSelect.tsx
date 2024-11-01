@@ -164,7 +164,7 @@ export function MultiSelect<T extends object>({
       <div ref={triggerRef}>
         <Label id={labelId}>{label}</Label>
         <div className='flex border'>
-          <TagGroup onSelectionChange={e => console.log(e)} onRemove={removeKeysInSelected} aria-labelledby={labelId}>
+          <TagGroup onRemove={removeKeysInSelected} aria-labelledby={labelId}>
             <TagList items={selectedItems}>
               {item => (
                 <Tag textValue={getTagTextValue(item)} className='bg-blue-400 rounded-lg inline-flex'>

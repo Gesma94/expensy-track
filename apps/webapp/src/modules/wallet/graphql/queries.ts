@@ -23,5 +23,11 @@ export const GET_MY_WALLET = gql(`
       error { ... GraphqlError }
       result { ... MyLabel }
     }
+    
+  categories {
+  success
+  error { ... GraphqlError } 
+  result { ... MyCategory }
+}
   }
 `);

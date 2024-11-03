@@ -13,3 +13,13 @@ export const MY_LABEL_FRAGMENT = gql(`
     displayName
   }
 `);
+
+export const MY_CATEGORY_FRAGMENT = gql(`
+  fragment MyCategory on Category {
+    id
+    displayName
+    type
+    color
+    icon
+  }
+`);

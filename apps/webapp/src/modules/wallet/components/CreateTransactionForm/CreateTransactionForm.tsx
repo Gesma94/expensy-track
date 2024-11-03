@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { type BaseMutationOptions, useMutation } from '@apollo/client';
 import { Button } from '@components/Button/Button';
 import { Heading } from '@components/Heading/Heading';
 import { Dialog } from '@components/dialogs/Dialog/Dialog';
@@ -12,14 +12,23 @@ import { MultiSelect } from '@components/input/MultiSelect/MultiSelect';
 import { Option } from '@components/input/Select/Select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@modules/toast/hooks/useToast';
+import { CREATE_TRANSACTION } from '@modules/wallet/graphql/mutations';
+import { GET_MY_WALLET } from '@modules/wallet/graphql/queries';
 import { type ListData, useListData } from '@react-stately/data';
 import { useContext } from 'react';
 import { Label, OverlayTriggerStateContext, SelectValue, Tag } from 'react-aria-components';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { CategoryIcon as CategoryIconEnum, type MyLabelFragment, MyLabelFragmentDoc } from '../../../../gql/graphql';
+import {
+  CategoryIcon as CategoryIconEnum,
+  type CreateTransactionMutation,
+  GetMyWalletDocument,
+  type MyCategoryFragment,
+  type MyLabelFragment,
+  MyLabelFragmentDoc
+} from '../../../../gql/graphql';
 const formSchema = z.object({
-  category: z.nativeEnum(CategoryIconEnum).nullable(),
+  category: z.custom<MyCategoryFragment>().nullable(),
   date: z.date(),
   amount: z.number(),
   note: z.string().optional(),
@@ -28,16 +37,24 @@ const formSchema = z.object({
 });
 type FormSchema = z.infer<typeof formSchema>;
 type Props = {
+  walletId: string;
   labels: MyLabelFragment[];
+  categories: MyCategoryFragment[];
+  onCompleted: (data: CreateTransactionMutation, clientOptions?: BaseMutationOptions) => Promise<void>;
 };
-export function CreateTransactionForm({ labels }: Props) {
+export function CreateTransactionForm({ walletId, labels, categories, onCompleted: parentOnCompleted }: Props) {
   const { successToast } = useToast();
   const dialogState = useContext(OverlayTriggerStateContext);
+  const [createTransactionMutation, { error }] = useMutation(CREATE_TRANSACTION, {
+    awaitRefetchQueries: true,
+    onCompleted,
+    refetchQueries: [GET_MY_WALLET]
+  });
   const selectedList = useListData<MyLabelFragment>({
     initialItems: [],
     getKey: label => label.id
   });
-  const { handleSubmit, control, getValues } = useForm<FormSchema>({
+  const { handleSubmit, control } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: 0,
@@ -51,12 +68,22 @@ export function CreateTransactionForm({ labels }: Props) {
 
   function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
     event?.preventDefault();
-    console.log(selectedList);
-    console.log(data);
-
-    // createCategoryMutation({ variables: { input: data } });
+    createTransactionMutation({
+      variables: {
+        input: {
+          amount: data.amount,
+          categoryId: data.category?.id,
+          date: data.date,
+          isParent: data.isParent,
+          walletId,
+          labelsIds: data.labels.map(label => label.id),
+          note: data.note
+        }
+      }
+    });
   }
-  function onCompleted() {
+  async function onCompleted(data: CreateTransactionMutation, clientOptions?: BaseMutationOptions) {
+    await parentOnCompleted(data, clientOptions);
     successToast('OK', 'wallet created');
     dialogState.close();
   }
@@ -76,9 +103,9 @@ export function CreateTransactionForm({ labels }: Props) {
               label='Category'
               selectValueTemplate={a => (a.isPlaceholder ? 'Select Category' : a.defaultChildren)}
             >
-              {Object.values(CategoryIconEnum).map(categoryIcon => (
-                <Option id={categoryIcon} key={categoryIcon} textValue={categoryIcon}>
-                  <CategoryIcon icon={categoryIcon} />
+              {Object.values(categories).map(category => (
+                <Option id={category.id} key={category.id} textValue={category.displayName} className='bg-white'>
+                  <CategoryIcon icon={category.icon} /> {category.displayName}
                 </Option>
               ))}
             </FormSelect>

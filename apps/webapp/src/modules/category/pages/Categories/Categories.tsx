@@ -1,18 +1,30 @@
-import { useMutation, useQuery } from '@apollo/client';
 import { Button } from '@components/Button/Button';
 import { Heading } from '@components/Heading/Heading';
 import { ConfirmDialog } from '@components/dialogs/ConfirmDialog/ConfirmDialog';
 import { CategorySelectionProvider } from '@modules/category/components/CategorySelectionProvider/CategorySelectionProvider';
-import { DELETE_CATEGORIES } from '@modules/category/graphql/mutations';
 import { useCategorySelection } from '@modules/category/hooks/useCategorySelection';
+import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useToast } from '@modules/toast/hooks/useToast';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useFragment } from '../../../../gql';
-import { GetMyCategoriesDocument, MyCategoryFragmentDoc } from '../../../../gql/graphql';
+import {
+  DeleteCategoriesDocument,
+  type DeleteCategoriesMutationVariables,
+  GetMyCategoriesDocument,
+  MyCategoryFragmentDoc
+} from '../../../../gql/graphql';
 import { CategoryList } from '../../components/CategoryList/CategoryList';
 import { CreateCategoryForm } from '../../components/CreateCategoryForm/CreateCategoryForm';
-import { GET_MY_CATEGORIES } from '../../graphql/queries';
 import { getGroupedCategories } from '../../utils/getGroupedCategories';
+
+async function queryFn() {
+  return getGqlClient().request(GetMyCategoriesDocument);
+}
+
+async function mutationFn(variables: DeleteCategoriesMutationVariables) {
+  return getGqlClient().request(DeleteCategoriesDocument, variables);
+}
 
 export const Categories = () => {
   return (
@@ -23,15 +35,12 @@ export const Categories = () => {
 };
 
 const InnerCategories = () => {
-  const { selectedCategories, cleanSelection } = useCategorySelection();
   const { successToast } = useToast();
-  const { loading, data, error } = useQuery(GET_MY_CATEGORIES);
-  const categoriesFragment = useFragment(MyCategoryFragmentDoc, data?.categories?.result);
+  const { selectedCategories, cleanSelection } = useCategorySelection();
+  const { data, error, isFetching, refetch } = useQuery({ queryKey: ['user-categories'], queryFn });
+  const { mutateAsync } = useMutation({ mutationKey: ['delete-categories'], mutationFn, onSuccess });
 
-  const [deleteCategoryMutation] = useMutation(DELETE_CATEGORIES, {
-    awaitRefetchQueries: true,
-    refetchQueries: [{ query: GetMyCategoriesDocument }]
-  });
+  const categoriesFragment = useFragment(MyCategoryFragmentDoc, data?.categories?.result);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -50,8 +59,20 @@ const InnerCategories = () => {
     setIsDialogOpen(false);
   }
 
+  function onSuccess() {
+    refetch();
+  }
+
+  function handleDeleteCategorySuccess() {
+    refetch();
+  }
+
+  function handleCreateCategorySuccess() {
+    refetch();
+  }
+
   async function handleConfirm() {
-    await deleteCategoryMutation({ variables: { input: { ids: selectedCategories.map(category => category.id) } } });
+    await mutateAsync({ input: { ids: selectedCategories.map(category => category.id) } });
     setIsDialogOpen(false);
     cleanSelection();
     successToast('Delete', `${selectedCategories.length} categories deleted correctly`);
@@ -68,18 +89,26 @@ const InnerCategories = () => {
         onConfirm={handleConfirm}
       />
       <div>
-        {loading && <p>Loading</p>}
+        {isFetching && <p>Loading</p>}
         {error && <p>error while loading</p>}
-        {!loading && (
+        {!isFetching && (
           <>
             <Heading level={1}>Category</Heading>
             <p>{categoriesCount} / 500</p>
             <div>
-              <CreateCategoryForm />
+              <CreateCategoryForm onSuccess={handleCreateCategorySuccess} />
             </div>
             <div>
-              <CategoryList title='Expanses' categories={groupedCategories.EXPANSE} />
-              <CategoryList title='Incomes' categories={groupedCategories.INCOME} />
+              <CategoryList
+                onDeleteSuccess={handleDeleteCategorySuccess}
+                title='Expanses'
+                categories={groupedCategories.EXPANSE}
+              />
+              <CategoryList
+                onDeleteSuccess={handleDeleteCategorySuccess}
+                title='Incomes'
+                categories={groupedCategories.INCOME}
+              />
             </div>
           </>
         )}

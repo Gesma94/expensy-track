@@ -1,19 +1,24 @@
-import type { MyCategoryFragment } from '../../../../gql/graphql';
+import type {
+  DeleteCategoriesMutation,
+  DeleteCategoriesMutationVariables,
+  MyCategoryFragment
+} from '../../../../gql/graphql';
 import { CategoryListElement } from '../CategoryListElement/CategoryListElement';
 
 type Props = {
   title: string;
   categories: MyCategoryFragment[];
+  onDeleteSuccess: (data: DeleteCategoriesMutation, variables: DeleteCategoriesMutationVariables) => void;
 };
 
-export const CategoryList = ({ title, categories }: Props) => {
+export const CategoryList = ({ title, categories, onDeleteSuccess }: Props) => {
   return (
     <div>
       <h2>{title}</h2>
       <ul>
         {categories.map(category => (
           <li key={category.id}>
-            <CategoryListElement category={category} />
+            <CategoryListElement category={category} onDeleteSuccess={onDeleteSuccess} />
           </li>
         ))}
       </ul>

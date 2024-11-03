@@ -1,44 +1,53 @@
-import { z } from 'zod';
-import { CategoryType, type CreateCategoryMutation, GetMyCategoriesDocument } from '../../../../gql/graphql';
-import { CategoryIcon as CategoryIconEnum } from './../../../../gql/graphql';
-
-import { useMutation } from '@apollo/client';
 import { Form } from '@components/form/Form/Form';
 import { FormTextInput } from '@components/form/FormTextInput/FormTextInput';
 import { CategoryIcon } from '@components/icon/CategoryIcon/CategoryIcon';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useToast } from '@modules/toast/hooks/useToast';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { CREATE_CATEGORY } from '../../graphql/mutations';
+import { z } from 'zod';
+import { CategoryType, CreateCategoryDocument, type CreateCategoryMutationVariables } from '../../../../gql/graphql';
+import { CategoryIcon as CategoryIconEnum } from './../../../../gql/graphql';
+
+type Props = {
+  onSuccess: () => void;
+};
+
+async function mutationFn(variables: CreateCategoryMutationVariables) {
+  return getGqlClient().request(CreateCategoryDocument, variables);
+}
 
 const formSchema = z.object({
   type: z.nativeEnum(CategoryType),
+  icon: z.nativeEnum(CategoryIconEnum),
   displayName: z.string().min(1, 'must have length 1').default('test def'),
-  color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'must be a valid color'),
-  icon: z.nativeEnum(CategoryIconEnum)
+  color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'must be a valid color')
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export const CreateCategoryForm = () => {
-  const { successToast } = useToast();
+export const CreateCategoryForm = ({ onSuccess: parentOnSuccess }: Props) => {
+  const { successToast, errorToast } = useToast();
+  const { mutate, error } = useMutation({ mutationKey: ['create-category'], mutationFn, onSuccess, onError });
   const { register, handleSubmit, control } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { displayName: '', color: '#FFFFFF', icon: CategoryIconEnum.Activity, type: CategoryType.Expanse }
   });
-  const [createCategoryMutation, { error }] = useMutation(CREATE_CATEGORY, {
-    awaitRefetchQueries: true,
-    onCompleted,
-    refetchQueries: [{ query: GetMyCategoriesDocument }]
-  });
 
   function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
     event?.preventDefault();
-    createCategoryMutation({ variables: { input: data } });
+    mutate({ input: data });
   }
 
-  function onCompleted(data: CreateCategoryMutation) {
+  function onSuccess() {
     successToast('OK', 'category craeted!');
+    parentOnSuccess();
+  }
+
+  function onError() {
+    console.error(error);
+    errorToast('Error', 'Category could not be created');
   }
 
   return (

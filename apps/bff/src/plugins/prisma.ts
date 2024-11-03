@@ -15,6 +15,7 @@ export default fp(
       datasourceUrl: fastify.env.DATABASE_URL
     });
 
+    fastify.log.debug('connecting Prisma to DB');
     await prismaClient.$connect();
 
     fastify.decorate(FastifyPluginName.Prisma, prismaClient);

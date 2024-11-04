@@ -19,6 +19,7 @@ import {
 type Props<T extends object> = {
   items: T[];
   label: string;
+  isInvalid?: boolean;
   getKey: (item: T) => Key;
   getSearchValue: (item: T) => string;
   selectedItems: T[];

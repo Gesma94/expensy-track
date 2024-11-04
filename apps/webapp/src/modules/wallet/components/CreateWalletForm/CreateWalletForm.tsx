@@ -11,8 +11,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@modules/toast/hooks/useToast';
 import { createWalletMutation } from '@modules/wallet/operations/create-wallet';
 import { useMutation } from '@tanstack/react-query';
-import { useContext } from 'react';
-import { OverlayTriggerStateContext } from 'react-aria-components';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { CurrencyCode, WalletIcon as WalletIconEnum } from '../../../../gql/graphql';
@@ -34,7 +32,6 @@ type FormSchema = z.infer<typeof formSchema>;
 export function CreateWalletForm({ onSuccess: parentOnSuccess }: Props) {
   const { successToast, errorToast } = useToast();
 
-  const dialogState = useContext(OverlayTriggerStateContext);
   const { handleSubmit, control } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { displayName: 'we', currencyCode: CurrencyCode.Eur, initialBalance: 10, icon: WalletIconEnum.Bank }

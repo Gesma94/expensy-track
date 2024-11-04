@@ -1,4 +1,4 @@
-import { type PropsWithRef, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import {
   Input as AriaInput,
   Label as AriaLabel,

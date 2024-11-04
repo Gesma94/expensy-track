@@ -117,6 +117,8 @@ export function CreateTransactionForm({ walletId, labels, categories, onSuccess:
               }) => (
                 <MultiSelect
                   items={labels}
+                  isInvalid={invalid}
+                  {...fieldProps}
                   selectedItems={value}
                   getKey={x => x.id}
                   getSearchValue={x => x.displayName}

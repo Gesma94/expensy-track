@@ -1,10 +1,13 @@
-import { useMutation } from '@apollo/client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CREATE_LABEL } from '@modules/label/graphql/mutations';
+import { createLabelMutation } from '@modules/label/operations/create-label';
 import { useToast } from '@modules/toast/hooks/useToast';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { GetMyLabelsDocument } from '../../../../gql/graphql';
+
+type Props = {
+  onSuccess: () => void;
+};
 
 const formSchema = z.object({
   displayName: z.string().min(1, 'must have length 1')
@@ -12,20 +15,31 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export function CreateLabelForm() {
-  const { successToast } = useToast();
+export function CreateLabelForm({ onSuccess: parentOnSuccess }: Props) {
+  const { successToast, errorToast } = useToast();
+  const { mutate, error } = useMutation({
+    mutationKey: ['create-label'],
+    mutationFn: createLabelMutation,
+    onSuccess,
+    onError
+  });
   const { register, handleSubmit } = useForm<FormSchema>({
     resolver: zodResolver(formSchema)
-  });
-  const [createLabelMutation, { error }] = useMutation(CREATE_LABEL, {
-    awaitRefetchQueries: true,
-    onCompleted: () => successToast('OK', 'label created!'),
-    refetchQueries: [{ query: GetMyLabelsDocument }]
   });
 
   function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
     event?.preventDefault();
-    createLabelMutation({ variables: { input: data } });
+    mutate({ input: data });
+  }
+
+  function onSuccess() {
+    successToast('OK', 'label created!');
+    parentOnSuccess();
+  }
+
+  function onError() {
+    console.error(error);
+    errorToast('Error', 'Category could not be created');
   }
 
   return (

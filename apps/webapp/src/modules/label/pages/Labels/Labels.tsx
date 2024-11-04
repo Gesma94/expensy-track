@@ -24,7 +24,7 @@ export function Labels() {
 }
 export function InnerLabels() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { data, error, isFetching } = useQuery({ queryKey: ['user-labels'], queryFn: queryFn });
+  const { data, error, isFetching, refetch } = useQuery({ queryKey: ['user-labels'], queryFn: queryFn });
   const labelsFragment = useFragment(MyLabelFragmentDoc, data?.labels?.result);
   const { selectedLabels } = useLabelRoot();
 
@@ -32,9 +32,22 @@ export function InnerLabels() {
     setIsDialogOpen(true);
   }
 
+  function handleDeleteLabelSuccess() {
+    refetch();
+  }
+
+  function handleCreateLabelSuccess() {
+    refetch();
+  }
+
   return (
     <>
-      <ConfirmDeleteLabelsDialog isOpen={isDialogOpen} setIsOpen={setIsDialogOpen} labelsToDelete={selectedLabels} />
+      <ConfirmDeleteLabelsDialog
+        isOpen={isDialogOpen}
+        setIsOpen={setIsDialogOpen}
+        labelsToDelete={selectedLabels}
+        onSuccess={handleDeleteLabelSuccess}
+      />
       <div>
         {isFetching && <p>Loading</p>}
         {error && <p>error while loading</p>}
@@ -43,12 +56,12 @@ export function InnerLabels() {
             <Heading level={1}>Labels</Heading>
             <p>{labelsFragment?.length} / 500</p>
             <div>
-              <CreateLabelForm />
+              <CreateLabelForm onSuccess={handleCreateLabelSuccess} />
             </div>
             <div>
               <ul>
                 {labelsFragment?.map(label => (
-                  <LabelListElement key={label.id} label={label} />
+                  <LabelListElement key={label.id} label={label} onDeleteSuccess={handleDeleteLabelSuccess} />
                 ))}
               </ul>
             </div>

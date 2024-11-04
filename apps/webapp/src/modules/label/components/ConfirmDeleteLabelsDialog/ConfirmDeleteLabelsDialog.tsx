@@ -1,23 +1,25 @@
-import { useMutation } from '@apollo/client';
 import { ConfirmDialog } from '@components/dialogs/ConfirmDialog/ConfirmDialog';
-import { DELETE_LABELS } from '@modules/label/graphql/mutations';
 import { useLabelRoot } from '@modules/label/hooks/useCategorySelection';
+import { deleteLabelsMutation } from '@modules/label/operations/delete-labels';
 import { useToast } from '@modules/toast/hooks/useToast';
-import { GetMyLabelsDocument, type MyLabelFragment } from '../../../../gql/graphql';
+import { useMutation } from '@tanstack/react-query';
+import type { DeleteLabelsMutation, DeleteLabelsMutationVariables, MyLabelFragment } from '../../../../gql/graphql';
 
 type Props = {
   isOpen: boolean;
   labelsToDelete: MyLabelFragment[];
   setIsOpen: (isOpen: boolean) => void;
+  onSuccess: (data: DeleteLabelsMutation, variables: DeleteLabelsMutationVariables) => void;
 };
 
-export function ConfirmDeleteLabelsDialog({ isOpen, setIsOpen, labelsToDelete }: Props) {
-  const { successToast } = useToast();
+export function ConfirmDeleteLabelsDialog({ isOpen, setIsOpen, labelsToDelete, onSuccess: parentOnSuccess }: Props) {
+  const { successToast, errorToast } = useToast();
   const { cleanSelection } = useLabelRoot();
-
-  const [deleteLabelMutation] = useMutation(DELETE_LABELS, {
-    awaitRefetchQueries: true,
-    refetchQueries: [{ query: GetMyLabelsDocument }]
+  const { mutate, error } = useMutation({
+    mutationKey: ['delete-labels'],
+    mutationFn: deleteLabelsMutation,
+    onSuccess,
+    onError
   });
 
   function handleCancel() {
@@ -35,10 +37,20 @@ export function ConfirmDeleteLabelsDialog({ isOpen, setIsOpen, labelsToDelete }:
   }
 
   async function handleConfirm() {
-    await deleteLabelMutation({ variables: { input: { ids: labelsToDelete.map(label => label.id) } } });
+    mutate({ input: { ids: labelsToDelete.map(label => label.id) } });
+  }
+
+  function onSuccess(data: DeleteLabelsMutation, variables: DeleteLabelsMutationVariables) {
+    successToast('Delete', `${labelsToDelete.length} labels deleted correctly`);
     setIsOpen(false);
     cleanSelection();
-    successToast('Delete', `${labelsToDelete.length} labels deleted correctly`);
+    parentOnSuccess(data, variables);
+  }
+
+  function onError() {
+    console.error(error);
+    errorToast('Error', 'labels could not be deleted');
+    setIsOpen(false);
   }
 
   return (

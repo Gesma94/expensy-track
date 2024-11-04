@@ -13,7 +13,6 @@
     "graphql-codegen": "pnpm run clean:codegen && npx graphql-code-generator --config ./graphql.codegen.ts"
   },
   "dependencies": {
-    "@apollo/client": "^3.11.8",
     "@expensy-track/common": "workspace:^",
     "@hookform/resolvers": "^3.9.0",
     "@react-aria/i18n": "^3.12.3",

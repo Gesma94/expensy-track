@@ -1,4 +1,3 @@
-import { type BaseMutationOptions, useMutation } from '@apollo/client';
 import { Button } from '@components/Button/Button';
 import { Heading } from '@components/Heading/Heading';
 import { Dialog } from '@components/dialogs/Dialog/Dialog';
@@ -12,21 +11,14 @@ import { MultiSelect } from '@components/input/MultiSelect/MultiSelect';
 import { Option } from '@components/input/Select/Select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@modules/toast/hooks/useToast';
-import { CREATE_TRANSACTION } from '@modules/wallet/graphql/mutations';
-import { GET_MY_WALLET } from '@modules/wallet/graphql/queries';
-import { type ListData, useListData } from '@react-stately/data';
+import { createTransactionMutation } from '@modules/wallet/operations/create-transaction';
+import { useMutation } from '@tanstack/react-query';
 import { useContext } from 'react';
-import { Label, OverlayTriggerStateContext, SelectValue, Tag } from 'react-aria-components';
+import { OverlayTriggerStateContext } from 'react-aria-components';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import {
-  CategoryIcon as CategoryIconEnum,
-  type CreateTransactionMutation,
-  GetMyWalletDocument,
-  type MyCategoryFragment,
-  type MyLabelFragment,
-  MyLabelFragmentDoc
-} from '../../../../gql/graphql';
+import type { MyCategoryFragment, MyLabelFragment } from '../../../../gql/graphql';
+
 const formSchema = z.object({
   category: z.custom<MyCategoryFragment>().nullable(),
   date: z.date(),
@@ -40,20 +32,19 @@ type Props = {
   walletId: string;
   labels: MyLabelFragment[];
   categories: MyCategoryFragment[];
-  onCompleted: (data: CreateTransactionMutation, clientOptions?: BaseMutationOptions) => Promise<void>;
+  onSuccess: () => void;
 };
-export function CreateTransactionForm({ walletId, labels, categories, onCompleted: parentOnCompleted }: Props) {
-  const { successToast } = useToast();
+export function CreateTransactionForm({ walletId, labels, categories, onSuccess: parentOnSuccess }: Props) {
+  const { successToast, errorToast } = useToast();
   const dialogState = useContext(OverlayTriggerStateContext);
-  const [createTransactionMutation, { error }] = useMutation(CREATE_TRANSACTION, {
-    awaitRefetchQueries: true,
-    onCompleted,
-    refetchQueries: [GET_MY_WALLET]
+
+  const { mutate, error } = useMutation({
+    mutationKey: ['create-label'],
+    mutationFn: createTransactionMutation,
+    onSuccess,
+    onError
   });
-  const selectedList = useListData<MyLabelFragment>({
-    initialItems: [],
-    getKey: label => label.id
-  });
+
   const { handleSubmit, control } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -68,25 +59,30 @@ export function CreateTransactionForm({ walletId, labels, categories, onComplete
 
   function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
     event?.preventDefault();
-    createTransactionMutation({
-      variables: {
-        input: {
-          amount: data.amount,
-          categoryId: data.category?.id,
-          date: data.date,
-          isParent: data.isParent,
-          walletId,
-          labelsIds: data.labels.map(label => label.id),
-          note: data.note
-        }
+    mutate({
+      input: {
+        amount: data.amount,
+        categoryId: data.category?.id,
+        date: data.date,
+        isParent: data.isParent,
+        walletId,
+        labelsIds: data.labels.map(label => label.id),
+        note: data.note
       }
     });
   }
-  async function onCompleted(data: CreateTransactionMutation, clientOptions?: BaseMutationOptions) {
-    await parentOnCompleted(data, clientOptions);
+
+  function onSuccess() {
     successToast('OK', 'wallet created');
     dialogState.close();
+    parentOnSuccess();
   }
+
+  function onError() {
+    console.error(error);
+    errorToast('Error', 'Category could not be created');
+  }
+
   return (
     <Dialog>
       {({ close }) => (

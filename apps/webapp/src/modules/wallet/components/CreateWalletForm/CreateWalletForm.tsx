@@ -1,4 +1,3 @@
-import { useMutation } from '@apollo/client';
 import { Button } from '@components/Button/Button';
 import { Heading } from '@components/Heading/Heading';
 import { Dialog } from '@components/dialogs/Dialog/Dialog';
@@ -10,13 +9,18 @@ import { WalletIcon } from '@components/icon/WalletIcon/WalletIcon';
 import { Option } from '@components/input/Select/Select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@modules/toast/hooks/useToast';
-import { CREATE_WALLET } from '@modules/wallet/graphql/mutations';
+import { createWalletMutation } from '@modules/wallet/operations/create-wallet';
+import { useMutation } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { OverlayTriggerStateContext } from 'react-aria-components';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { CurrencyCode, GetMyWalletsDocument, WalletIcon as WalletIconEnum } from '../../../../gql/graphql';
+import { CurrencyCode, WalletIcon as WalletIconEnum } from '../../../../gql/graphql';
 import { CurrencyOption } from '../CurrencyOption/CurrencyOption';
+
+type Props = {
+  onSuccess: () => void;
+};
 
 const formSchema = z.object({
   initialBalance: z.number(),
@@ -27,28 +31,35 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export function CreateWalletForm() {
-  const { successToast } = useToast();
+export function CreateWalletForm({ onSuccess: parentOnSuccess }: Props) {
+  const { successToast, errorToast } = useToast();
 
   const dialogState = useContext(OverlayTriggerStateContext);
   const { handleSubmit, control } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { displayName: 'we', currencyCode: CurrencyCode.Eur, initialBalance: 10, icon: WalletIconEnum.Bank }
   });
-  const [createCategoryMutation, { error }] = useMutation(CREATE_WALLET, {
-    awaitRefetchQueries: true,
-    onCompleted,
-    refetchQueries: [{ query: GetMyWalletsDocument }]
+
+  const { mutate, error } = useMutation({
+    mutationKey: ['create-wallet'],
+    mutationFn: createWalletMutation,
+    onSuccess,
+    onError
   });
 
   function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
     event?.preventDefault();
-    createCategoryMutation({ variables: { input: data } });
+    mutate({ input: data });
   }
 
-  function onCompleted() {
+  function onSuccess() {
     successToast('OK', 'wallet created');
-    dialogState.close();
+    parentOnSuccess();
+  }
+
+  function onError() {
+    console.error(error);
+    errorToast('Error', 'Category could not be created');
   }
 
   return (

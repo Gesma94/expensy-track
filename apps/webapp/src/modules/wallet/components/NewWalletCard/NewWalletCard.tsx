@@ -3,7 +3,11 @@ import { DialogTrigger } from 'react-aria-components';
 import { PiPlus } from 'react-icons/pi';
 import { CreateWalletForm } from '../CreateWalletForm/CreateWalletForm';
 
-export function NewWalletCard() {
+type Props = {
+  onCreateSuccess: () => void;
+};
+
+export function NewWalletCard({ onCreateSuccess }: Props) {
   function handlePress() {}
 
   return (
@@ -16,7 +20,7 @@ export function NewWalletCard() {
           Add new wallet
         </div>
       </Button>
-      <CreateWalletForm />
+      <CreateWalletForm onSuccess={onCreateSuccess} />
     </DialogTrigger>
   );
 }

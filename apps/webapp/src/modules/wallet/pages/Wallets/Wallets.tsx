@@ -1,23 +1,27 @@
-import { useQuery } from '@apollo/client';
 import { ROUTES } from '@common/consts/routes';
 import { Heading } from '@components/Heading/Heading';
 import { Link } from '@components/Link/Link';
 import { NewWalletCard } from '@modules/wallet/components/NewWalletCard/NewWalletCard';
 import { WalletCard } from '@modules/wallet/components/WalletCard/WalletCard';
-import { GET_MY_WALLETS } from '@modules/wallet/graphql/queries';
+import { getWalletsQuery } from '@modules/wallet/operations/get-wallets';
+import { useQuery } from '@tanstack/react-query';
 import { useFragment } from '../../../../gql';
 import { MyWalletFragmentDoc } from '../../../../gql/graphql';
 
 export function Wallets() {
-  const { loading, data, error } = useQuery(GET_MY_WALLETS);
+  const { data, error, isFetching, refetch } = useQuery({ queryKey: ['user-wallets'], queryFn: getWalletsQuery });
   const walletFragments = useFragment(MyWalletFragmentDoc, data?.wallets?.result);
+
+  function handleCreateWalletSuccess() {
+    refetch();
+  }
 
   return (
     <>
       <div>
-        {loading && <p>Loading</p>}
+        {isFetching && <p>Loading</p>}
         {error && <p>error while loading</p>}
-        {!loading && (
+        {!isFetching && (
           <>
             <Heading level={1}>Wallets</Heading>
             <ul>
@@ -29,7 +33,7 @@ export function Wallets() {
                 </li>
               ))}
               <li>
-                <NewWalletCard />
+                <NewWalletCard onCreateSuccess={handleCreateWalletSuccess} />
               </li>
             </ul>
           </>

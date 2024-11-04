@@ -1,6 +1,9 @@
+import { Button } from '@components/Button/Button';
 import { Form } from '@components/form/Form/Form';
+import { FormSelect } from '@components/form/FormSelect/FormSelect';
 import { FormTextInput } from '@components/form/FormTextInput/FormTextInput';
 import { CategoryIcon } from '@components/icon/CategoryIcon/CategoryIcon';
+import { Option } from '@components/input/Select/Select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useToast } from '@modules/toast/hooks/useToast';
@@ -57,25 +60,29 @@ export const CreateCategoryForm = ({ onSuccess: parentOnSuccess }: Props) => {
       {error?.message}
 
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <select {...register('type')}>
-          <option value={CategoryType.Expanse}>Expanse</option>
-          <option value={CategoryType.Income}>Income</option>
-        </select>
+        <FormSelect control={control} name='type' label='Type'>
+          <Option id={CategoryType.Expanse} textValue={CategoryType.Expanse}>
+            Expanse
+          </Option>
+          <Option id={CategoryType.Income} textValue={CategoryType.Income}>
+            Income
+          </Option>
+        </FormSelect>
 
-        <select {...register('icon')}>
+        <FormSelect control={control} name='icon' label='icon'>
           {Object.values(CategoryIconEnum).map(categoryIcon => (
-            <option key={categoryIcon} value={categoryIcon}>
+            <Option id={categoryIcon} key={categoryIcon} textValue={categoryIcon} className='flex bg-white'>
               <CategoryIcon icon={categoryIcon} /> - {categoryIcon}
-            </option>
+            </Option>
           ))}
-        </select>
+        </FormSelect>
 
         <FormTextInput label='Name' control={control} name='displayName' />
 
         <label htmlFor='color-input'>Color</label>
         <input id='color-input' {...register('color')} defaultValue={''} placeholder='color' />
 
-        <button type='submit'>Create</button>
+        <Button type='submit'>Create</Button>
       </Form>
     </div>
   );

@@ -1,5 +1,4 @@
 enum BudgetSpan {
-  ONCE
   DAILY
   WEEKLY
   MONTHLY
@@ -24,7 +23,7 @@ type BudgetSnapshot {
   expectedExpense: Float!
   actualExpense: Float!
   remainingAllowance: Float!
-  remainingAllowanceDaily: Float!
+  remainingAllowanceInInterval: Float!
   endDate: DateTime!
   startDate: DateTime!
   transactions: [Transaction!]
@@ -69,6 +68,12 @@ type BudgetSnapshotResult implements Response {
   result: BudgetSnapshot
 }
 
+type BudgetSnapshotsResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: [BudgetSnapshot!]
+}
+
 type CreateBudgetResult implements Response {
   success: Boolean!
   error: GraphqlError
@@ -83,6 +88,7 @@ type DeleteBudgetsResult implements Response {
 
 type Query {
   budgets: BudgetsResult
+  budgetsSnapshot: BudgetSnapshotsResult
   budget(input: BudgetInput!): BudgetResult
   budgetSnapshot(input: BudgetSnapshotInput!): BudgetSnapshotResult
 }

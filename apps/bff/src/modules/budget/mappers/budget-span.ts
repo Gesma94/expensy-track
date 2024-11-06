@@ -9,8 +9,6 @@ export function BudgetSpanToPrisma(budgetSpan: BudgetSpan): $Enums.BudgetSpan {
       return $Enums.BudgetSpan.DAILY;
     case BudgetSpan.Monthly:
       return $Enums.BudgetSpan.MONTHLY;
-    case BudgetSpan.Once:
-      return $Enums.BudgetSpan.ONCE;
     case BudgetSpan.Weekly:
       return $Enums.BudgetSpan.WEEKLY;
   }
@@ -24,8 +22,6 @@ export function BudgetSpanToGraphql(budgetSpan: $Enums.BudgetSpan): BudgetSpan {
       return BudgetSpan.Daily;
     case $Enums.BudgetSpan.MONTHLY:
       return BudgetSpan.Monthly;
-    case $Enums.BudgetSpan.ONCE:
-      return BudgetSpan.Once;
     case $Enums.BudgetSpan.WEEKLY:
       return BudgetSpan.Weekly;
   }

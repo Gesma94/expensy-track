@@ -69,7 +69,6 @@ enum TransactionFrequency {
 }
 
 enum BudgetSpan {
-  ONCE
   DAILY
   WEEKLY
   MONTHLY

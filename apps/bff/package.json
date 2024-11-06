@@ -38,6 +38,7 @@
     "@graphql-tools/utils": "^10.5.4",
     "@sinclair/typebox": "^0.33.9",
     "bcrypt": "^5.1.1",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "fastify": "^5.0.0",
     "fastify-plugin": "^5.0.0",

@@ -1,0 +1,93 @@
+enum BudgetSpan {
+  ONCE
+  DAILY
+  WEEKLY
+  MONTHLY
+  ANNUAL
+}
+
+type Budget {
+  id: ID!
+  displayName: String!
+  userId: ID!
+  amount: Float!
+  user: User
+  span: BudgetSpan!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  wallets: [Wallet!]
+  categories: [Category!]
+}
+
+type BudgetSnapshot {
+  budget: Budget
+  expectedExpense: Float!
+  actualExpense: Float!
+  remainingAllowance: Float!
+  remainingAllowanceDaily: Float!
+  endDate: DateTime!
+  startDate: DateTime!
+  transactions: [Transaction!]
+}
+
+input BudgetInput {
+  id: ID!
+}
+
+input CreateBudgetInput {
+  displayName: String!
+  amount: Float!
+  span: BudgetSpan!
+  walletIds: [ID!]!
+  categoryIds: [ID!]!
+}
+
+input BudgetSnapshotInput {
+  budgetId: ID!
+  dateTimeRange: DateTimeRange
+}
+
+input DeleteBudgetsInput {
+  ids: [ID!]!
+}
+
+type BudgetsResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: [Budget!]
+}
+
+type BudgetResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Budget
+}
+
+type BudgetSnapshotResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: BudgetSnapshot
+}
+
+type CreateBudgetResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Budget
+}
+
+type DeleteBudgetsResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Int
+}
+
+type Query {
+  budgets: BudgetsResult
+  budget(input: BudgetInput!): BudgetResult
+  budgetSnapshot(input: BudgetSnapshotInput!): BudgetSnapshotResult
+}
+
+type Mutation {
+  createBudget(input: CreateBudgetInput!): CreateBudgetResult
+  deleteBudgets(input: DeleteBudgetsInput!): DeleteBudgetsResult
+}

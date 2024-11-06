@@ -14,7 +14,7 @@ CREATE TYPE "WalletIcon" AS ENUM ('CREDIT_CARD', 'CONTACTLESS', 'WALLET', 'CARDH
 CREATE TYPE "TransactionFrequency" AS ENUM ('ONE_DAY', 'TWO_DAYS', 'WEEKDAYS', 'HOLIDAYS', 'ONE_WEEK', 'TWO_WEEK', 'FOUR_WEEK', 'ONE_MONTH', 'TWO_MONTHS', 'THREE_MONTHS', 'SIX_MONTHS', 'ONE_YEAR');
 
 -- CreateEnum
-CREATE TYPE "BudgetSpan" AS ENUM ('ONCE', 'DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'ANNUAL');
+CREATE TYPE "BudgetSpan" AS ENUM ('ONCE', 'DAILY', 'WEEKLY', 'MONTHLY', 'ANNUAL');
 
 -- CreateEnum
 CREATE TYPE "CurrencyCode" AS ENUM ('EUR', 'USD', 'GBP');
@@ -88,20 +88,18 @@ CREATE TABLE "GuestsOnWallets" (
 CREATE TABLE "Transaction" (
     "id" TEXT NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
+    "isTransfer" BOOLEAN NOT NULL DEFAULT false,
     "walletFromId" TEXT,
     "walletToId" TEXT,
     "note" TEXT,
     "date" DATE NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "isRecurrentTemplate" BOOLEAN NOT NULL DEFAULT false,
-    "isRecurring" BOOLEAN NOT NULL DEFAULT false,
-    "frequency" "TransactionFrequency",
-    "startDate" TIMESTAMP(3),
-    "endDate" TIMESTAMP(3),
+    "parentTransactionId" TEXT,
+    "isParent" BOOLEAN NOT NULL DEFAULT false,
     "userId" TEXT NOT NULL,
     "walletId" TEXT NOT NULL,
-    "categoryId" TEXT NOT NULL,
+    "categoryId" TEXT,
 
     CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
 );
@@ -122,6 +120,7 @@ CREATE TABLE "Budget" (
     "amount" DOUBLE PRECISION NOT NULL,
     "displayName" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "span" "BudgetSpan" NOT NULL,
     "startingDate" DATE NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -164,6 +163,9 @@ CREATE UNIQUE INDEX "User_firebase_uid_key" ON "User"("firebase_uid");
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Wallet_id_displayName_key" ON "Wallet"("id", "displayName");
+
 -- AddForeignKey
 ALTER TABLE "Label" ADD CONSTRAINT "Label_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -186,13 +188,16 @@ ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_walletFromId_fkey" FOREIGN
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_walletToId_fkey" FOREIGN KEY ("walletToId") REFERENCES "Wallet"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_parentTransactionId_fkey" FOREIGN KEY ("parentTransactionId") REFERENCES "Transaction"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_walletId_fkey" FOREIGN KEY ("walletId") REFERENCES "Wallet"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "LabelsOnTransactions" ADD CONSTRAINT "LabelsOnTransactions_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

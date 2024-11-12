@@ -3,11 +3,11 @@ import { Heading } from '@components/Heading/Heading';
 import { Dialog } from '@components/dialogs/Dialog/Dialog';
 import { Form } from '@components/form/Form/Form';
 import { FormCheckbox } from '@components/form/FormCheckbox/FormCheckbox';
+import { FormMultiSelect } from '@components/form/FormMultiSelect/FormMultiSelect';
 import { FormNumberInput } from '@components/form/FormNumberInput/FormNumberInput';
 import { FormSelect } from '@components/form/FormSelect/FormSelect';
 import { FormTextInput } from '@components/form/FormTextInput/FormTextInput';
 import { CategoryIcon } from '@components/icon/CategoryIcon/CategoryIcon';
-import { MultiSelect } from '@components/input/MultiSelect/MultiSelect';
 import { Option } from '@components/input/Select/Select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@modules/toast/hooks/useToast';
@@ -15,7 +15,7 @@ import { createTransactionMutation } from '@modules/wallet/operations/create-tra
 import { useMutation } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { OverlayTriggerStateContext } from 'react-aria-components';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import type { MyCategoryFragment, MyLabelFragment } from '../../../../gql/graphql';
 
@@ -108,30 +108,14 @@ export function CreateTransactionForm({ walletId, labels, categories, onSuccess:
             <FormNumberInput control={control} name='amount' label='Amount' />
             <FormTextInput control={control} name='note' label='Note' />
 
-            <Controller
-              control={control}
+            <FormMultiSelect
               name='labels'
-              render={({
-                field: { disabled, onChange, value, ...fieldProps },
-                fieldState: { invalid, error: _error }
-              }) => (
-                <MultiSelect
-                  items={labels}
-                  isInvalid={invalid}
-                  {...fieldProps}
-                  selectedItems={value}
-                  getKey={x => x.id}
-                  getSearchValue={x => x.displayName}
-                  onChange={onChange}
-                  label='labels'
-                  getTagTextValue={x => x.displayName}
-                  itemRender={(item, isSelected) => (
-                    <>
-                      {isSelected && <Button slot='remove'>X</Button>} {item.displayName}
-                    </>
-                  )}
-                />
-              )}
+              control={control}
+              label='labels'
+              items={labels}
+              getId={x => x.id}
+              getTextValue={x => x.displayName}
+              getTagTextValue={x => x.displayName}
             />
 
             <Button type='submit'>Create</Button>

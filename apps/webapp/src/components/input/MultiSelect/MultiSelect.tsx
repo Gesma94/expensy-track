@@ -1,61 +1,68 @@
 import { Button } from '@components/Button/Button';
-import { useFilter } from '@react-aria/i18n';
-import { type PressEvent, useKeyboard, usePress } from '@react-aria/interactions';
-import { useListData } from '@react-stately/data';
-import React, { useCallback, useLayoutEffect, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useKeyboard } from '@react-aria/interactions';
+import React, {
+  forwardRef,
+  useLayoutEffect,
+  useState,
+  type ComponentProps,
+  type ForwardedRef,
+  type KeyboardEvent,
+  type Ref
+} from 'react';
 import {
   Input,
   type Key,
   Label,
   ListBox,
   ListBoxItem,
+  type ListBoxItemProps,
   Popover,
   type Selection,
   Tag,
   TagGroup,
-  TagList
+  TagList,
+  TextField
 } from 'react-aria-components';
 
 type Props<T extends object> = {
-  items: T[];
   label: string;
-  isInvalid?: boolean;
-  getKey: (item: T) => Key;
-  getSearchValue: (item: T) => string;
-  selectedItems: T[];
-  onChange: (newSelectionList: T[]) => void;
+  items: T[];
+  getId: (item: T) => Key;
+  getTextValue: (item: T) => string;
   getTagTextValue: (item: T) => string;
-  tagRender?: (item: T) => ReactNode;
-  itemRender: (item: T, isSelected: boolean) => ReactNode;
-  renderEmptyState?: (filterValue: string) => ReactNode;
+  isInvalid?: boolean;
+  isDisabled?: boolean;
+  selectedItems?: T[];
+  onChange?: (newSelectionList: T[]) => void;
+  validationBehavior?: ComponentProps<typeof TextField>['validationBehavior'];
 };
 
-export function MultiSelect<T extends object>({
-  label,
-  getKey,
-  items,
-  getTagTextValue,
-  tagRender,
-  itemRender,
-  getSearchValue,
-  onChange,
-  selectedItems,
-  renderEmptyState: customRenderEmptyState
-}: Props<T>) {
+export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
+  {
+    label,
+    getId,
+    getTextValue,
+    items,
+    isDisabled,
+    getTagTextValue,
+    validationBehavior,
+    onChange,
+    selectedItems: statelessSelectedItems
+  }: Props<T>,
+  ref: ForwardedRef<HTMLInputElement>
+) {
   const labelId = React.useId();
   const triggerRef = React.useRef<HTMLDivElement>(null);
   const listBoxRef = React.useRef<HTMLDivElement>(null);
 
+  const [searchValue, setSearchValue] = useState('');
+  const [statefulSelectedItems, setStatefulSelectedItems] = useState<T[]>([]);
   const [isPopoverOpen, setIsPopoverOpen] = useState<'no' | 'from-search-value-change' | 'open'>('no');
 
-  const { contains } = useFilter({ sensitivity: 'base' });
   const { keyboardProps } = useKeyboard({ onKeyDown: onInputKeyDown });
-  const { pressProps } = usePress({
-    onPress: onListBoxCustomPress,
-    onPressUp: onListBoxCustomPress,
-    onPressEnd: onPressEventContinuePropagation,
-    onPressStart: onPressEventContinuePropagation
-  });
+
+  const isStateless = statelessSelectedItems;
+  const selectedItems = isStateless ? statelessSelectedItems : statefulSelectedItems;
 
   function onInputKeyDown(e: KeyboardEvent): void {
     if (e.code === 'ArrowDown' || e.code === 'Enter') {
@@ -63,66 +70,49 @@ export function MultiSelect<T extends object>({
     }
   }
 
-  function onPressEventContinuePropagation(e: PressEvent) {
-    e.continuePropagation();
-  }
-
-  function onListBoxCustomPress(e: PressEvent) {
-    if (e.target.matches('button[slot="remove"]')) {
-      const newArray = [...selectedItems];
-      const key = e.target.parentElement?.getAttribute('data-key');
-
-      if (key) {
-        const index = newArray.findIndex(x => getKey(x) === key);
-
-        if (index !== -1) {
-          newArray.splice(index, 1);
-        }
-
-        onChange(newArray);
+  function updateSelectedItems(newSelectedItems: T[]) {
+    if (isStateless) {
+      if (!onChange) {
+        console.warn('MultiSelect is a controlled input without an onChange handler provided');
+      } else {
+        onChange(newSelectedItems);
       }
     } else {
-      e.continuePropagation();
+      setStatefulSelectedItems(newSelectedItems);
     }
   }
 
-  function addKeysInSelected(keys: Key[] | Set<Key>) {
-    const newArray = [...selectedItems];
+  function removeSelectedItemFromTagGroup(keys: Key[] | Set<Key>) {
+    const newSelectedItems = [...selectedItems];
 
     keys.forEach(key => {
-      const item = availableList.getItem(key);
-
-      if (item) {
-        newArray.push(item);
-      }
-    });
-
-    onChange(newArray);
-  }
-
-  function removeKeysInSelected(keys: Key[] | Set<Key>) {
-    const newArray = [...selectedItems];
-
-    keys.forEach(key => {
-      const index = newArray.findIndex(x => getKey(x) === key);
+      const index = newSelectedItems.findIndex(x => getId(x) === key);
 
       if (index !== -1) {
-        newArray.splice(index, 1);
+        newSelectedItems.splice(index, 1);
       }
     });
 
-    onChange(newArray);
+    updateSelectedItems(newSelectedItems);
   }
 
   function handleListBoxSelectionChange(keys: Selection) {
-    if (!keys) {
-      return;
+    let newSelectedItems: T[] = [];
+
+    if (keys === 'all') {
+      newSelectedItems = [...items];
+    } else {
+      const selectedKeys = Array.from(keys.keys());
+
+      items.forEach(item => {
+        if (selectedKeys.includes(getId(item))) {
+          newSelectedItems.push(item);
+        }
+      });
     }
 
-    const selectedKeys = keys === 'all' ? availableList.items.map(item => getKey(item)) : keys;
-
-    addKeysInSelected(selectedKeys);
-    availableList.setFilterText('');
+    updateSelectedItems(newSelectedItems);
+    setSearchValue('');
   }
 
   function handleBlurInput() {
@@ -132,27 +122,12 @@ export function MultiSelect<T extends object>({
   }
 
   function handleSearchValueChange(e: React.ChangeEvent<HTMLInputElement>) {
-    e.currentTarget.value;
-    availableList.setFilterText(e.currentTarget.value);
+    setSearchValue(e.currentTarget.value);
     setIsPopoverOpen('from-search-value-change');
   }
 
-  function renderEmptyState() {
-    if (customRenderEmptyState) {
-      return customRenderEmptyState(availableList.filterText);
-    }
-
-    return availableList.filterText ? `no value for ${availableList.filterText}` : 'no items';
-  }
-
-  const filter = useCallback(
-    (item: T, filterText: string) => {
-      return !selectedItems.find(x => getKey(x) === getKey(item)) && contains(getSearchValue(item), filterText);
-    },
-    [contains, getSearchValue, selectedItems, getKey]
-  );
-
-  const availableList = useListData({ getKey, filter, initialItems: items });
+  const selectedItemsKey = new Map(selectedItems.map(item => [getId(item), true]));
+  const notSelectedItems = items.filter(item => !selectedItemsKey.has(getId(item)));
 
   useLayoutEffect(() => {
     if (isPopoverOpen === 'open') {
@@ -161,53 +136,70 @@ export function MultiSelect<T extends object>({
   }, [isPopoverOpen]);
 
   return (
-    <>
-      <div ref={triggerRef}>
-        <Label id={labelId}>{label}</Label>
-        <div className='flex border'>
-          <TagGroup onRemove={removeKeysInSelected} aria-labelledby={labelId}>
+    <TextField validationBehavior={validationBehavior} isDisabled={isDisabled} ref={triggerRef}>
+      <Label id={labelId}>{label}</Label>
+      <div className='flex border'>
+        {selectedItems?.length > 0 && (
+          <TagGroup onRemove={removeSelectedItemFromTagGroup} aria-labelledby={labelId}>
             <TagList items={selectedItems}>
               {item => (
                 <Tag textValue={getTagTextValue(item)} className='bg-blue-400 rounded-lg inline-flex'>
-                  {tagRender?.(item) ?? getTagTextValue(item)}
+                  {getTagTextValue(item)}
                   <Button slot='remove'>X</Button>
                 </Tag>
               )}
             </TagList>
           </TagGroup>
-          <div>
-            <Input
+        )}
+        <div>
+          <Input
+            aria-labelledby={labelId}
+            onBlur={handleBlurInput}
+            ref={ref}
+            {...keyboardProps}
+            onChange={handleSearchValueChange}
+            value={searchValue}
+          />
+          <Button excludeFromTabOrder={true} onPress={() => setIsPopoverOpen('open')}>
+            ▼
+          </Button>
+          <Popover
+            placement='bottom start'
+            triggerRef={triggerRef}
+            isOpen={isPopoverOpen !== 'no'}
+            onOpenChange={e => setIsPopoverOpen(e ? 'open' : 'no')}
+          >
+            <ListBox
+              ref={listBoxRef}
+              selectionMode='multiple'
+              className='flex flex-col'
+              items={items}
               aria-labelledby={labelId}
-              onBlur={handleBlurInput}
-              {...keyboardProps}
-              onChange={handleSearchValueChange}
-              value={availableList.filterText}
-            />
-            <Button onPress={() => setIsPopoverOpen('open')}>▼</Button>
-            <Popover
-              placement='bottom start'
-              triggerRef={triggerRef}
-              isOpen={isPopoverOpen !== 'no'}
-              onOpenChange={e => setIsPopoverOpen(e ? 'open' : 'no')}
+              selectedKeys={new Set(selectedItemsKey.keys())}
+              onSelectionChange={handleListBoxSelectionChange}
             >
-              <ListBox
-                renderEmptyState={renderEmptyState}
-                aria-labelledby={labelId}
-                ref={listBoxRef}
-                selectionMode='single'
-                items={[...selectedItems, ...availableList.items]}
-                onSelectionChange={handleListBoxSelectionChange}
-              >
-                {item => (
-                  <ListBoxItem key={getKey(item)} id={getKey(item)} textValue={getTagTextValue(item)}>
-                    <div {...pressProps}>{itemRender(item, selectedItems.includes(item))}</div>
-                  </ListBoxItem>
-                )}
-              </ListBox>
-            </Popover>
-          </div>
+              {selectedItems.map(item => (
+                <MultiSelectSelectedOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />
+              ))}
+              {notSelectedItems.map(item => (
+                <MultiSelectOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />
+              ))}
+            </ListBox>
+          </Popover>
         </div>
       </div>
-    </>
+    </TextField>
   );
+}) as <T extends object>(props: Props<T> & { ref?: Ref<HTMLInputElement> }) => JSX.Element;
+
+function MultiSelectSelectedOption<T extends object>(props: ListBoxItemProps<T>) {
+  return (
+    <ListBoxItem {...props} className='flex bg-blue-500'>
+      {props.textValue} X
+    </ListBoxItem>
+  );
+}
+
+function MultiSelectOption<T extends object>(props: ListBoxItemProps<T>) {
+  return <ListBoxItem {...props}>{props.textValue}</ListBoxItem>;
 }

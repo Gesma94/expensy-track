@@ -16,13 +16,13 @@ export async function buildFastify(options?: FastifyBuildOptions) {
   });
 
   // registering all plugins in 'plugins' folder
-  await fastify.register(autoLoad, {
+  fastify.register(autoLoad, {
     options,
     dir: join(__dirname, 'plugins')
   });
 
   // registering all routes in 'routes' folder with prefix "/api"
-  await fastify.register(autoLoad, {
+  fastify.register(autoLoad, {
     dir: join(__dirname, 'modules'),
     dirNameRoutePrefix: false,
     matchFilter: path => minimatch(path, '**/routes/*.ts'),
@@ -30,6 +30,7 @@ export async function buildFastify(options?: FastifyBuildOptions) {
       prefix: '/api'
     }
   });
+
   fastify.get('/ping', (_, reply) => {
     reply.send({ ping: 'pong' });
   });

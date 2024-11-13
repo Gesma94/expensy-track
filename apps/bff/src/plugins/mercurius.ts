@@ -9,6 +9,8 @@ import fp from 'fastify-plugin';
 import mercurius from 'mercurius';
 import { FastifyPluginName } from '#enums/fastify-plugin-name.js';
 import { authResolvers } from '../modules/auth/graphql/resolvers.js';
+import { budgetLoaders } from '../modules/budget/loaders.js';
+import { budgetResolvers } from '../modules/budget/resolvers.js';
 import { categoryResolvers } from '../modules/category/graphql/resolvers.js';
 import { labelResolvers } from '../modules/label/graphql/resolvers.js';
 import { transactionLoaders } from '../modules/transaction/loaders.js';
@@ -31,7 +33,14 @@ const typeDefArray = loadFilesSync(path.join(__dirname, './../**/*.graphql'));
 
 const schema = makeExecutableSchema({
   typeDefs: mergeTypeDefs(typeDefArray),
-  resolvers: mergeResolvers([categoryResolvers, authResolvers, labelResolvers, walletResolvers, transactionResolvers])
+  resolvers: mergeResolvers([
+    categoryResolvers,
+    authResolvers,
+    labelResolvers,
+    walletResolvers,
+    transactionResolvers,
+    budgetResolvers
+  ])
 });
 
 type MercuriusAdditionalContext = {
@@ -56,7 +65,7 @@ export default fp(
     fastify.register(mercurius, {
       schema,
       context: buildContext,
-      loaders: { ...transactionLoaders, ...walletLoaders },
+      loaders: { ...transactionLoaders, ...walletLoaders, ...budgetLoaders },
       graphiql: fastify.env.NODE_ENV === 'development'
     });
 

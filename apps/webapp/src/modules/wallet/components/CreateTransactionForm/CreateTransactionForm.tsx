@@ -20,7 +20,7 @@ import { z } from 'zod';
 import type { MyCategoryFragment, MyLabelFragment } from '../../../../gql/graphql';
 
 const formSchema = z.object({
-  category: z.custom<MyCategoryFragment>().nullable(),
+  categoryId: z.string().optional(),
   date: z.date(),
   amount: z.number(),
   note: z.string().optional(),
@@ -49,7 +49,7 @@ export function CreateTransactionForm({ walletId, labels, categories, onSuccess:
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: 0,
-      category: null,
+      categoryId: '',
       date: new Date(Date.now()),
       note: '',
       labels: [],
@@ -62,7 +62,7 @@ export function CreateTransactionForm({ walletId, labels, categories, onSuccess:
     mutate({
       input: {
         amount: data.amount,
-        categoryId: data.category?.id,
+        categoryId: data.categoryId,
         date: data.date,
         isParent: data.isParent,
         walletId,
@@ -95,7 +95,7 @@ export function CreateTransactionForm({ walletId, labels, categories, onSuccess:
             </FormCheckbox>
             <FormSelect
               control={control}
-              name='category'
+              name='categoryId'
               label='Category'
               selectValueTemplate={a => (a.isPlaceholder ? 'Select Category' : a.defaultChildren)}
             >

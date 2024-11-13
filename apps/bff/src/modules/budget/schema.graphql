@@ -19,7 +19,7 @@ type Budget {
 }
 
 type BudgetSnapshot {
-  budget: Budget
+  budget: Budget!
   expectedExpense: Float!
   actualExpense: Float!
   remainingAllowance: Float!

@@ -1,6 +1,7 @@
 import { ROUTES } from '@common/consts/routes';
 import { PrivateRoute } from '@modules/auth/components/PrivateRoute/PrivateRoute';
 import { authRoutes } from '@modules/auth/routes';
+import { budgetRoutes } from '@modules/budget/routes';
 import { Categories } from '@modules/category/pages/Categories/Categories';
 import { Home } from '@modules/home/pages/Home';
 import { Labels } from '@modules/label/pages/Labels/Labels';
@@ -38,6 +39,10 @@ export function getRouter(): ReturnType<typeof createBrowserRouter> {
               <Labels />
             </PrivateRoute>
           )
+        },
+        {
+          path: ROUTES.BUDGETS.ROOT,
+          children: budgetRoutes
         }
       ]
     }

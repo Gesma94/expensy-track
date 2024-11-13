@@ -10,6 +10,8 @@ import React, {
   type Ref
 } from 'react';
 import {
+  Collection,
+  Header,
   Input,
   type Key,
   Label,
@@ -17,6 +19,7 @@ import {
   ListBoxItem,
   type ListBoxItemProps,
   Popover,
+  Section,
   type Selection,
   Tag,
   TagGroup,
@@ -24,15 +27,24 @@ import {
   TextField
 } from 'react-aria-components';
 
+type GroupedItem<T extends object> = {
+  [key: string]: {
+    selectedItems: T[];
+    notSelectedItems: T[];
+  };
+};
+
 type Props<T extends object> = {
   label: string;
   items: T[];
   getId: (item: T) => Key;
   getTextValue: (item: T) => string;
   getTagTextValue: (item: T) => string;
+  getSection?: (item: T) => string;
   isInvalid?: boolean;
   isDisabled?: boolean;
   selectedItems?: T[];
+  children?: ComponentProps<typeof ListBox<T>>['children'];
   onChange?: (newSelectionList: T[]) => void;
   validationBehavior?: ComponentProps<typeof TextField>['validationBehavior'];
 };
@@ -47,6 +59,7 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
     getTagTextValue,
     validationBehavior,
     onChange,
+    getSection,
     selectedItems: statelessSelectedItems
   }: Props<T>,
   ref: ForwardedRef<HTMLInputElement>
@@ -129,6 +142,8 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
   const selectedItemsKey = new Map(selectedItems.map(item => [getId(item), true]));
   const notSelectedItems = items.filter(item => !selectedItemsKey.has(getId(item)));
 
+  const groupedItems = groupBySection(getSection, items, selectedItems, notSelectedItems);
+
   useLayoutEffect(() => {
     if (isPopoverOpen === 'open') {
       listBoxRef?.current?.focus();
@@ -167,6 +182,7 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
             placement='bottom start'
             triggerRef={triggerRef}
             isOpen={isPopoverOpen !== 'no'}
+            className='bg-white'
             onOpenChange={e => setIsPopoverOpen(e ? 'open' : 'no')}
           >
             <ListBox
@@ -178,12 +194,40 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
               selectedKeys={new Set(selectedItemsKey.keys())}
               onSelectionChange={handleListBoxSelectionChange}
             >
-              {selectedItems.map(item => (
-                <MultiSelectSelectedOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />
-              ))}
-              {notSelectedItems.map(item => (
-                <MultiSelectOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />
-              ))}
+              {groupedItems !== null && (
+                <>
+                  {Object.entries(groupedItems).map(sectionInfo => (
+                    <Section key={sectionInfo[0]} id={sectionInfo[0]}>
+                      <Header>{sectionInfo[0]}</Header>
+                      <Collection items={sectionInfo[1].selectedItems}>
+                        {item => (
+                          <MultiSelectSelectedOption
+                            textValue={getTextValue(item)}
+                            id={getId(item)}
+                            key={getId(item)}
+                          />
+                        )}
+                      </Collection>
+                      <Collection items={sectionInfo[1].notSelectedItems}>
+                        {item => (
+                          <MultiSelectOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />
+                        )}
+                      </Collection>
+                    </Section>
+                  ))}
+                </>
+              )}
+
+              {groupedItems === null && (
+                <>
+                  {selectedItems.map(item => (
+                    <MultiSelectSelectedOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />
+                  ))}
+                  {notSelectedItems.map(item => (
+                    <MultiSelectOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />
+                  ))}
+                </>
+              )}
             </ListBox>
           </Popover>
         </div>
@@ -202,4 +246,43 @@ function MultiSelectSelectedOption<T extends object>(props: ListBoxItemProps<T>)
 
 function MultiSelectOption<T extends object>(props: ListBoxItemProps<T>) {
   return <ListBoxItem {...props}>{props.textValue}</ListBoxItem>;
+}
+
+function groupBySection<T extends object>(
+  getSectionTitle: undefined | ((item: T) => string),
+  items: T[],
+  selectedItems: T[],
+  notSelectedItems: T[]
+): GroupedItem<T> | null {
+  if (!getSectionTitle) {
+    return null;
+  }
+
+  const groups: GroupedItem<T> = {};
+
+  // this way the order of section is kept
+  items.forEach(item => {
+    const itemSection = getSectionTitle(item);
+
+    if (!(itemSection in groups)) {
+      groups[itemSection] = {
+        notSelectedItems: [],
+        selectedItems: []
+      };
+    }
+  });
+
+  selectedItems.forEach(item => {
+    const itemSection = getSectionTitle(item);
+
+    groups[itemSection]?.selectedItems.push(item);
+  });
+
+  notSelectedItems.forEach(item => {
+    const itemSection = getSectionTitle(item);
+
+    groups[itemSection]?.notSelectedItems.push(item);
+  });
+
+  return groups;
 }

@@ -29,7 +29,7 @@ export const Select = forwardRef<HTMLSelectElement, Props<object>>(function _Sel
         <AriaSelectValue ref={ref}>{selectValueTemplate}</AriaSelectValue>
         <span aria-hidden='true'>▼</span>
       </Button>
-      <AriaPopover>
+      <AriaPopover className='bg-white'>
         <AriaListBox>{children}</AriaListBox>
       </AriaPopover>
     </AriaSelect>

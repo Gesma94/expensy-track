@@ -16,5 +16,11 @@ export const ROUTES = {
   },
   LABELS: {
     ROOT: '/labels'
+  },
+  BUDGETS: {
+    ROOT: '/budgets',
+    CREATE: function () {
+      return `${this.ROOT}/create`;
+    }
   }
 };

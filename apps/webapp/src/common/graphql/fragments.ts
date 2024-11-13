@@ -23,3 +23,11 @@ export const MY_CATEGORY_FRAGMENT = gql(`
     icon
   }
 `);
+
+export const WALLET_KEY_VALUE_FRAGMENT = gql(`
+  fragment WalletKeyValueFragment on Wallet {
+    id
+    displayName
+    icon
+  }
+`);

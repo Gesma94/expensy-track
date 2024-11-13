@@ -1,4 +1,5 @@
 import type { MercuriusContext } from 'mercurius';
+import { getGqlEntityNotFoundResponse } from '#utils/get-gql-entity-not-found-response.js';
 import { getGqlSuccessResponse } from '#utils/get-gql-success-response.js';
 import { getGqlUnauthorizedResponse } from '#utils/get-gql-unauthorized-response.js';
 import type { QueryResolvers } from '../../../@types/graphql-generated.js';
@@ -15,6 +16,10 @@ export const queryBudget: QueryResolvers<MercuriusContext>['budget'] = async (_p
       userId: contextValue.user.id
     }
   });
+
+  if (!budget) {
+    return getGqlEntityNotFoundResponse(`budget '${args.input.id}' not found`);
+  }
 
   return getGqlSuccessResponse(BudgetToGraphql(budget));
 };

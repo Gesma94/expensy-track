@@ -2,11 +2,7 @@ import type { Budget as PrismaBudget } from '@expensy-track/prisma';
 import type { Budget as GraphqlBudget } from '../../../@types/graphql-generated.js';
 import { BudgetSpanToGraphql, BudgetSpanToPrisma } from './budget-span.js';
 
-export function BudgetToGraphql(budget: PrismaBudget | null): GraphqlBudget | null {
-  if (budget === null) {
-    return null;
-  }
-
+export function BudgetToGraphql(budget: PrismaBudget): GraphqlBudget {
   return {
     id: budget.id,
     displayName: budget.displayName,
@@ -18,11 +14,7 @@ export function BudgetToGraphql(budget: PrismaBudget | null): GraphqlBudget | nu
   };
 }
 
-export function BudgetToPrisma(budget: GraphqlBudget | null): PrismaBudget | null {
-  if (budget === null) {
-    return null;
-  }
-
+export function BudgetToPrisma(budget: GraphqlBudget): PrismaBudget {
   return {
     id: budget.id,
     displayName: budget.displayName,

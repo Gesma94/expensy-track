@@ -8,6 +8,7 @@ import { Labels } from '@modules/label/pages/Labels/Labels';
 import { RouterRoot } from '@modules/routing/components/RouterRoot';
 import { walletRoutes } from '@modules/wallet/routes';
 import { createBrowserRouter } from 'react-router-dom';
+import { WithNavbar } from '../components/WithNavbar/WithNavbar';
 
 export function getRouter(): ReturnType<typeof createBrowserRouter> {
   return createBrowserRouter([
@@ -15,34 +16,40 @@ export function getRouter(): ReturnType<typeof createBrowserRouter> {
       path: '',
       element: <RouterRoot />,
       children: [
-        {
-          path: ROUTES.HOME,
-          element: <Home />
-        },
         ...authRoutes,
         {
-          path: ROUTES.WALLETS.ROOT,
-          children: walletRoutes
-        },
-        {
-          path: 'categories',
-          element: (
-            <PrivateRoute>
-              <Categories />
-            </PrivateRoute>
-          )
-        },
-        {
-          path: 'labels',
-          element: (
-            <PrivateRoute>
-              <Labels />
-            </PrivateRoute>
-          )
-        },
-        {
-          path: ROUTES.BUDGETS.ROOT,
-          children: budgetRoutes
+          path: '',
+          element: <WithNavbar />,
+          children: [
+            {
+              path: ROUTES.HOME,
+              element: <Home />
+            },
+            {
+              path: ROUTES.WALLETS.ROOT,
+              children: walletRoutes
+            },
+            {
+              path: 'categories',
+              element: (
+                <PrivateRoute>
+                  <Categories />
+                </PrivateRoute>
+              )
+            },
+            {
+              path: 'labels',
+              element: (
+                <PrivateRoute>
+                  <Labels />
+                </PrivateRoute>
+              )
+            },
+            {
+              path: ROUTES.BUDGETS.ROOT,
+              children: budgetRoutes
+            }
+          ]
         }
       ]
     }

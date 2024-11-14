@@ -1,4 +1,4 @@
-import { Button } from '@components/Button/Button';
+import { Button } from '@components/ui/Button/Button';
 import type { ExpensyToastContent } from '@modules/toast/types/ExpensyToastContent';
 import type { ExpensyToastState } from '@modules/toast/types/ExpensyToastState';
 import type { AriaToastProps } from '@react-aria/toast';

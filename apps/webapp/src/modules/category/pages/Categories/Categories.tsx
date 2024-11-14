@@ -1,6 +1,6 @@
-import { Button } from '@components/Button/Button';
-import { Heading } from '@components/Heading/Heading';
-import { ConfirmDialog } from '@components/dialogs/ConfirmDialog/ConfirmDialog';
+import { Button } from '@components/ui/Button/Button';
+import { Heading } from '@components/ui/Heading/Heading';
+import { ConfirmDialog } from '@components/ui/dialogs/ConfirmDialog/ConfirmDialog';
 import { CategorySelectionProvider } from '@modules/category/components/CategorySelectionProvider/CategorySelectionProvider';
 import { useCategorySelection } from '@modules/category/hooks/useCategorySelection';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
@@ -92,7 +92,12 @@ const InnerCategories = () => {
         <Heading level={1} className='text-4xl'>
           Category
         </Heading>
-        <p>Manage your categories</p>
+        <p className='mb-10'>Manage your categories</p>
+
+        <div className='bg-white px-8 py-4 rounded-3xl'>
+          <p className='text-2xl font-extralight text-black'>Craete category</p>
+          <CreateCategoryForm onSuccess={handleCreateCategorySuccess} />
+        </div>
 
         <div className='bg-white mt-6'>
           {isFetching && <p>Loading</p>}
@@ -100,9 +105,7 @@ const InnerCategories = () => {
           {!isFetching && (
             <>
               <p>{categoriesCount} / 500</p>
-              <div>
-                <CreateCategoryForm onSuccess={handleCreateCategorySuccess} />
-              </div>
+              <div></div>
               <div>
                 <CategoryList
                   onDeleteSuccess={handleDeleteCategorySuccess}

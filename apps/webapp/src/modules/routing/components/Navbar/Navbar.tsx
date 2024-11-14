@@ -1,5 +1,5 @@
 import { ROUTES } from '@common/consts/routes';
-import { Link } from '@components/Link/Link';
+import { Link } from '@components/ui/Link/Link';
 
 export function Navbar() {
   return (

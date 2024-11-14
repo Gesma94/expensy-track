@@ -1,4 +1,4 @@
-import { Button } from '@components/Button/Button';
+import { Button } from '@components/ui/Button/Button';
 import { type ComponentProps, forwardRef } from 'react';
 import {
   Label as AriaLabel,

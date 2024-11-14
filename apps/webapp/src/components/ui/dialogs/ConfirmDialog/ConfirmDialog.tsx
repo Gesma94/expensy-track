@@ -1,5 +1,5 @@
-import { Button } from '@components/Button/Button';
-import { Heading } from '@components/Heading/Heading';
+import { Button } from '@components/ui/Button/Button';
+import { Heading } from '@components/ui/Heading/Heading';
 import type { PressEvent } from 'react-aria-components';
 import { Dialog } from '../Dialog/Dialog';
 

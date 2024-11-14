@@ -1,9 +1,6 @@
-import { ROUTES } from '@common/consts/routes';
-import { Link } from '@components/Link/Link';
 import { RouterProvider as AriaRouterProvider } from 'react-aria-components';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAbsoluteHref } from '../hooks/useAbsoluteHref';
-import { Navbar } from './Navbar/Navbar';
 
 export function RouterRoot() {
   const navigate = useNavigate();

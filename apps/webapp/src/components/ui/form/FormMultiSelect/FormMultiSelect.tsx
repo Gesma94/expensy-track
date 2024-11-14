@@ -1,4 +1,4 @@
-import { MultiSelect } from '@components/input/MultiSelect/MultiSelect';
+import { MultiSelect } from '@components/ui/input/MultiSelect/MultiSelect';
 import type { ComponentProps } from 'react';
 import { Controller, type FieldPath, type FieldValues, type UseControllerProps } from 'react-hook-form';
 

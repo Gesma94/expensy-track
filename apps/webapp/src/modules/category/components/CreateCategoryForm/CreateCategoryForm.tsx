@@ -1,9 +1,9 @@
-import { Button } from '@components/Button/Button';
-import { Form } from '@components/form/Form/Form';
-import { FormSelect } from '@components/form/FormSelect/FormSelect';
-import { FormTextInput } from '@components/form/FormTextInput/FormTextInput';
-import { CategoryIcon } from '@components/icon/CategoryIcon/CategoryIcon';
-import { Option } from '@components/input/Select/Select';
+import { Button } from '@components/ui/Button/Button';
+import { Form } from '@components/ui/form/Form/Form';
+import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';
+import { FormTextInput } from '@components/ui/form/FormTextInput/FormTextInput';
+import { CategoryIcon } from '@components/ui/icon/CategoryIcon/CategoryIcon';
+import { Option } from '@components/ui/input/Select/Select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useToast } from '@modules/toast/hooks/useToast';
@@ -55,8 +55,6 @@ export const CreateCategoryForm = ({ onSuccess: parentOnSuccess }: Props) => {
 
   return (
     <div>
-      <p>Add new category</p>
-
       {error?.message}
 
       <Form onSubmit={handleSubmit(onSubmit)}>

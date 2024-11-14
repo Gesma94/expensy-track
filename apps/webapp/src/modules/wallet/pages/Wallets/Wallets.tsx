@@ -1,6 +1,6 @@
 import { ROUTES } from '@common/consts/routes';
-import { Heading } from '@components/Heading/Heading';
-import { Link } from '@components/Link/Link';
+import { Heading } from '@components/ui/Heading/Heading';
+import { Link } from '@components/ui/Link/Link';
 import { NewWalletCard } from '@modules/wallet/components/NewWalletCard/NewWalletCard';
 import { WalletCard } from '@modules/wallet/components/WalletCard/WalletCard';
 import { getWalletsQuery } from '@modules/wallet/operations/get-wallets';

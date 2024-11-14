@@ -1,10 +1,10 @@
-import { Button } from '@components/Button/Button';
-import { Form } from '@components/form/Form/Form';
-import { FormMultiSelect } from '@components/form/FormMultiSelect/FormMultiSelect';
-import { FormNumberInput } from '@components/form/FormNumberInput/FormNumberInput';
-import { FormSelect } from '@components/form/FormSelect/FormSelect';
-import { FormTextInput } from '@components/form/FormTextInput/FormTextInput';
-import { Option } from '@components/input/Select/Select';
+import { Button } from '@components/ui/Button/Button';
+import { Form } from '@components/ui/form/Form/Form';
+import { FormMultiSelect } from '@components/ui/form/FormMultiSelect/FormMultiSelect';
+import { FormNumberInput } from '@components/ui/form/FormNumberInput/FormNumberInput';
+import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';
+import { FormTextInput } from '@components/ui/form/FormTextInput/FormTextInput';
+import { Option } from '@components/ui/input/Select/Select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createBudgetMutation } from '@modules/budget/operations/create-budget';
 import { GetCreateBudgetDeps } from '@modules/budget/operations/get-create-budget-deps';

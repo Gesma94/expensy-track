@@ -1,4 +1,4 @@
-import { Button } from '@components/Button/Button';
+import { Button } from '@components/ui/Button/Button';
 import { useKeyboard } from '@react-aria/interactions';
 import React, {
   forwardRef,
@@ -194,29 +194,20 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
               selectedKeys={new Set(selectedItemsKey.keys())}
               onSelectionChange={handleListBoxSelectionChange}
             >
-              {groupedItems !== null && (
-                <>
-                  {Object.entries(groupedItems).map(sectionInfo => (
-                    <Section key={sectionInfo[0]} id={sectionInfo[0]}>
-                      <Header>{sectionInfo[0]}</Header>
-                      <Collection items={sectionInfo[1].selectedItems}>
-                        {item => (
-                          <MultiSelectSelectedOption
-                            textValue={getTextValue(item)}
-                            id={getId(item)}
-                            key={getId(item)}
-                          />
-                        )}
-                      </Collection>
-                      <Collection items={sectionInfo[1].notSelectedItems}>
-                        {item => (
-                          <MultiSelectOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />
-                        )}
-                      </Collection>
-                    </Section>
-                  ))}
-                </>
-              )}
+              {groupedItems !== null &&
+                Object.entries(groupedItems).map(sectionInfo => (
+                  <Section key={sectionInfo[0]} id={sectionInfo[0]}>
+                    <Header>{sectionInfo[0]}</Header>
+                    <Collection items={sectionInfo[1].selectedItems}>
+                      {item => (
+                        <MultiSelectSelectedOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />
+                      )}
+                    </Collection>
+                    <Collection items={sectionInfo[1].notSelectedItems}>
+                      {item => <MultiSelectOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />}
+                    </Collection>
+                  </Section>
+                ))}
 
               {groupedItems === null && (
                 <>

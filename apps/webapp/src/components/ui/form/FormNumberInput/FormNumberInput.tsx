@@ -1,23 +1,29 @@
-import { TextInput } from '@components/input/TextInput/TextInput';
+import { NumberInput } from '@components/ui/input/NumberInput/NumberInput';
 import type { ComponentProps } from 'react';
 import { Controller, type ControllerProps, type FieldPath, type FieldValues } from 'react-hook-form';
 
 type Props<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = Omit<ControllerProps<TFieldValues, TName>, 'render'> & ComponentProps<typeof TextInput>;
+> = Omit<ControllerProps<TFieldValues, TName>, 'render'> & ComponentProps<typeof NumberInput>;
 
-export function FormTextInput<
+export function FormNumberInput<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->({ name, control, defaultValue, disabled, rules, shouldUnregister, ...textProps }: Props<TFieldValues, TName>) {
+>({ name, control, defaultValue, disabled, rules, shouldUnregister, ...numberProps }: Props<TFieldValues, TName>) {
   const controllerProps = { name, control, defaultValue, disabled, rules, shouldUnregister };
 
   return (
     <Controller
       {...controllerProps}
       render={({ field: { disabled, ...fieldProps }, fieldState: { invalid, error: _error } }) => (
-        <TextInput {...textProps} {...fieldProps} isDisabled={disabled} isInvalid={invalid} validationBehavior='aria' />
+        <NumberInput
+          {...numberProps}
+          {...fieldProps}
+          isDisabled={disabled}
+          isInvalid={invalid}
+          validationBehavior='aria'
+        />
       )}
     />
   );

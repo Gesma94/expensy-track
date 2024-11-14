@@ -1,4 +1,4 @@
-import { Link } from '@components/Link/Link';
+import { Link } from '@components/ui/Link/Link';
 import { useAuth } from '@modules/auth/hooks/useAuth';
 
 export function Home() {

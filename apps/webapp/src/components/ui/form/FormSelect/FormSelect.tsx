@@ -1,4 +1,4 @@
-import { Select } from '@components/input/Select/Select';
+import { Select } from '@components/ui/input/Select/Select';
 import type { ComponentProps } from 'react';
 import { Controller, type ControllerProps, type FieldPath, type FieldValues } from 'react-hook-form';
 

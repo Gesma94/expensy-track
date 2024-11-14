@@ -9,7 +9,7 @@ import {
   PiVault,
   PiWallet
 } from 'react-icons/pi';
-import { WalletIcon as WalletIconEnum } from '../../../gql/graphql';
+import { WalletIcon as WalletIconEnum } from '../../../../gql/graphql';
 
 type Props = {
   icon: WalletIconEnum;

@@ -1,4 +1,4 @@
-import { ConfirmDialog } from '@components/dialogs/ConfirmDialog/ConfirmDialog';
+import { ConfirmDialog } from '@components/ui/dialogs/ConfirmDialog/ConfirmDialog';
 import { useLabelRoot } from '@modules/label/hooks/useCategorySelection';
 import { deleteLabelsMutation } from '@modules/label/operations/delete-labels';
 import { useToast } from '@modules/toast/hooks/useToast';

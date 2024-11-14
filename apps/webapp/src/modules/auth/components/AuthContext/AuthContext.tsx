@@ -1,4 +1,4 @@
-import { LoadingModal } from '@components/LoadingModal/LoadingModal';
+import { LoadingModal } from '@components/ui/LoadingModal/LoadingModal';
 import { type ReplyAuthenticate, type UserPayload, UserPayloadSchema } from '@expensy-track/common/schemas';
 import { isSchema } from '@expensy-track/common/utils';
 import { refreshToken } from '@modules/auth/utils/refreshToken';

@@ -1,7 +1,7 @@
-import { Button } from '@components/Button/Button';
-import { ConfirmDialog } from '@components/dialogs/ConfirmDialog/ConfirmDialog';
-import { CategoryIcon } from '@components/icon/CategoryIcon/CategoryIcon';
-import { Checkbox } from '@components/input/Checkbox/Checkbox';
+import { Button } from '@components/ui/Button/Button';
+import { ConfirmDialog } from '@components/ui/dialogs/ConfirmDialog/ConfirmDialog';
+import { CategoryIcon } from '@components/ui/icon/CategoryIcon/CategoryIcon';
+import { Checkbox } from '@components/ui/input/Checkbox/Checkbox';
 import { useCategorySelection } from '@modules/category/hooks/useCategorySelection';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useToast } from '@modules/toast/hooks/useToast';

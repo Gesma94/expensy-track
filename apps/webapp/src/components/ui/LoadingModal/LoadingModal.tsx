@@ -1,4 +1,4 @@
-import { Heading } from '@components/Heading/Heading';
+import { Heading } from '@components/ui/Heading/Heading';
 import clsx from 'clsx';
 import { Dialog, Modal, ModalOverlay, ProgressBar } from 'react-aria-components';
 import { useTranslation } from 'react-i18next';

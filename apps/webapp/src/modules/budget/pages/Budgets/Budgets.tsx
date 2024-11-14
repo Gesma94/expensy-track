@@ -1,6 +1,6 @@
 import { ROUTES } from '@common/consts/routes';
-import { Heading } from '@components/Heading/Heading';
-import { Link } from '@components/Link/Link';
+import { Heading } from '@components/ui/Heading/Heading';
+import { Link } from '@components/ui/Link/Link';
 import { GetBudgetsSnapshot } from '@modules/budget/operations/get-budgets-snapshot';
 import { useQuery } from '@tanstack/react-query';
 import { useFragment } from '../../../../gql';

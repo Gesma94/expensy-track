@@ -1,5 +1,7 @@
-import { Heading as AriaHeading, type HeadingProps } from 'react-aria-components';
+import type { ComponentProps } from 'react';
+import { Heading as AriaHeading } from 'react-aria-components';
+import { twMerge } from 'tailwind-merge';
 
-export function Heading(props: HeadingProps) {
-  return <AriaHeading {...props} />;
+export function Heading({ className, ...otherProps }: ComponentProps<typeof AriaHeading>) {
+  return <AriaHeading className={twMerge('font-bitter', className)} {...otherProps} />;
 }

@@ -88,36 +88,42 @@ const InnerCategories = () => {
         onCancel={handleCancel}
         onConfirm={handleConfirm}
       />
-      <div>
-        {isFetching && <p>Loading</p>}
-        {error && <p>error while loading</p>}
-        {!isFetching && (
-          <>
-            <Heading level={1}>Category</Heading>
-            <p>{categoriesCount} / 500</p>
-            <div>
-              <CreateCategoryForm onSuccess={handleCreateCategorySuccess} />
-            </div>
-            <div>
-              <CategoryList
-                onDeleteSuccess={handleDeleteCategorySuccess}
-                title='Expanses'
-                categories={groupedCategories.EXPANSE}
-              />
-              <CategoryList
-                onDeleteSuccess={handleDeleteCategorySuccess}
-                title='Incomes'
-                categories={groupedCategories.INCOME}
-              />
-            </div>
-          </>
-        )}
+      <div className='w-full max-w-7xl mx-auto px-10 pt-14'>
+        <Heading level={1} className='text-4xl'>
+          Category
+        </Heading>
+        <p>Manage your categories</p>
 
-        {selectedCategories.length > 0 && (
-          <Button onPress={handleDeleteCategoriesPress}>
-            Delete ({selectedCategories.length}) selected categories
-          </Button>
-        )}
+        <div className='bg-white mt-6'>
+          {isFetching && <p>Loading</p>}
+          {error && <p>error while loading</p>}
+          {!isFetching && (
+            <>
+              <p>{categoriesCount} / 500</p>
+              <div>
+                <CreateCategoryForm onSuccess={handleCreateCategorySuccess} />
+              </div>
+              <div>
+                <CategoryList
+                  onDeleteSuccess={handleDeleteCategorySuccess}
+                  title='Expanses'
+                  categories={groupedCategories.EXPANSE}
+                />
+                <CategoryList
+                  onDeleteSuccess={handleDeleteCategorySuccess}
+                  title='Incomes'
+                  categories={groupedCategories.INCOME}
+                />
+              </div>
+            </>
+          )}
+
+          {selectedCategories.length > 0 && (
+            <Button onPress={handleDeleteCategoriesPress}>
+              Delete ({selectedCategories.length}) selected categories
+            </Button>
+          )}
+        </div>
       </div>
     </>
   );

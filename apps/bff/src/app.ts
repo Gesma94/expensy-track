@@ -12,6 +12,7 @@ export async function buildFastify(options?: FastifyBuildOptions) {
   const __dirname = dirname(__filename);
 
   const fastify = Fastify({
+    pluginTimeout: 200000,
     logger: getFastifyLogger(process.env.NODE_ENV)
   });
 

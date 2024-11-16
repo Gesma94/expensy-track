@@ -60,7 +60,7 @@ export const Categories = () => {
   }
   return (
     <>
-      <div className='w-full max-w-7xl mx-auto px-10 pt-14'>
+      <div className='w-full max-w-7xl mx-auto pt-14 px-4 md:px-10'>
         <Heading level={1} className='text-4xl'>
           Category
         </Heading>

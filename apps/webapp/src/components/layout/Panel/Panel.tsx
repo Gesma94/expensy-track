@@ -7,7 +7,7 @@ type Props = {
 };
 export function Panel({ title, className, children }: PropsWithChildren<Props>) {
   return (
-    <div className={twMerge('bg-white px-8 py-6 rounded-3xl', className)}>
+    <div className={twMerge('md:bg-white md:px-8 md:py-6 md:rounded-3xl', className)}>
       <p className='text-2xl font-extralight text-black'>{title}</p>
       <div className='mt-2'>{children}</div>
     </div>

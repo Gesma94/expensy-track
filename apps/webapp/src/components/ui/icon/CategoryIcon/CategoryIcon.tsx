@@ -28,42 +28,42 @@ type Props = {
 export const CategoryIcon = ({ icon }: Props) => {
   switch (icon) {
     case CategoryIconEnum.Activity:
-      return <PiConfetti />;
+      return <PiConfetti className='w-full h-full' />;
     case CategoryIconEnum.Beer:
-      return <PiBeerStein />;
+      return <PiBeerStein className='w-full h-full' />;
     case CategoryIconEnum.Credit:
-      return <PiCurrencyCircleDollar />;
+      return <PiCurrencyCircleDollar className='w-full h-full' />;
     case CategoryIconEnum.CreditCard:
-      return <PiCreditCard />;
+      return <PiCreditCard className='w-full h-full' />;
     case CategoryIconEnum.DebtCollection:
-      return <PiHandCoins />;
+      return <PiHandCoins className='w-full h-full' />;
     case CategoryIconEnum.Gas:
-      return <PiGasPump />;
+      return <PiGasPump className='w-full h-full' />;
     case CategoryIconEnum.Grocery:
-      return <PiBasket />;
+      return <PiBasket className='w-full h-full' />;
     case CategoryIconEnum.Investment:
-      return <PiTrendUp />;
+      return <PiTrendUp className='w-full h-full' />;
     case CategoryIconEnum.Medical:
-      return <PiFirstAidKit />;
+      return <PiFirstAidKit className='w-full h-full' />;
     case CategoryIconEnum.Miscellaneous:
-      return <PiDotsThreeCircle />;
+      return <PiDotsThreeCircle className='w-full h-full' />;
     case CategoryIconEnum.Money_1:
-      return <PiMoney />;
+      return <PiMoney className='w-full h-full' />;
     case CategoryIconEnum.Money_2:
-      return <PiWallet />;
+      return <PiWallet className='w-full h-full' />;
     case CategoryIconEnum.Money_3:
-      return <PiMoneyWavy />;
+      return <PiMoneyWavy className='w-full h-full' />;
     case CategoryIconEnum.Music:
-      return <PiMusicNotes />;
+      return <PiMusicNotes className='w-full h-full' />;
     case CategoryIconEnum.Restourant:
-      return <PiPizza />;
+      return <PiPizza className='w-full h-full' />;
     case CategoryIconEnum.Salary:
-      return <PiPiggyBank />;
+      return <PiPiggyBank className='w-full h-full' />;
     case CategoryIconEnum.Shopping:
-      return <PiStorefront />;
+      return <PiStorefront className='w-full h-full' />;
     case CategoryIconEnum.Star:
-      return <PiStar />;
+      return <PiStar className='w-full h-full' />;
     case CategoryIconEnum.Subscription:
-      return <PiMegaphone />;
+      return <PiMegaphone className='w-full h-full' />;
   }
 };

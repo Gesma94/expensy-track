@@ -19,9 +19,7 @@ export const TextInput = forwardRef<HTMLInputElement, Props>(function _TextInput
     <AriaTextField className={values => twMerge('flex flex-col', getAriaCustomClassName(values, className))} {...props}>
       <AriaLabel className='text-slate-800/50'>{label}</AriaLabel>
       <AriaInput type='text' className='h-input border border-black/10' placeholder={placeholder} ref={ref} />
-      <div className='w-full h-4'>
-        <FieldError className='block text-xs text-red-500'>{errorMessage}</FieldError>
-      </div>
+      <FieldError className='block text-xs text-red-500'>{errorMessage}</FieldError>
     </AriaTextField>
   );
 });

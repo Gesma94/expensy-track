@@ -1,1 +1,12 @@
-{}
+{
+  "layout": {
+    "category-type-name": {
+      "income": "Entrata",
+      "expanse": "Uscita",
+      "transfer": "Trasferimento"
+    },
+    "category-icon-name": {
+      "activity": "Attività"
+    }
+  }
+}

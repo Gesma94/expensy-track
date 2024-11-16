@@ -1,5 +1,17 @@
 {
-  "loading-modal": {
-    "default-message": "Loading"
+  "ui": {
+    "loading-modal": {
+      "default-message": "Loading"
+    }
+  },
+  "layout": {
+    "category-type-name": {
+      "income": "Income",
+      "expanse": "Expanse",
+      "transfer": "Transfer"
+    },
+    "category-icon-name": {
+      "activity": "Activity"
+    }
   }
 }

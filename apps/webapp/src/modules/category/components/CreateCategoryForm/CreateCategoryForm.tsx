@@ -1,5 +1,8 @@
+import { CategoryIconName } from '@components/layout/CategoryIconName/CategoryIconName';
+import { CategoryTypeName } from '@components/layout/CategoryTypeName/CategoryTypeName';
 import { Button } from '@components/ui/Button/Button';
 import { Form } from '@components/ui/form/Form/Form';
+import { FormColorPicker } from '@components/ui/form/FormColorPicker/FormColorPicker';
 import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';
 import { FormTextInput } from '@components/ui/form/FormTextInput/FormTextInput';
 import { CategoryIcon } from '@components/ui/icon/CategoryIcon/CategoryIcon';
@@ -8,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useToast } from '@modules/toast/hooks/useToast';
 import { useMutation } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import { type FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { CategoryType, CreateCategoryDocument, type CreateCategoryMutationVariables } from '../../../../gql/graphql';
 import { CategoryIcon as CategoryIconEnum } from './../../../../gql/graphql';
@@ -22,24 +25,23 @@ async function mutationFn(variables: CreateCategoryMutationVariables) {
 }
 
 const formSchema = z.object({
+  color: z.string(),
   type: z.nativeEnum(CategoryType),
   icon: z.nativeEnum(CategoryIconEnum),
-  displayName: z.string().min(1, 'must have length 1').default('test def'),
-  color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'must be a valid color')
+  displayName: z.string().min(1, 'must have length 1').default('test def')
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 export const CreateCategoryForm = ({ onSuccess: parentOnSuccess }: Props) => {
   const { successToast, errorToast } = useToast();
-  const { mutate, error } = useMutation({ mutationKey: ['create-category'], mutationFn, onSuccess, onError });
-  const { register, handleSubmit, control } = useForm<FormSchema>({
+  const { mutate } = useMutation({ mutationKey: ['create-category'], mutationFn, onSuccess, onError: onInvalid });
+  const { handleSubmit, control } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: { displayName: '', color: '#FFFFFF', icon: CategoryIconEnum.Activity, type: CategoryType.Expanse }
+    defaultValues: { displayName: '', color: '#E86161', icon: CategoryIconEnum.Activity, type: CategoryType.Expanse }
   });
 
-  function onSubmit(data: FormSchema, event?: React.BaseSyntheticEvent) {
-    event?.preventDefault();
+  function onValid(data: FormSchema) {
     mutate({ input: data });
   }
 
@@ -48,39 +50,40 @@ export const CreateCategoryForm = ({ onSuccess: parentOnSuccess }: Props) => {
     parentOnSuccess();
   }
 
-  function onError() {
-    console.error(error);
+  function onInvalid(errors: FieldErrors<FormSchema>) {
+    console.error(errors);
     errorToast('Error', 'Category could not be created');
   }
 
   return (
     <div>
-      {error?.message}
-
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onValid, onInvalid)}>
         <FormSelect control={control} name='type' label='Type'>
           <Option id={CategoryType.Expanse} textValue={CategoryType.Expanse}>
-            Expanse
+            <CategoryTypeName categoryType={CategoryType.Expanse} />
           </Option>
           <Option id={CategoryType.Income} textValue={CategoryType.Income}>
-            Income
+            <CategoryTypeName categoryType={CategoryType.Income} />
           </Option>
         </FormSelect>
 
         <FormSelect control={control} name='icon' label='icon'>
           {Object.values(CategoryIconEnum).map(categoryIcon => (
-            <Option id={categoryIcon} key={categoryIcon} textValue={categoryIcon} className='flex bg-white'>
-              <CategoryIcon icon={categoryIcon} /> - {categoryIcon}
+            <Option id={categoryIcon} key={categoryIcon} textValue={categoryIcon}>
+              <div className='flex items-center gap-2'>
+                <CategoryIcon icon={categoryIcon} /> <CategoryIconName icon={categoryIcon} />
+              </div>
             </Option>
           ))}
         </FormSelect>
 
         <FormTextInput label='Name' control={control} name='displayName' />
 
-        <label htmlFor='color-input'>Color</label>
-        <input id='color-input' {...register('color')} defaultValue={''} placeholder='color' />
+        <FormColorPicker control={control} name='color' colorFormat='hex' label='Color' />
 
-        <Button type='submit'>Create</Button>
+        <Button className='mt-4' type='submit'>
+          Create
+        </Button>
       </Form>
     </div>
   );

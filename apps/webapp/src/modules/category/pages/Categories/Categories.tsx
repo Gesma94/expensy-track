@@ -1,8 +1,6 @@
-import { Button } from '@components/ui/Button/Button';
+import { Panel } from '@components/layout/Panel/Panel';
 import { Heading } from '@components/ui/Heading/Heading';
 import { ConfirmDialog } from '@components/ui/dialogs/ConfirmDialog/ConfirmDialog';
-import { CategorySelectionProvider } from '@modules/category/components/CategorySelectionProvider/CategorySelectionProvider';
-import { useCategorySelection } from '@modules/category/hooks/useCategorySelection';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useToast } from '@modules/toast/hooks/useToast';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -26,19 +24,9 @@ async function mutationFn(variables: DeleteCategoriesMutationVariables) {
   return getGqlClient().request(DeleteCategoriesDocument, variables);
 }
 
-export const Categories = () => {
-  return (
-    <CategorySelectionProvider>
-      <InnerCategories />
-    </CategorySelectionProvider>
-  );
-};
-
-const InnerCategories = () => {
+const Categories = () => {
   const { successToast } = useToast();
-  const { selectedCategories, cleanSelection } = useCategorySelection();
   const { data, error, isFetching, refetch } = useQuery({ queryKey: ['user-categories'], queryFn });
-  const { mutateAsync } = useMutation({ mutationKey: ['delete-categories'], mutationFn, onSuccess });
 
   const categoriesFragment = useFragment(MyCategoryFragmentDoc, data?.categories?.result);
 
@@ -70,62 +58,25 @@ const InnerCategories = () => {
   function handleCreateCategorySuccess() {
     refetch();
   }
-
-  async function handleConfirm() {
-    await mutateAsync({ input: { ids: selectedCategories.map(category => category.id) } });
-    setIsDialogOpen(false);
-    cleanSelection();
-    successToast('Delete', `${selectedCategories.length} categories deleted correctly`);
-  }
-
   return (
     <>
-      <ConfirmDialog
-        isOpen={isDialogOpen}
-        confirmLabel='Delete'
-        heading='Delete categories'
-        message={`Are you sure you want to delete ${selectedCategories.length} categories?`}
-        onCancel={handleCancel}
-        onConfirm={handleConfirm}
-      />
       <div className='w-full max-w-7xl mx-auto px-10 pt-14'>
         <Heading level={1} className='text-4xl'>
           Category
         </Heading>
         <p className='mb-10'>Manage your categories</p>
 
-        <div className='bg-white px-8 py-4 rounded-3xl'>
-          <p className='text-2xl font-extralight text-black'>Craete category</p>
-          <CreateCategoryForm onSuccess={handleCreateCategorySuccess} />
-        </div>
+        <div className='grid gap-8 grid-cols-1 md:grid-cols-2'>
+          <Panel title='Create category' className='md:col-span-2'>
+            <CreateCategoryForm onSuccess={handleCreateCategorySuccess} />
+          </Panel>
 
-        <div className='bg-white mt-6'>
-          {isFetching && <p>Loading</p>}
-          {error && <p>error while loading</p>}
-          {!isFetching && (
-            <>
-              <p>{categoriesCount} / 500</p>
-              <div></div>
-              <div>
-                <CategoryList
-                  onDeleteSuccess={handleDeleteCategorySuccess}
-                  title='Expanses'
-                  categories={groupedCategories.EXPANSE}
-                />
-                <CategoryList
-                  onDeleteSuccess={handleDeleteCategorySuccess}
-                  title='Incomes'
-                  categories={groupedCategories.INCOME}
-                />
-              </div>
-            </>
-          )}
-
-          {selectedCategories.length > 0 && (
-            <Button onPress={handleDeleteCategoriesPress}>
-              Delete ({selectedCategories.length}) selected categories
-            </Button>
-          )}
+          <Panel title='Expanse Categories'>
+            <CategoryList categories={groupedCategories.EXPANSE} onDeleteSuccess={handleDeleteCategorySuccess} />
+          </Panel>
+          <Panel title='Incoma Categories'>
+            <CategoryList categories={groupedCategories.INCOME} onDeleteSuccess={handleDeleteCategorySuccess} />
+          </Panel>
         </div>
       </div>
     </>

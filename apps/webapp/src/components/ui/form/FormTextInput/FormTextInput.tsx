@@ -16,8 +16,15 @@ export function FormTextInput<
   return (
     <Controller
       {...controllerProps}
-      render={({ field: { disabled, ...fieldProps }, fieldState: { invalid, error: _error } }) => (
-        <TextInput {...textProps} {...fieldProps} isDisabled={disabled} isInvalid={invalid} validationBehavior='aria' />
+      render={({ field: { disabled, ...fieldProps }, fieldState: { invalid, error } }) => (
+        <TextInput
+          {...textProps}
+          {...fieldProps}
+          errorMessage={error?.message}
+          isDisabled={disabled}
+          isInvalid={invalid}
+          validationBehavior='aria'
+        />
       )}
     />
   );

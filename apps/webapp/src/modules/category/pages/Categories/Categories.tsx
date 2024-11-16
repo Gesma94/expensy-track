@@ -24,7 +24,7 @@ async function mutationFn(variables: DeleteCategoriesMutationVariables) {
   return getGqlClient().request(DeleteCategoriesDocument, variables);
 }
 
-const Categories = () => {
+export const Categories = () => {
   const { successToast } = useToast();
   const { data, error, isFetching, refetch } = useQuery({ queryKey: ['user-categories'], queryFn });
 

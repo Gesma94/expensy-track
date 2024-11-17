@@ -4,7 +4,7 @@ import type { PressEvent } from 'react-aria-components';
 import { Dialog } from '../Dialog/Dialog';
 
 type Props = {
-  isOpen: boolean;
+  isOpen?: boolean;
   heading: string;
   message: string;
   confirmLabel: string;

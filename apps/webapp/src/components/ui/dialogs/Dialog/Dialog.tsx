@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import {
   Dialog as AriaDialog,
   Modal as AriaModal,
@@ -5,20 +6,15 @@ import {
   type DialogProps
 } from 'react-aria-components';
 
-type Props = {
-  isOpen?: boolean;
-  isDismissable?: boolean;
+type Props = Omit<ComponentProps<typeof AriaModalOverlay>, 'children'> & {
   children: DialogProps['children'];
-  isKeyboardDismissDisabled?: boolean;
 };
 
-export function Dialog({ isOpen, isDismissable, isKeyboardDismissDisabled, children }: Props) {
+export function Dialog({ children, ...modalOverlayProps }: Props) {
   return (
     <AriaModalOverlay
-      isOpen={isOpen}
+      {...modalOverlayProps}
       className='fixed inset-0 w-dvw h-dvh bg-black/20 flex justify-center items-center'
-      isDismissable={isDismissable}
-      isKeyboardDismissDisabled={isKeyboardDismissDisabled}
     >
       <AriaModal className='bg-white p-2'>
         <AriaDialog className='outline-none'>{children}</AriaDialog>

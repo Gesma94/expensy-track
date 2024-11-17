@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { ClipLoader } from 'react-spinners';
 
 type Props = {
-  message?: string;
   isTransparent?: boolean;
+  message?: string | false;
 };
 
 export const LoadingModal = ({ message, isTransparent }: Props) => {
-  const { t } = useTranslation('components', { keyPrefix: 'loading-modal' });
+  const { t } = useTranslation('components', { keyPrefix: 'ui.loading-modal' });
 
   return (
     <>
@@ -20,15 +20,17 @@ export const LoadingModal = ({ message, isTransparent }: Props) => {
         isOpen={true}
       >
         <Modal isOpen={true} isDismissable={false}>
-          <Dialog className='flex text-center'>
+          <Dialog className='flex text-center' aria-label={message === false ? 'loading' : undefined}>
             <ProgressBar isIndeterminate={true} aria-label='loading progress bar'>
               <ClipLoader size={16} speedMultiplier={0.68} />
-              <Heading level={4} slot='title' className='text-xl'>
-                {message ?? t('default-message')}
-                <span className='ml-[2px] animate-[pulse_1s_infinite_100ms]'>.</span>
-                <span className='animate-[pulse_1s_infinite_300ms]'>.</span>
-                <span className='animate-[pulse_1s_infinite_500ms]'>.</span>
-              </Heading>
+              {message !== false && (
+                <Heading level={4} slot='title' className='text-xl'>
+                  {message ?? t('default-message')}
+                  <span className='ml-[2px] animate-[pulse_1s_infinite_100ms]'>.</span>
+                  <span className='animate-[pulse_1s_infinite_300ms]'>.</span>
+                  <span className='animate-[pulse_1s_infinite_500ms]'>.</span>
+                </Heading>
+              )}
             </ProgressBar>
           </Dialog>
         </Modal>

@@ -9,15 +9,27 @@ export const mutationDeleteCategories: MutationResolvers<MercuriusContext>['dele
   args,
   contextValue
 ) => {
+  const user = contextValue.user;
   const { ids } = args.input;
 
-  if (!contextValue.user) {
+  if (!user) {
     return getGqlUnauthorizedResponse();
   }
 
-  const categories = await contextValue.app.prisma.category.deleteMany({ where: { id: { in: ids } } });
+  const result = await contextValue.app.prisma.$transaction(async tx => {
+    await tx.transaction.updateMany({
+      where: { userId: user.id, categoryId: { in: ids } },
+      data: { categoryId: null }
+    });
 
-  return categories
-    ? getGqlSuccessResponse(categories.count)
+    await tx.budgetsOnCategories.deleteMany({
+      where: { userId: user.id, categoryId: { in: ids } }
+    });
+
+    return await contextValue.app.prisma.category.deleteMany({ where: { userId: user.id, id: { in: ids } } });
+  });
+
+  return result
+    ? getGqlSuccessResponse(result.count)
     : getGqlUnsuccessResponse(GraphqlErrorCode.DeleteManyFailed, 'could not delete categories from database');
 };

@@ -5,10 +5,10 @@ import { budgetRoutes } from '@modules/budget/routes';
 import { Categories } from '@modules/category/pages/Categories/Categories';
 import { Home } from '@modules/home/pages/Home';
 import { Labels } from '@modules/label/pages/Labels/Labels';
-import { RouterRoot } from '@modules/routing/components/RouterRoot';
+import { RouterRoot } from '@modules/routing/components/RouterRoot/RouterRoot';
 import { walletRoutes } from '@modules/wallet/routes';
 import { createBrowserRouter } from 'react-router-dom';
-import { WithNavbar } from '../components/WithNavbar/WithNavbar';
+import { PageWithNavbar } from '../../navbar/components/PageWithNavbar/PageWithNavbar';
 
 export function getRouter(): ReturnType<typeof createBrowserRouter> {
   return createBrowserRouter([
@@ -19,7 +19,7 @@ export function getRouter(): ReturnType<typeof createBrowserRouter> {
         ...authRoutes,
         {
           path: '',
-          element: <WithNavbar />,
+          element: <PageWithNavbar />,
           children: [
             {
               path: ROUTES.HOME,

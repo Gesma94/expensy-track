@@ -68,7 +68,7 @@ export const HslColorPicker = forwardRef<HTMLButtonElement, Props>(function _Col
             </ColorArea>
             <ColorSlider className='w-full mt-2' colorSpace='hsb' channel='hue'>
               <SliderTrack className='w-full h-5 rounded-lg'>
-                <ColorThumb />
+                <ColorThumb className='border-2 border-white size-4 rounded-full top-1/2' />
               </SliderTrack>
             </ColorSlider>
             <ColorField className='flex mt-4'>

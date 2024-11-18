@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit",
     "build": "pnpm run clean && tsc --project tsconfig.prod.json",
     "test": "vitest",
+    "test:integration": "vitest --config ./configs/vitest.integration.config.ts",
     "graphql-codegen": "pnpm run clean:codegen && npx graphql-code-generator --config ./graphql.codegen.ts"
   },
   "keywords": [],
@@ -47,15 +48,20 @@
     "graphql-scalars": "^1.23.0",
     "mercurius": "^15.0.0",
     "minimatch": "^10.0.1",
+    "testcontainers": "^10.14.0",
     "type-fest": "^4.26.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/typescript-resolvers": "^4.2.1",
+    "@testcontainers/postgresql": "^10.14.0",
     "@types/bcrypt": "^5.0.2",
     "cross-env": "^7.0.3",
     "pino-pretty": "^11.2.2",
     "rimraf": "^6.0.1",
-    "tsx": "^4.19.1"
+    "tsx": "^4.19.1",
+    "vite-tsconfig-paths": "^5.1.2",
+    "vitest": "^2.1.5"
   }
 }

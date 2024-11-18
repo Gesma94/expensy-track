@@ -12,6 +12,6 @@
       "#utils/*": ["./src/common/utils/*"]
     }
   },
-  "include": ["graphql.codegen.ts", "./src"],
+  "include": ["graphql.codegen.ts", "./src", "./test"],
   "exclude": ["node_modules", "**/*.graphql"]
 }

@@ -1,8 +1,7 @@
 import type { PinoLoggerOptions } from 'fastify/types/logger.js';
-import type { Environment } from '#schemas/env-schema.js';
 import { getLogLevel } from './get-log-level.js';
 
-export function getFastifyLogger(nodeEnv: Environment['NODE_ENV']): PinoLoggerOptions | boolean {
+export function getFastifyLogger(nodeEnv: string | undefined): PinoLoggerOptions | boolean {
   const level = getLogLevel(nodeEnv);
 
   switch (nodeEnv) {
@@ -20,5 +19,7 @@ export function getFastifyLogger(nodeEnv: Environment['NODE_ENV']): PinoLoggerOp
         level,
         enabled: true
       };
+    default:
+      throw new Error(`unsupported node environemnt '${nodeEnv}'`);
   }
 }

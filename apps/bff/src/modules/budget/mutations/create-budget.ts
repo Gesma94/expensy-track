@@ -31,6 +31,7 @@ export const mutationCreateBudget: MutationResolvers<MercuriusContext>['createBu
       await tx.budgetsOnCategories.createMany({
         data: categoryIds.map(categoryId => ({
           categoryId,
+          userId: user.id,
           budgetId: budget.id
         }))
       });
@@ -40,6 +41,7 @@ export const mutationCreateBudget: MutationResolvers<MercuriusContext>['createBu
       await tx.budgetsOnWallets.createMany({
         data: walletIds.map(walletId => ({
           walletId,
+          userId: user.id,
           budgetId: budget.id
         }))
       });

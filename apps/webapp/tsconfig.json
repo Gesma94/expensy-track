@@ -17,6 +17,7 @@
     "jsx": "react-jsx",
 
     "paths": {
+      "@gql/*": ["./src/gql/*"],
       "@common/*": ["./src/common/*"],
       "@modules/*": ["./src/modules/*"],
       "@components/*": ["./src/components/*"]

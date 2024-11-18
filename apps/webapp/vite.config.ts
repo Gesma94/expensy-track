@@ -13,6 +13,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@gql': path.resolve(__dirname, './src/gql'),
       '@common': path.resolve(__dirname, './src/common'),
       '@modules': path.resolve(__dirname, './src/modules'),
       '@components': path.resolve(__dirname, './src/components')

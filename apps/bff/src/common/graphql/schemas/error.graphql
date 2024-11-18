@@ -2,6 +2,7 @@ enum GraphqlErrorCode {
   UNAUTHORIZED_USER
   DELETE_MANY_FAILED
   ENTITY_NOT_FOUND
+  OPERATION_FAILED
 }
 
 type GraphqlError {

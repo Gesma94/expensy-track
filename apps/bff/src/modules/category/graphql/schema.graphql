@@ -55,6 +55,19 @@ type DeleteCategoriesResult implements Response {
   result: Int
 }
 
+type EditCategoryResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Category
+}
+
+input EditCategoryInput {
+  id: ID!
+  displayName: String!
+  color: String!
+  icon: CategoryIcon!
+}
+
 input CreateCategoryInput {
   color: String!
   type: CategoryType!
@@ -72,5 +85,6 @@ type Query {
 
 type Mutation {
   createCategory(input: CreateCategoryInput!): CreateCategoryResult
+  editCategory(input: EditCategoryInput!): EditCategoryResult
   deleteCategories(input: DeleteCategoriesInput!): DeleteCategoriesResult
 }

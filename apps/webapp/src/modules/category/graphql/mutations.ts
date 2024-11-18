@@ -19,3 +19,13 @@ mutation DeleteCategories($input: DeleteCategoriesInput!) {
   }
 }
 `);
+
+export const EDIT_CATEGORY = gql(`
+  mutation EditCategory($input: EditCategoryInput!) {
+    editCategory(input: $input) {
+      success
+      error { ... GraphqlError }
+      result { ... MyCategory }
+    }
+  }  
+`);

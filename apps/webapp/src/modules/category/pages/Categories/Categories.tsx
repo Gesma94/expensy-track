@@ -20,38 +20,19 @@ async function queryFn() {
   return getGqlClient().request(GetMyCategoriesDocument);
 }
 
-async function mutationFn(variables: DeleteCategoriesMutationVariables) {
-  return getGqlClient().request(DeleteCategoriesDocument, variables);
-}
-
 export const Categories = () => {
-  const { successToast } = useToast();
   const { data, error, isFetching, refetch } = useQuery({ queryKey: ['user-categories'], queryFn });
 
   const categoriesFragment = useFragment(MyCategoryFragmentDoc, data?.categories?.result);
-
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   const groupedCategories = useMemo(() => {
     return getGroupedCategories(categoriesFragment);
   }, [categoriesFragment]);
 
-  const categoriesCount =
-    groupedCategories.EXPANSE.length + groupedCategories.INCOME.length + groupedCategories.TRANSFER.length;
-
-  function handleDeleteCategoriesPress() {
-    setIsDialogOpen(true);
-  }
-
-  function handleCancel() {
-    setIsDialogOpen(false);
-  }
-
-  function onSuccess() {
+  function handleDeleteCategorySuccess() {
     refetch();
   }
 
-  function handleDeleteCategorySuccess() {
+  function handleEditCategorySuccess() {
     refetch();
   }
 
@@ -72,10 +53,18 @@ export const Categories = () => {
           </Panel>
 
           <Panel title='Expanse Categories'>
-            <CategoryList categories={groupedCategories.EXPANSE} onDeleteSuccess={handleDeleteCategorySuccess} />
+            <CategoryList
+              categories={groupedCategories.EXPANSE}
+              onDelete={handleDeleteCategorySuccess}
+              onEdit={handleEditCategorySuccess}
+            />
           </Panel>
           <Panel title='Incoma Categories'>
-            <CategoryList categories={groupedCategories.INCOME} onDeleteSuccess={handleDeleteCategorySuccess} />
+            <CategoryList
+              categories={groupedCategories.INCOME}
+              onDelete={handleDeleteCategorySuccess}
+              onEdit={handleEditCategorySuccess}
+            />
           </Panel>
         </div>
       </div>

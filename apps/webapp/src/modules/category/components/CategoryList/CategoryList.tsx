@@ -1,18 +1,16 @@
+import { Button } from '@components/ui/Button/Button';
 import { useState } from 'react';
-import type {
-  DeleteCategoriesMutation,
-  DeleteCategoriesMutationVariables,
-  MyCategoryFragment
-} from '../../../../gql/graphql';
+import type { MyCategoryFragment } from '../../../../gql/graphql';
 import { CategoryListElement } from '../CategoryListElement/CategoryListElement';
 import { DeleteCategoriesDialog } from '../DeleteCategoriesDialog/DeleteCategoriesDialog';
 
 type Props = {
+  onEdit: () => void;
+  onDelete: () => void;
   categories: MyCategoryFragment[];
-  onDeleteSuccess: (data: DeleteCategoriesMutation, variables: DeleteCategoriesMutationVariables) => void;
 };
 
-export const CategoryList = ({ categories, onDeleteSuccess }: Props) => {
+export const CategoryList = ({ categories, onDelete, onEdit }: Props) => {
   const [selectedCategories, setSelectedCategories] = useState<Map<string, MyCategoryFragment>>(new Map());
 
   function handleSelectionChange(category: MyCategoryFragment, isSelected: boolean) {
@@ -34,29 +32,17 @@ export const CategoryList = ({ categories, onDeleteSuccess }: Props) => {
     }
   }
 
+  function handleDeleteCategories() {
+    onDelete();
+    setSelectedCategories(new Map());
+  }
+
   function isSelected(categoryId: string) {
     return selectedCategories.has(categoryId);
   }
 
-  // const { mutateAsync } = useMutation({ mutationKey: ['delete-categories'], mutationFn, onSuccess });
-
-  // async function handleConfirm() {
-  //   await mutateAsync({ input: { ids: selectedCategories.map(category => category.id) } });
-  //   setIsDialogOpen(false);
-  //   cleanSelection();
-  //   successToast('Delete', `${selectedCategories.length} categories deleted correctly`);
-  // }
-
   return (
     <>
-      {/* <ConfirmDialog
-        isOpen={isDialogOpen}
-        confirmLabel='Delete'
-        heading='Delete categories'
-        message={`Are you sure you want to delete ${selectedCategories.length} categories?`}
-        onCancel={handleCancel}
-        onConfirm={handleConfirm}
-      /> */}
       <div className='flex flex-col'>
         <ul className='grid grid-cols-[auto_1fr_auto_auto] grid-flow-row'>
           {categories.map(category => (
@@ -65,12 +51,16 @@ export const CategoryList = ({ categories, onDeleteSuccess }: Props) => {
               category={category}
               isSelected={isSelected(category.id)}
               onSelectionChange={handleSelectionChange}
-              onDeleteSuccess={onDeleteSuccess}
+              onDelete={onDelete}
+              onEdit={onEdit}
             />
           ))}
         </ul>
-
-        <DeleteCategoriesDialog categoriesToDelete={selectedCategories} />
+        <DeleteCategoriesDialog onDelete={handleDeleteCategories} categoriesToDelete={selectedCategories}>
+          <Button isDisabled={selectedCategories.size === 0} className='mt-2 ml-auto'>
+            Delete selected
+          </Button>
+        </DeleteCategoriesDialog>
       </div>
     </>
   );

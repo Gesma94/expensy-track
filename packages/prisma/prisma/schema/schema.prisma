@@ -82,21 +82,23 @@ enum CurrencyCode {
 }
 
 model User {
-  id            String            @id @default(uuid())
-  provider      UserProvider
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  firstName     String            @unique
-  lastName      String            @unique
-  password      String?           @unique @db.VarChar(60)
-  firebase_uid  String?           @unique
-  email         String            @unique
-  wallets       Wallet[]
-  sharedWallets GuestsOnWallets[]
-  categories    Category[]
-  labels        Label[]
-  transactions  Transaction[]
-  budgets       Budget[]
+  id                  String                @id @default(uuid())
+  provider            UserProvider
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  firstName           String                @unique
+  lastName            String                @unique
+  password            String?               @unique @db.VarChar(60)
+  firebase_uid        String?               @unique
+  email               String                @unique
+  wallets             Wallet[]
+  sharedWallets       GuestsOnWallets[]
+  categories          Category[]
+  labels              Label[]
+  transactions        Transaction[]
+  budgets             Budget[]
+  budgetsOnCategories BudgetsOnCategories[]
+  budgetsOnWallets    BudgetsOnWallets[]
 }
 
 model Label {
@@ -121,6 +123,8 @@ model Category {
   userId       String
   transactions Transaction[]
   budgets      BudgetsOnCategories[]
+
+  @@unique([displayName, userId, type])
 }
 
 model Wallet {
@@ -166,10 +170,10 @@ model Transaction {
   date                DateTime               @db.Date
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
-  parentTransactionId String?                
+  parentTransactionId String?
   parentTransaction   Transaction?           @relation("subTransactions", fields: [parentTransactionId], references: [id])
   isParent            Boolean                @default(false)
-  subTransactions     Transaction[]          @relation("subTransactions") 
+  subTransactions     Transaction[]          @relation("subTransactions")
   userId              String
   user                User                   @relation(fields: [userId], references: [id])
   walletId            String
@@ -191,13 +195,13 @@ model LabelsOnTransactions {
 }
 
 model Budget {
-  id           String   @id @default(uuid())
-  amount       Float
-  displayName  String
-  userId       String
-  span         BudgetSpan
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id          String     @id @default(uuid())
+  amount      Float
+  displayName String
+  userId      String
+  span        BudgetSpan
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   user       User                  @relation(fields: [userId], references: [id])
   wallets    BudgetsOnWallets[]
@@ -211,6 +215,8 @@ model BudgetsOnWallets {
   wallet    Wallet   @relation(fields: [walletId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 
   @@id([budgetId, walletId])
 }
@@ -222,6 +228,8 @@ model BudgetsOnCategories {
   category   Category @relation(fields: [categoryId], references: [id])
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
 
   @@id([budgetId, categoryId])
 }

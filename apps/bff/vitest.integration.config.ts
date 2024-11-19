@@ -4,6 +4,9 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     hookTimeout: 10000,
+    coverage: {
+      provider: 'v8'
+    },
     setupFiles: './vitest.integration.setup.ts',
     include: ['./test/**/*.test.ts'],
     alias: {

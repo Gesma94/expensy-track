@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "clean": "rimraf dist",
-    "clean:codegen": "rimraf ./src/@types/graphql-generated.ts",
+    "clean:codegen": "rimraf ./src/gql",
     "dev": "tsx watch src/entry.ts",
     "start": "node dist/entry.js",
     "lint": "pnpm biome lint --write .",
@@ -23,7 +23,8 @@
     "#enums": "./src/common/enums",
     "#schemas": "./src/common/schemas",
     "#types": "./src/common/types",
-    "#utils": "./src/common/utils"
+    "#utils": "./src/common/utils",
+    "#gql": "./src/gql"
   },
   "dependencies": {
     "@expensy-track/common": "workspace:^",

@@ -12,7 +12,7 @@ import {
   startOfWeek,
   startOfYear
 } from 'date-fns';
-import type { DateTimeRange } from '../../../@types/graphql-generated.js';
+import type { DateTimeRange } from '#gql/graphql-generated.js';
 
 type ReturnType = {
   remainingSpan: number;

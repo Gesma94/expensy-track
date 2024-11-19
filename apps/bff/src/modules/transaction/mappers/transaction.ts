@@ -1,5 +1,5 @@
 import type { Transaction as TransactionPrisma } from '@expensy-track/prisma';
-import type { Transaction as TransactionGraphql } from '../../../@types/graphql-generated.js';
+import type { Transaction as TransactionGraphql } from '#gql/graphql-generated.js';
 
 export function TransactionToPrisma(transaction: TransactionGraphql | null): TransactionPrisma | null {
   if (transaction === null) {

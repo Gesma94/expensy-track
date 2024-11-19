@@ -1,5 +1,5 @@
 import type { MercuriusContext } from 'mercurius';
-import type { UserResolvers } from '../../../../@types/graphql-generated.js';
+import type { UserResolvers } from '#gql/graphql-generated.js';
 import { CategoryToGraphql } from '../../../category/graphql/mappers/category.js';
 
 export const userCategoriesFieldResolvers: UserResolvers<MercuriusContext>['categories'] = async (

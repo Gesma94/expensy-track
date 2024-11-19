@@ -1,11 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { gql } from 'graphql-request';
 import { describe, it } from 'vitest';
-import { CategoryIcon, CategoryType } from '../../../src/@types/graphql-generated.js';
-import type {
-  TestCreateCategoryMutation,
-  TestCreateCategoryMutationVariables
-} from '../../../src/@types/test-graphql-generated.js';
+import { CategoryIcon, CategoryType } from '#gql/graphql-generated.js';
+import type { TestCreateCategoryMutation, TestCreateCategoryMutationVariables } from '#gql/test-graphql-generated.js';
 import { type DbTestEnvironmentContext, setupDbTestEnvironment } from '../../setups/setup-db-test-environment.js';
 import { setGqlAuthTokens } from '../../setups/setup-gql-auth-tokens.js';
 

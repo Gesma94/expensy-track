@@ -1,6 +1,6 @@
+import type { Category as GqlCategory } from '#gql/graphql-generated.js';
 import type { MercuriusLoaderTyped } from '#types/graphql-loaders.js';
 import { Collection } from '#utils/collection.js';
-import type { Category as GqlCategory } from '../../../@types/graphql-generated.js';
 import { CategoryToGraphql } from '../../category/graphql/mappers/category.js';
 
 export const budgetCategoriesLoader: Required<MercuriusLoaderTyped>['Budget']['categories'] = async (

@@ -1,4 +1,4 @@
-import type { Resolvers } from '../../../@types/graphql-generated.js';
+import type { Resolvers } from '#gql/graphql-generated.js';
 import { userCategoriesFieldResolvers } from './field-resolvers/user-categories.js';
 import { queryUser } from './queries/query-user.js';
 

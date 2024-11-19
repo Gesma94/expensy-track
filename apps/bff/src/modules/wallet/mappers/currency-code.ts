@@ -1,5 +1,5 @@
 import { $Enums } from '@expensy-track/prisma';
-import { CurrencyCode } from '../../../@types/graphql-generated.js';
+import { CurrencyCode } from '#gql/graphql-generated.js';
 
 export function CurrencyCodeToPrisma(currencyCode: CurrencyCode): $Enums.CurrencyCode {
   switch (currencyCode) {

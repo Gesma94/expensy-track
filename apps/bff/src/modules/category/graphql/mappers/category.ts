@@ -1,5 +1,5 @@
 import type { Category as CategoryPrisma } from '@expensy-track/prisma';
-import type { Category as CategoryGraphql } from '../../../../@types/graphql-generated.js';
+import type { Category as CategoryGraphql } from '#gql/graphql-generated.js';
 import { CategoryIconToGraphql, CategoryIconToPrisma } from './category-icon.js';
 import { CategoryTypeToGraphql, CategoryTypeToPrisma } from './category-type.js';
 

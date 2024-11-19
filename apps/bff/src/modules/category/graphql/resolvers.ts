@@ -1,4 +1,4 @@
-import type { Resolvers } from '../../../@types/graphql-generated.js';
+import type { Resolvers } from '#gql/graphql-generated.js';
 import { mutationCreateCategory } from './mutations/create-category.js';
 import { mutationDeleteCategories } from './mutations/delete-categories.js';
 import { mutationEditCategory } from './mutations/edit-category.js';

@@ -1,6 +1,6 @@
+import type { Wallet as GqlWallet } from '#gql/graphql-generated.js';
 import type { MercuriusLoaderTyped } from '#types/graphql-loaders.js';
 import { Collection } from '#utils/collection.js';
-import type { Wallet as GqlWallet } from '../../../@types/graphql-generated.js';
 import { WalletToGraphql } from '../../wallet/mappers/wallet.js';
 
 export const budgetWalletsLoader: Required<MercuriusLoaderTyped>['Budget']['wallets'] = async (queries, context) => {

@@ -1,7 +1,7 @@
 import type { MercuriusContext } from 'mercurius';
+import type { MutationResolvers } from '#gql/graphql-generated.js';
 import { getGqlSuccessResponse } from '#utils/get-gql-success-response.js';
 import { getGqlUnauthorizedResponse } from '#utils/get-gql-unauthorized-response.js';
-import type { MutationResolvers } from '../../../@types/graphql-generated.js';
 import { CurrencyCodeToPrisma } from '../mappers/currency-code.js';
 import { WalletToGraphql } from '../mappers/wallet.js';
 

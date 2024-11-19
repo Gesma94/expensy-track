@@ -1,4 +1,4 @@
-import type { Resolvers } from '../../@types/graphql-generated.js';
+import type { Resolvers } from '#gql/graphql-generated.js';
 import { mutationCreateBudget } from './mutations/create-budget.js';
 import { mutationDeleteBudgets } from './mutations/delete-budets.js';
 import { queryBudgetSnapshot } from './queries/budget-snapshot.js';

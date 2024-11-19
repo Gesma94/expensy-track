@@ -1,5 +1,5 @@
+import type { Label as GraphqlLabel } from '#gql/graphql-generated.js';
 import type { MercuriusLoaderTyped } from '#types/graphql-loaders.js';
-import type { Label as GraphqlLabel } from '../../../@types/graphql-generated.js';
 import { LabelToGraphql } from '../../label/graphql/mappers/label-mapper.js';
 
 export const transactionLabelsLoader: Required<MercuriusLoaderTyped>['Transaction']['labels'] = async (

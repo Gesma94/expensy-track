@@ -1,5 +1,5 @@
 import type { Wallet as WalletPrisma } from '@expensy-track/prisma';
-import type { Wallet as WalletGraphql } from '../../../@types/graphql-generated.js';
+import type { Wallet as WalletGraphql } from '#gql/graphql-generated.js';
 import { CurrencyCodeToGraphql, CurrencyCodeToPrisma } from './currency-code.js';
 import { WalletIconToGraphql } from './wallet-icon.js';
 

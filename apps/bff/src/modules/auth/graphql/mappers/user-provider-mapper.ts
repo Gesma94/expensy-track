@@ -1,5 +1,5 @@
 import { $Enums } from '@expensy-track/prisma';
-import { UserProvider } from '../../../../@types/graphql-generated.js';
+import { UserProvider } from '#gql/graphql-generated.js';
 
 export function UserProviderToPrisma(userProvider: UserProvider): $Enums.UserProvider {
   switch (userProvider) {

@@ -1,5 +1,5 @@
 import type { MercuriusContext } from 'mercurius';
-import type { MutationResolvers } from '../../../../@types/graphql-generated.js';
+import type { MutationResolvers } from '#gql/graphql-generated.js';
 import { getGqlSuccessResponse } from '../../../../common/utils/get-gql-success-response.js';
 import { getGqlUnauthorizedResponse } from '../../../../common/utils/get-gql-unauthorized-response.js';
 import { CategoryIconToPrisma } from '../mappers/category-icon.js';

@@ -1,5 +1,5 @@
 import type { MercuriusContext } from 'mercurius';
-import { type QueryResolvers, UserErrorCode } from '../../../../@types/graphql-generated.js';
+import { type QueryResolvers, UserErrorCode } from '#gql/graphql-generated.js';
 import { UserToGraphql } from '../mappers/user-mapper.js';
 
 export const queryUser: QueryResolvers<MercuriusContext>['user'] = async (_parent, _args, contextValue) => {

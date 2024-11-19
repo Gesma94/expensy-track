@@ -1,5 +1,5 @@
 import type { User as UserPrisma } from '@expensy-track/prisma';
-import type { User as UserGraphql } from '../../../../@types/graphql-generated.js';
+import type { User as UserGraphql } from '#gql/graphql-generated.js';
 import { UserProviderToGraphql, UserProviderToPrisma } from './user-provider-mapper.js';
 
 export function UserToPrisma(user: UserGraphql | null): UserPrisma | null {

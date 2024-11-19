@@ -1,6 +1,6 @@
+import type { Transaction as GraphqlTransaction } from '#gql/graphql-generated.js';
 import type { MercuriusLoaderTyped } from '#types/graphql-loaders.js';
 import { NotNullOrUndefined } from '#utils/not-null-or-undefined.js';
-import type { Transaction as GraphqlTransaction } from '../../../@types/graphql-generated.js';
 import { TransactionToGraphql } from '../mappers/transaction.js';
 
 export const transactionSubTransactionsLoader: Required<MercuriusLoaderTyped>['Transaction']['subTransactions'] =

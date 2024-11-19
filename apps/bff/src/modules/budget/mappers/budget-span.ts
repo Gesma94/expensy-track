@@ -1,5 +1,5 @@
 import { $Enums } from '@expensy-track/prisma';
-import { BudgetSpan } from '../../../@types/graphql-generated.js';
+import { BudgetSpan } from '#gql/graphql-generated.js';
 
 export function BudgetSpanToPrisma(budgetSpan: BudgetSpan): $Enums.BudgetSpan {
   switch (budgetSpan) {

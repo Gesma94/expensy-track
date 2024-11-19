@@ -1,5 +1,5 @@
 import type { Budget as PrismaBudget } from '@expensy-track/prisma';
-import type { Budget as GraphqlBudget } from '../../../@types/graphql-generated.js';
+import type { Budget as GraphqlBudget } from '#gql/graphql-generated.js';
 import { BudgetSpanToGraphql, BudgetSpanToPrisma } from './budget-span.js';
 
 export function BudgetToGraphql(budget: PrismaBudget): GraphqlBudget {

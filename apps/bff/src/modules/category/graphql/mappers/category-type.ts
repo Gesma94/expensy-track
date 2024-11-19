@@ -1,5 +1,5 @@
 import { $Enums } from '@expensy-track/prisma';
-import { CategoryType } from '../../../../@types/graphql-generated.js';
+import { CategoryType } from '#gql/graphql-generated.js';
 
 export function CategoryTypeToPrisma(categoryType: CategoryType): $Enums.CategoryType {
   switch (categoryType) {

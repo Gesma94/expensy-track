@@ -1,7 +1,7 @@
 import type { Budget as PrismaBudget } from '@expensy-track/prisma';
 import type { MercuriusContext } from 'mercurius';
+import type { BudgetSnapshot } from '#gql/graphql-generated.js';
 import { NotNullOrUndefined } from '#utils/not-null-or-undefined.js';
-import type { BudgetSnapshot } from '../../../@types/graphql-generated.js';
 import { TransactionToGraphql } from '../../transaction/mappers/transaction.js';
 import { BudgetToGraphql } from '../mappers/budget.js';
 import { getBudgetCurrentSnapshotDateTimeRange } from './get-budget-current-snapshot-date-time-range.js';

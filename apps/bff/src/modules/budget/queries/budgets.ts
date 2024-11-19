@@ -1,7 +1,7 @@
 import type { MercuriusContext } from 'mercurius';
+import type { QueryResolvers } from '#gql/graphql-generated.js';
 import { getGqlSuccessResponse } from '#utils/get-gql-success-response.js';
 import { getGqlUnauthorizedResponse } from '#utils/get-gql-unauthorized-response.js';
-import type { QueryResolvers } from '../../../@types/graphql-generated.js';
 import { BudgetToGraphql } from '../mappers/budget.js';
 
 export const queryBudgets: QueryResolvers<MercuriusContext>['budgets'] = async (_parent, _args, contextValue) => {

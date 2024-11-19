@@ -10,7 +10,8 @@ export default defineConfig({
       '#enums': new URL('./src/common/enums', import.meta.url).pathname,
       '#schemas': new URL('./src/common/schemas', import.meta.url).pathname,
       '#types': new URL('./src/common/types', import.meta.url).pathname,
-      '#utils': new URL('./src/common/utils', import.meta.url).pathname
+      '#utils': new URL('./src/common/utils', import.meta.url).pathname,
+      '#gql': new URL('./src/gql', import.meta.url).pathname
     },
     server: {
       deps: {

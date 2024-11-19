@@ -1,5 +1,5 @@
 import { $Enums } from '@expensy-track/prisma';
-import { WalletIcon } from '../../../@types/graphql-generated.js';
+import { WalletIcon } from '#gql/graphql-generated.js';
 
 export function WalletIconToPrisma(categoryIcon: WalletIcon): $Enums.WalletIcon {
   switch (categoryIcon) {

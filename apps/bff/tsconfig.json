@@ -9,7 +9,8 @@
       "#enums/*": ["./src/common/enums/*"],
       "#schemas/*": ["./src/common/schemas/*"],
       "#types/*": ["./src/common/types/*"],
-      "#utils/*": ["./src/common/utils/*"]
+      "#utils/*": ["./src/common/utils/*"],
+      "#gql/*": ["./src/gql/*"]
     }
   },
   "include": ["graphql.codegen.ts", "./src", "./test"],

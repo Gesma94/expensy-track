@@ -1,8 +1,8 @@
 import type { MercuriusContext } from 'mercurius';
+import { GraphqlErrorCode, type MutationResolvers } from '#gql/graphql-generated.js';
 import { getGqlSuccessResponse } from '#utils/get-gql-success-response.js';
 import { getGqlUnauthorizedResponse } from '#utils/get-gql-unauthorized-response.js';
 import { getGqlUnsuccessResponse } from '#utils/get-gql-unsuccess-response.js';
-import { GraphqlErrorCode, type MutationResolvers } from '../../../@types/graphql-generated.js';
 import { TransactionToGraphql } from '../mappers/transaction.js';
 
 export const mutationCreateTransaction: MutationResolvers<MercuriusContext>['createTransaction'] = async (

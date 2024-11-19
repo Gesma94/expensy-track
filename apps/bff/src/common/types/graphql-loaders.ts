@@ -5,7 +5,7 @@ import type {
   ResolverWithResolve,
   Resolvers,
   ResolversParentTypes
-} from '../../@types/graphql-generated.js';
+} from '#gql/graphql-generated.js';
 
 type ExtractResolverReturnType<T> = T extends ResolverFn<infer TResult, infer _TParent, infer _TContext, infer _TArgs>
   ? NonNullable<TResult>

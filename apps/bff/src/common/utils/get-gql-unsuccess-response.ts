@@ -1,4 +1,4 @@
-import type { GraphqlErrorCode } from '../../@types/graphql-generated.js';
+import type { GraphqlErrorCode } from '#gql/graphql-generated.js';
 import type { GqlResponseType } from '../types/gql-response-type.js';
 
 export function getGqlUnsuccessResponse<T = unknown>(

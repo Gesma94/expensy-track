@@ -1,7 +1,7 @@
 import type { $Utils } from '@expensy-track/prisma';
 import type { ArrayValues } from 'type-fest';
+import type { Transaction as GraphqlTransaction } from '#gql/graphql-generated.js';
 import type { MercuriusLoaderTyped } from '#types/graphql-loaders.js';
-import type { Transaction as GraphqlTransaction } from '../../../@types/graphql-generated.js';
 import { TransactionToGraphql } from '../../transaction/mappers/transaction.js';
 
 export const walletTransactionsLoader: Required<MercuriusLoaderTyped>['Wallet']['transactions'] = async (

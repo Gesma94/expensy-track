@@ -1,5 +1,5 @@
 import type { Label as LabelPrisma } from '@expensy-track/prisma';
-import type { Label as LabelGraphql } from '../../../../@types/graphql-generated.js';
+import type { Label as LabelGraphql } from '#gql/graphql-generated.js';
 
 export function LabelToPrisma(label: LabelGraphql | null): LabelPrisma | null {
   if (label === null) {

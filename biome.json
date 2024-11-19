@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["**/dist", "**/node_modules", "apps/bff/src/@types/graphql-generated.ts", "apps/webapp/src/gql"]
+    "ignore": ["**/dist", "**/node_modules", "apps/bff/src/gql", "apps/webapp/src/gql"]
   },
   "formatter": {
     "enabled": true,

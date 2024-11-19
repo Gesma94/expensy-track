@@ -1,12 +1,14 @@
 import { execSync } from 'node:child_process';
 import { PostgreSqlContainer, type StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 import type { FastifyInstance } from 'fastify';
+import { createMercuriusTestClient } from 'mercurius-integration-testing';
 import { afterEach, beforeEach } from 'vitest';
 import { buildFastify } from '../../src/app.js';
 
 export type DbTestEnvironmentContext = {
   app: FastifyInstance;
   dbContainer: StartedPostgreSqlContainer;
+  mercuriusClient: ReturnType<typeof createMercuriusTestClient>;
 };
 
 export async function beforeEachSetupDbTestEnvironment(context: DbTestEnvironmentContext) {
@@ -22,6 +24,7 @@ export async function beforeEachSetupDbTestEnvironment(context: DbTestEnvironmen
     execSync('pnpm --filter prisma migrate:deploy', { env: { ...customEnvs } });
 
     context.app = await buildFastify({ customEnvs });
+    context.mercuriusClient = createMercuriusTestClient(context.app);
 
     await context.app.listen({ port: 0, host: '0.0.0.0' });
     await context.app.ready();

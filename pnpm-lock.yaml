@@ -123,6 +123,12 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
+      graphql-request:
+        specifier: ^7.1.2
+        version: 7.1.2(graphql@16.9.0)
+      mercurius-integration-testing:
+        specifier: ^9.0.0
+        version: 9.0.0(fastify@5.0.0)(graphql@16.9.0)(mercurius@15.0.0(graphql@16.9.0))
       pino-pretty:
         specifier: ^11.2.2
         version: 11.2.2
@@ -132,9 +138,6 @@ importers:
       tsx:
         specifier: ^4.19.1
         version: 4.19.1
-      vite-tsconfig-paths:
-        specifier: ^5.1.2
-        version: 5.1.2(typescript@5.6.3)(vite@5.4.10(@types/node@22.5.5))
       vitest:
         specifier: ^2.1.5
         version: 2.1.5(@types/node@22.5.5)
@@ -2751,6 +2754,10 @@ packages:
     resolution: {integrity: sha512-78KWk9T26NhzXtuL26cIJ8/qNHANyJ/ZYrmEXFzUmhZdjpBv+DlWlOANRTGBt48YcyslsLrj0bMLFTmXvLRCOw==}
     engines: {node: '>=6.6.0'}
 
+  cookie@0.5.0:
+    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
+    engines: {node: '>= 0.6'}
+
   cookie@0.6.0:
     resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
     engines: {node: '>= 0.6'}
@@ -3242,9 +3249,6 @@ packages:
   globby@11.1.0:
     resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
     engines: {node: '>=10'}
-
-  globrex@0.1.2:
-    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
 
   google-auth-library@9.14.1:
     resolution: {integrity: sha512-Rj+PMjoNFGFTmtItH7gHfbHpGVSb3vmnGK3nwNBqxQF9NoBpttSZI/rc0WiM63ma2uGDQtYEkMHkK9U6937NiA==}
@@ -3768,6 +3772,21 @@ packages:
   meow@12.1.1:
     resolution: {integrity: sha512-BhXM0Au22RwUneMPwSCnyhTOizdWoIEPU9sp0Aqa1PnDMR5Wv2FGXYDjuzJEIX+Eo2Rb8xuYe5jrnm5QowQFkw==}
     engines: {node: '>=16.10'}
+
+  mercurius-integration-testing@9.0.0:
+    resolution: {integrity: sha512-N2GRMPOZ2BjgnTUH3QKcv9INd3AXb7u7GYQQ8EeakBTqZ68PkWppM32RwNTRMKuxJblUBbTEOJ5diAwo0ETP9A==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@mercuriusjs/federation': ^1 || ^2
+      '@mercuriusjs/gateway': ^1.2.0
+      fastify: ^4.0.0 || ^5.0.0
+      graphql: '*'
+      mercurius: ^12 || ^13 || ^14 || ^15
+    peerDependenciesMeta:
+      '@mercuriusjs/federation':
+        optional: true
+      '@mercuriusjs/gateway':
+        optional: true
 
   mercurius@15.0.0:
     resolution: {integrity: sha512-Kb/EznlDZEJ4lztD1QfDp/01SiC8doO1cvlM6FfjiljL3LMCa40RIZxWVUZAl8KOnSEKBc940gmAxEFmgWBLvA==}
@@ -4753,16 +4772,6 @@ packages:
   ts-log@2.2.5:
     resolution: {integrity: sha512-PGcnJoTBnVGy6yYNFxWVNkdcAuAMstvutN9MgDJIV6L0oG8fB+ZNNy1T+wJzah8RPGor1mZuPQkVfXNDpy9eHA==}
 
-  tsconfck@3.1.4:
-    resolution: {integrity: sha512-kdqWFGVJqe+KGYvlSO9NIaWn9jT1Ny4oKVzAJsKii5eoE9snzTJzL4+MMVOMn+fikWGFmKEylcXL710V/kIPJQ==}
-    engines: {node: ^18 || >=20}
-    hasBin: true
-    peerDependencies:
-      typescript: ^5.0.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
@@ -4870,14 +4879,6 @@ packages:
     resolution: {integrity: sha512-rd0QIgx74q4S1Rd56XIiL2cYEdyWn13cunYBIuqh9mpmQr7gGS0IxXoP8R6OaZtNQQLyXSWbd4rXKYUbhFpK5w==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
-
-  vite-tsconfig-paths@5.1.2:
-    resolution: {integrity: sha512-gEIbKfJzSEv0yR3XS2QEocKetONoWkbROj6hGx0FHM18qKUojhvcokQsxQx5nMkelZq2n37zbSGCJn+FSODSjA==}
-    peerDependencies:
-      vite: '*'
-    peerDependenciesMeta:
-      vite:
-        optional: true
 
   vite@5.4.10:
     resolution: {integrity: sha512-1hvaPshuPUtxeQ0hsVH3Mud0ZanOLwVTneA1EgbAM5LhaZEqyPWGRQ7BtaMvUrTDeEaC8pxtj6a6jku3x4z6SQ==}
@@ -8446,6 +8447,8 @@ snapshots:
 
   cookie-signature@1.2.1: {}
 
+  cookie@0.5.0: {}
+
   cookie@0.6.0: {}
 
   core-util-is@1.0.3: {}
@@ -9045,8 +9048,6 @@ snapshots:
       merge2: 1.4.1
       slash: 3.0.0
 
-  globrex@0.1.2: {}
-
   google-auth-library@9.14.1:
     dependencies:
       base64-js: 1.5.1
@@ -9624,6 +9625,18 @@ snapshots:
   map-cache@0.2.2: {}
 
   meow@12.1.1: {}
+
+  mercurius-integration-testing@9.0.0(fastify@5.0.0)(graphql@16.9.0)(mercurius@15.0.0(graphql@16.9.0)):
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.9.0)
+      cookie: 0.5.0
+      fastify: 5.0.0
+      graphql: 16.9.0
+      mercurius: 15.0.0(graphql@16.9.0)
+      ws: 8.18.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   mercurius@15.0.0(graphql@16.9.0):
     dependencies:
@@ -10748,10 +10761,6 @@ snapshots:
 
   ts-log@2.2.5: {}
 
-  tsconfck@3.1.4(typescript@5.6.3):
-    optionalDependencies:
-      typescript: 5.6.3
-
   tslib@2.6.3: {}
 
   tslib@2.7.0: {}
@@ -10844,17 +10853,6 @@ snapshots:
       - sugarss
       - supports-color
       - terser
-
-  vite-tsconfig-paths@5.1.2(typescript@5.6.3)(vite@5.4.10(@types/node@22.5.5)):
-    dependencies:
-      debug: 4.3.7
-      globrex: 0.1.2
-      tsconfck: 3.1.4(typescript@5.6.3)
-    optionalDependencies:
-      vite: 5.4.10(@types/node@22.5.5)
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
 
   vite@5.4.10(@types/node@22.5.5):
     dependencies:

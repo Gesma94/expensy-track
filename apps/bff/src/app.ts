@@ -3,7 +3,6 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import autoLoad from '@fastify/autoload';
 import Fastify from 'fastify';
-import { minimatch } from 'minimatch';
 import type { FastifyBuildOptions } from './common/types/fastify-build-options.js';
 import { getFastifyLogger } from './common/utils/get-fastify-logger.js';
 import authenticateRoute from './modules/auth/routes/authenticate.js';

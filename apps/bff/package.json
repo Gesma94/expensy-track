@@ -48,8 +48,6 @@
     "graphql": "^16.9.0",
     "graphql-scalars": "^1.23.0",
     "mercurius": "^15.0.0",
-    "minimatch": "^10.0.1",
-    "testcontainers": "^10.14.0",
     "type-fest": "^4.26.1"
   },
   "devDependencies": {

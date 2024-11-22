@@ -1,3 +1,4 @@
+import { Prisma, PrismaClient, PrismaErrorCode } from '@expensy-track/prisma';
 import type { MercuriusContext } from 'mercurius';
 import { GraphqlErrorCode, type MutationResolvers } from '#gql/graphql-generated.js';
 import { getGqlUnsuccessResponse } from '#utils/get-gql-unsuccess-response.js';
@@ -26,9 +27,17 @@ export const mutationEditCategory: MutationResolvers<MercuriusContext>['editCate
 
     return getGqlSuccessResponse(CategoryToGraphql(updatedCategory));
   } catch (error) {
-    const errorMessage = `could not update category with id ${id} from user ${contextValue.user.id}`;
+    let gqlErrorCode = GraphqlErrorCode.OperationFailed;
+    let errorMessage = `could not update category with id ${id} from user ${contextValue.user.id}`;
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === PrismaErrorCode.RECORDS_NOT_FOUND) {
+        gqlErrorCode = GraphqlErrorCode.EntityNotFound;
+        errorMessage = `category ${id} not found`;
+      }
+    }
 
     contextValue.app.log.error(error, errorMessage);
-    return getGqlUnsuccessResponse(GraphqlErrorCode.OperationFailed, errorMessage);
+    return getGqlUnsuccessResponse(gqlErrorCode, errorMessage);
   }
 };

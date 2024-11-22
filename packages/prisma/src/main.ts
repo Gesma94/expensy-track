@@ -1,4 +1,4 @@
-import { $Enums, PrismaClient } from '@prisma/client';
+import { $Enums, Prisma, PrismaClient } from '@prisma/client';
 import type {
   Budget,
   BudgetsOnCategories,
@@ -7,11 +7,11 @@ import type {
   GuestsOnWallets,
   Label,
   LabelsOnTransactions,
-  Prisma,
   Transaction,
   User,
   Wallet
 } from '@prisma/client';
+import { PrismaErrorCode } from './prisma-error-code.js';
 
 export type {
   Category,
@@ -25,7 +25,7 @@ export type {
   Transaction,
   Wallet
 };
-export { PrismaClient, $Enums };
+export { PrismaClient, $Enums, Prisma, PrismaErrorCode };
 
 export namespace $Utils {
   export type Models = keyof typeof Prisma.ModelName;

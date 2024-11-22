@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit",
     "build": "pnpm run clean && tsc --project tsconfig.prod.json",
     "test": "vitest",
-    "test:integration": "vitest --config ./configs/vitest.integration.config.ts",
+    "test:integration": "vitest --config ./vitest.integration.config.ts",
     "graphql-codegen": "pnpm run clean:codegen && npx graphql-code-generator --config ./graphql.codegen.ts"
   },
   "keywords": [],

@@ -14,7 +14,7 @@ CREATE TYPE "WalletIcon" AS ENUM ('CREDIT_CARD', 'CONTACTLESS', 'WALLET', 'CARDH
 CREATE TYPE "TransactionFrequency" AS ENUM ('ONE_DAY', 'TWO_DAYS', 'WEEKDAYS', 'HOLIDAYS', 'ONE_WEEK', 'TWO_WEEK', 'FOUR_WEEK', 'ONE_MONTH', 'TWO_MONTHS', 'THREE_MONTHS', 'SIX_MONTHS', 'ONE_YEAR');
 
 -- CreateEnum
-CREATE TYPE "BudgetSpan" AS ENUM ('ONCE', 'DAILY', 'WEEKLY', 'MONTHLY', 'ANNUAL');
+CREATE TYPE "BudgetSpan" AS ENUM ('DAILY', 'WEEKLY', 'MONTHLY', 'ANNUAL');
 
 -- CreateEnum
 CREATE TYPE "CurrencyCode" AS ENUM ('EUR', 'USD', 'GBP');
@@ -121,7 +121,6 @@ CREATE TABLE "Budget" (
     "displayName" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "span" "BudgetSpan" NOT NULL,
-    "startingDate" DATE NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -134,6 +133,7 @@ CREATE TABLE "BudgetsOnWallets" (
     "walletId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "BudgetsOnWallets_pkey" PRIMARY KEY ("budgetId","walletId")
 );
@@ -144,6 +144,7 @@ CREATE TABLE "BudgetsOnCategories" (
     "categoryId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "BudgetsOnCategories_pkey" PRIMARY KEY ("budgetId","categoryId")
 );
@@ -162,6 +163,9 @@ CREATE UNIQUE INDEX "User_firebase_uid_key" ON "User"("firebase_uid");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Category_displayName_userId_type_key" ON "Category"("displayName", "userId", "type");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Wallet_id_displayName_key" ON "Wallet"("id", "displayName");
@@ -215,7 +219,13 @@ ALTER TABLE "BudgetsOnWallets" ADD CONSTRAINT "BudgetsOnWallets_budgetId_fkey" F
 ALTER TABLE "BudgetsOnWallets" ADD CONSTRAINT "BudgetsOnWallets_walletId_fkey" FOREIGN KEY ("walletId") REFERENCES "Wallet"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "BudgetsOnWallets" ADD CONSTRAINT "BudgetsOnWallets_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "BudgetsOnCategories" ADD CONSTRAINT "BudgetsOnCategories_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "Budget"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "BudgetsOnCategories" ADD CONSTRAINT "BudgetsOnCategories_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BudgetsOnCategories" ADD CONSTRAINT "BudgetsOnCategories_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -16,20 +16,25 @@ export const mutationDeleteCategories: MutationResolvers<MercuriusContext>['dele
     return getGqlUnauthorizedResponse();
   }
 
-  const result = await contextValue.app.prisma.$transaction(async tx => {
-    await tx.transaction.updateMany({
-      where: { userId: user.id, categoryId: { in: ids } },
-      data: { categoryId: null }
+  try {
+    const result = await contextValue.app.prisma.$transaction(async tx => {
+      await tx.transaction.updateMany({
+        where: { userId: user.id, categoryId: { in: ids } },
+        data: { categoryId: null }
+      });
+
+      await tx.budgetsOnCategories.deleteMany({
+        where: { userId: user.id, categoryId: { in: ids } }
+      });
+
+      return await tx.category.deleteMany({ where: { userId: user.id, id: { in: ids } } });
     });
 
-    await tx.budgetsOnCategories.deleteMany({
-      where: { userId: user.id, categoryId: { in: ids } }
-    });
-
-    return await contextValue.app.prisma.category.deleteMany({ where: { userId: user.id, id: { in: ids } } });
-  });
-
-  return result
-    ? getGqlSuccessResponse(result.count)
-    : getGqlUnsuccessResponse(GraphqlErrorCode.DeleteManyFailed, 'could not delete categories from database');
+    return result
+      ? getGqlSuccessResponse(result.count)
+      : getGqlUnsuccessResponse(GraphqlErrorCode.OperationFailed, 'could not delete categories from database');
+  } catch (error) {
+    contextValue.app.log.error(error);
+    return getGqlUnsuccessResponse(GraphqlErrorCode.OperationFailed, 'could not delete categories from database');
+  }
 };

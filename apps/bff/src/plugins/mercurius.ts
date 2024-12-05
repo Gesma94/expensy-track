@@ -66,7 +66,7 @@ export default fp(
       schema,
       context: buildContext,
       loaders: { ...transactionLoaders, ...walletLoaders, ...budgetLoaders },
-      graphiql: fastify.env.NODE_ENV === 'development'
+      graphiql: fastify.env.NODE_ENV === 'development' || fastify.env.NODE_ENV === 'e2e'
     });
 
     done();

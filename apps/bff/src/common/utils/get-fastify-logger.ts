@@ -14,6 +14,7 @@ export function getFastifyLogger(nodeEnv: string | undefined): PinoLoggerOptions
           target: 'pino-pretty'
         }
       };
+    case 'e2e':
     case 'production':
       return {
         level,

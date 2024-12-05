@@ -5,6 +5,7 @@ export function getLogLevel(nodeEnv: string | undefined): LogLevel {
     case 'test':
       return 'warn';
     case 'development':
+    case 'e2e':
       return 'debug';
     case 'production':
       return 'info';

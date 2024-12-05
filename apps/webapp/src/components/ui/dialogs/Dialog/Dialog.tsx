@@ -9,7 +9,7 @@ import { twMerge } from 'tailwind-merge';
 
 type Props = Omit<ComponentProps<typeof AriaModalOverlay>, 'children' | 'className'> & {
   children: DialogProps['children'];
-  className: DialogProps['className'];
+  className?: DialogProps['className'];
 };
 
 export function Dialog({ children, className, ...modalOverlayProps }: Props) {

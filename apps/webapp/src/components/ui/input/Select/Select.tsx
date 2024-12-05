@@ -9,8 +9,7 @@ import {
   Select as AriaSelect,
   type SelectProps as AriaSelectProps,
   SelectValue as AriaSelectValue,
-  type ListBoxItemProps,
-  type SelectRenderProps
+  type ListBoxItemProps
 } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 

@@ -7,7 +7,7 @@ import { useFragment } from '../../../../gql';
 import { BudgetsPageBudgetSnapshotFragmentDoc } from '../../../../gql/graphql';
 
 export function Budgets() {
-  const { data, error, isFetching, refetch } = useQuery({
+  const { data, error, isFetching } = useQuery({
     queryKey: ['user-budgets-snapshot'],
     queryFn: GetBudgetsSnapshot
   });

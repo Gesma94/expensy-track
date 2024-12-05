@@ -15,10 +15,8 @@ import { z } from 'zod';
 import { useFragment } from '../../../../gql';
 import {
   BudgetSpan,
-  CategoryType,
   type MyCategoryFragment,
   MyCategoryFragmentDoc,
-  type MyWalletFragment,
   type WalletKeyValueFragmentFragment,
   WalletKeyValueFragmentFragmentDoc
 } from '../../../../gql/graphql';
@@ -35,7 +33,7 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export function CreateBudget() {
   const { successToast, errorToast } = useToast();
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['create-budget-deps'],
     queryFn: () => GetCreateBudgetDeps()
   });

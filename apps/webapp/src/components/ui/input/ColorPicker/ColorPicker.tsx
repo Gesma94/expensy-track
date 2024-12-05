@@ -1,10 +1,7 @@
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
-import { type ComponentProps, forwardRef, useState } from 'react';
+import { type ComponentProps, forwardRef } from 'react';
 import {
   ColorPicker as AriaColorPicker,
-  Input as AriaInput,
-  Label as AriaLabel,
-  TextField as AriaTextField,
   Button,
   type Color,
   ColorArea,
@@ -15,13 +12,10 @@ import {
   ColorThumb,
   Dialog,
   DialogTrigger,
-  FieldError,
   Input,
   Label,
   Popover,
-  SliderOutput,
-  SliderTrack,
-  parseColor
+  SliderTrack
 } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 

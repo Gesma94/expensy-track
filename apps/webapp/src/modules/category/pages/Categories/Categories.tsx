@@ -1,17 +1,10 @@
 import { Panel } from '@components/layout/Panel/Panel';
 import { Heading } from '@components/ui/Heading/Heading';
-import { ConfirmDialog } from '@components/ui/dialogs/ConfirmDialog/ConfirmDialog';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
-import { useToast } from '@modules/toast/hooks/useToast';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { useFragment } from '../../../../gql';
-import {
-  DeleteCategoriesDocument,
-  type DeleteCategoriesMutationVariables,
-  GetMyCategoriesDocument,
-  MyCategoryFragmentDoc
-} from '../../../../gql/graphql';
+import { GetMyCategoriesDocument, MyCategoryFragmentDoc } from '../../../../gql/graphql';
 import { CategoryList } from '../../components/CategoryList/CategoryList';
 import { CreateCategoryForm } from '../../components/CreateCategoryForm/CreateCategoryForm';
 import { getGroupedCategories } from '../../utils/getGroupedCategories';
@@ -21,7 +14,7 @@ async function queryFn() {
 }
 
 export const Categories = () => {
-  const { data, error, isFetching, refetch } = useQuery({ queryKey: ['user-categories'], queryFn });
+  const { data, refetch } = useQuery({ queryKey: ['user-categories'], queryFn });
 
   const categoriesFragment = useFragment(MyCategoryFragmentDoc, data?.categories?.result);
   const groupedCategories = useMemo(() => {

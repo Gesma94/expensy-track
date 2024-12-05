@@ -11,7 +11,7 @@
     "lint": "pnpm biome lint --write .",
     "format": "pnpm biome format --write .",
     "typecheck": "tsc --noEmit",
-    "build": "pnpm run clean && tsc --project tsconfig.prod.json",
+    "build": "pnpm run clean && tsc --project tsconfig.prod.json  && tsc-alias --project tsconfig.prod.json && copyfiles -u 1 src/**/*.graphql dist",
     "test": "vitest",
     "test:integration": "vitest --config ./vitest.integration.config.ts",
     "graphql-codegen": "pnpm run clean:codegen && npx graphql-code-generator --config ./graphql.codegen.ts"
@@ -57,11 +57,13 @@
     "@testcontainers/postgresql": "^10.14.0",
     "@types/bcrypt": "^5.0.2",
     "@vitest/coverage-v8": "^2.1.5",
+    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "graphql-request": "^7.1.2",
     "mercurius-integration-testing": "^9.0.0",
     "pino-pretty": "^11.2.2",
     "rimraf": "^6.0.1",
+    "tsc-alias": "^1.8.10",
     "tsx": "^4.19.1",
     "vitest": "^2.1.5"
   }

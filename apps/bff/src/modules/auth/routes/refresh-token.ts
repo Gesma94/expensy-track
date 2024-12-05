@@ -18,9 +18,9 @@ const refreshTokenRoute: FastifyPluginAsync = async fastify => {
 
     if (!refreshToken) {
       return reply.status(401).send({
-        code: ErrorCode.ET_InvalidRefreshToken,
-        message: 'Invalid refresh token was found in request.cookies',
-        name: 'InvalidRefreshToken',
+        code: ErrorCode.ET_UserUnauthorized,
+        message: 'User is not authenticated',
+        name: 'UserUnauthorized',
         statusCode: 401
       });
     }
@@ -32,9 +32,9 @@ const refreshTokenRoute: FastifyPluginAsync = async fastify => {
       fastify.log.error(error, 'invalid refresh token in request cookies');
 
       return reply.status(401).send({
-        code: ErrorCode.ET_InvalidRefreshToken,
-        message: 'Invalid refresh token was found in request.cookies',
-        name: 'InvalidRefreshToken',
+        code: ErrorCode.ET_UserUnauthorized,
+        message: 'User is not authenticated',
+        name: 'UserUnauthorized',
         statusCode: 401
       });
     }

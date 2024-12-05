@@ -6,7 +6,8 @@
     "prepare": "husky",
     "test": "pnpm recursive run test",
     "lint": "pnpm biome lint --write .",
-    "format": "pnpm biome format --write ."
+    "format": "pnpm biome format --write .",
+    "docker:e2e:up": "docker compose -f docker-compose.e2e.yml down && docker compose -f docker-compose.e2e.yml build && docker compose -f docker-compose.e2e.yml up -d"
   },
   "author": "Matteo Gesmundo",
   "license": "AGPL-3.0-only",

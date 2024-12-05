@@ -10,6 +10,7 @@
     "lint": "pnpm biome lint --write .",
     "format": "pnpm biome format --write .",
     "preview": "vite preview",
+    "test:e2e": "playwright test",
     "graphql-codegen": "pnpm run clean:codegen && npx graphql-code-generator --config ./graphql.codegen.ts"
   },
   "dependencies": {
@@ -43,13 +44,16 @@
     "@graphql-codegen/cli": "^5.0.3",
     "@graphql-codegen/client-preset": "^4.4.0",
     "@graphql-typed-document-node/core": "^3.2.0",
+    "@playwright/test": "^1.49.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/wait-on": "^5.3.4",
     "@vitejs/plugin-react": "^4.3.3",
     "globals": "^15.11.0",
     "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3",
-    "vite": "^5.4.10"
+    "vite": "^5.4.10",
+    "wait-on": "^8.0.1"
   }
 }

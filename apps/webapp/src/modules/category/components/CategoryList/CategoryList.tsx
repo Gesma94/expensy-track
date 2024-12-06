@@ -43,7 +43,7 @@ export const CategoryList = ({ categories, onDelete, onEdit }: Props) => {
 
   return (
     <>
-      <div className='flex flex-col'>
+      <div className='h-full flex flex-col gap-2'>
         <ul className='grid grid-cols-[auto_1fr_auto_auto] grid-flow-row'>
           {categories.map(category => (
             <CategoryListElement
@@ -57,7 +57,7 @@ export const CategoryList = ({ categories, onDelete, onEdit }: Props) => {
           ))}
         </ul>
         <DeleteCategoriesDialog onDelete={handleDeleteCategories} categoriesToDelete={selectedCategories}>
-          <Button isDisabled={selectedCategories.size === 0} className='mt-2 ml-auto'>
+          <Button size='small' isDisabled={selectedCategories.size === 0} className='mt-auto ml-auto'>
             Delete selected
           </Button>
         </DeleteCategoriesDialog>

@@ -1,8 +1,11 @@
 import { Panel } from '@components/layout/Panel/Panel';
+import { Button } from '@components/ui/Button/Button';
 import { Heading } from '@components/ui/Heading/Heading';
+import { Text } from '@components/ui/Text/Text';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import { PiPlus } from 'react-icons/pi';
 import { useFragment } from '../../../../gql';
 import { GetMyCategoriesDocument, MyCategoryFragmentDoc } from '../../../../gql/graphql';
 import { CategoryList } from '../../components/CategoryList/CategoryList';
@@ -34,32 +37,39 @@ export const Categories = () => {
   }
   return (
     <>
-      <div className='w-full max-w-7xl mx-auto pt-14 px-4 md:px-10'>
-        <Heading level={1} className='text-4xl'>
-          Category
-        </Heading>
-        <p className='mb-10'>Manage your categories</p>
+      <div className='w-full max-w-6xl mx-auto pt-14 px-4 md:px-10'>
+        <section className='grid grid-cols-[1fr_auto] grid-rows-[auto_auto]'>
+          <Heading level={1} className='col-start-1 row-start-1 text-2xl text-eerie-black'>
+            Categories
+          </Heading>
+          <Text className='col-start-1 row-start-2 font-medium text-lg text-independence'>
+            Manage your spending and income categories
+          </Text>
+          <div className='col-start-2 row-start-1 row-span-2 self-end'>
+            <Button variant='primary' iconBefore={PiPlus}>
+              Create a new category
+            </Button>
+          </div>
+        </section>
 
-        <div className='grid gap-8 grid-cols-1 md:grid-cols-2'>
-          <Panel title='Create category' className='md:col-span-2'>
-            <CreateCategoryForm onSuccess={handleCreateCategorySuccess} />
-          </Panel>
-
-          <Panel title='Expanse Categories'>
-            <CategoryList
-              categories={groupedCategories.EXPANSE}
-              onDelete={handleDeleteCategorySuccess}
-              onEdit={handleEditCategorySuccess}
-            />
-          </Panel>
-          <Panel title='Incoma Categories'>
-            <CategoryList
-              categories={groupedCategories.INCOME}
-              onDelete={handleDeleteCategorySuccess}
-              onEdit={handleEditCategorySuccess}
-            />
-          </Panel>
-        </div>
+        <section className='mt-8'>
+          <div className='grid grid-cols-2 gap-4'>
+            <Panel title='Expanse Categories'>
+              <CategoryList
+                categories={groupedCategories.EXPANSE}
+                onDelete={handleDeleteCategorySuccess}
+                onEdit={handleEditCategorySuccess}
+              />
+            </Panel>
+            <Panel title='Income categories'>
+              <CategoryList
+                categories={groupedCategories.INCOME}
+                onDelete={handleDeleteCategorySuccess}
+                onEdit={handleEditCategorySuccess}
+              />
+            </Panel>
+          </div>
+        </section>
       </div>
     </>
   );

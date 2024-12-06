@@ -7,6 +7,7 @@ export function getFastifyLogger(nodeEnv: string | undefined): PinoLoggerOptions
   switch (nodeEnv) {
     case 'test':
     case 'development':
+    case 'e2e':
       return {
         level,
         enabled: true,
@@ -14,7 +15,6 @@ export function getFastifyLogger(nodeEnv: string | undefined): PinoLoggerOptions
           target: 'pino-pretty'
         }
       };
-    case 'e2e':
     case 'production':
       return {
         level,

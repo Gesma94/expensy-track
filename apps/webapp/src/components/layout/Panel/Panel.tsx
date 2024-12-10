@@ -1,3 +1,4 @@
+import { Heading } from '@components/ui/Heading/Heading';
 import type { PropsWithChildren } from 'react';
 import { twMerge } from 'tailwind-merge';
 
@@ -7,9 +8,11 @@ type Props = {
 };
 export function Panel({ title, className, children }: PropsWithChildren<Props>) {
   return (
-    <div className={twMerge('flex flex-col md:bg-white md:px-8 md:py-6 md:rounded-3xl', className)}>
-      <p className='text-2xl font-extralight text-black'>{title}</p>
-      <div className='mt-2 grow'>{children}</div>
-    </div>
+    <section className={twMerge('flex flex-col bg-white p-6 rounded-lg', className)}>
+      <Heading level={3} className='text-eerie-black text-lg font-semibold'>
+        {title}
+      </Heading>
+      <div className='mt-6 grow'>{children}</div>
+    </section>
   );
 }

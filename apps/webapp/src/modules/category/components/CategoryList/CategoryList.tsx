@@ -1,4 +1,5 @@
 import { Button } from '@components/ui/Button/Button';
+import { Text } from '@components/ui/Text/Text';
 import { useState } from 'react';
 import type { MyCategoryFragment } from '../../../../gql/graphql';
 import { CategoryListElement } from '../CategoryListElement/CategoryListElement';
@@ -43,8 +44,8 @@ export const CategoryList = ({ categories, onDelete, onEdit }: Props) => {
 
   return (
     <>
-      <div className='h-full flex flex-col gap-2'>
-        <ul className='grid grid-cols-[auto_1fr_auto_auto] grid-flow-row'>
+      <div className='h-full grid grid-rows-[1fr_auto]'>
+        <ul className='row-start-1 flex flex-col gap-2'>
           {categories.map(category => (
             <CategoryListElement
               key={category.id}
@@ -56,11 +57,17 @@ export const CategoryList = ({ categories, onDelete, onEdit }: Props) => {
             />
           ))}
         </ul>
-        <DeleteCategoriesDialog onDelete={handleDeleteCategories} categoriesToDelete={selectedCategories}>
-          <Button size='small' isDisabled={selectedCategories.size === 0} className='mt-auto ml-auto'>
-            Delete selected
-          </Button>
-        </DeleteCategoriesDialog>
+
+        <div className='mt-14 flex justify-between items-center gap-3'>
+          <Text className='font-medium text-independence text-sm'>
+            {selectedCategories.size}/{categories.length} Selected
+          </Text>
+          <DeleteCategoriesDialog onDelete={handleDeleteCategories} categoriesToDelete={selectedCategories}>
+            <Button size='small' isDisabled={selectedCategories.size === 0}>
+              Delete selected
+            </Button>
+          </DeleteCategoriesDialog>
+        </div>
       </div>
     </>
   );

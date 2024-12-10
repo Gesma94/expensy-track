@@ -54,7 +54,7 @@ export const Categories = () => {
 
         <section className='mt-8'>
           <div className='grid grid-cols-2 gap-4'>
-            <Panel title='Expanse Categories'>
+            <Panel title='Spending Categories'>
               <CategoryList
                 categories={groupedCategories.EXPANSE}
                 onDelete={handleDeleteCategorySuccess}

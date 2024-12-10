@@ -14,7 +14,8 @@ export default {
       'celtic-blue': '#145DDA',
       'alice-blue': '#E9F1FF',
       'ghost-white': '#F7FBFF',
-      'lavender-blue': '#B8D2FF'
+      'lavender-blue': '#B8D2FF',
+      rhythm: '#77778F'
     },
     extend: {
       height: {

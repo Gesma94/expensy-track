@@ -4,7 +4,7 @@ import { Navbar } from '../Navbar/Navbar';
 export function PageWithNavbar() {
   return (
     <div className='min-h-screen w-full md:bg-alice-blue flex'>
-      <div className='hidden shrink-0 overflow-hidden md:block md:w-20 lg:w-64'>
+      <div className='hidden shrink-0 overflow-hidden md:block'>
         <Navbar />
       </div>
 

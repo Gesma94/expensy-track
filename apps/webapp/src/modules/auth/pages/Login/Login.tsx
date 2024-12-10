@@ -72,7 +72,13 @@ export function Login() {
         {formState.errors.email && <span>{formState.errors.email.message}</span>}
 
         <label htmlFor='password-input'>password</label>
-        <input id='password-input' {...register('password')} defaultValue={''} placeholder='your password' />
+        <input
+          id='password-input'
+          {...register('password')}
+          type='password'
+          defaultValue={''}
+          placeholder='your password'
+        />
         {formState.errors.password && <span>{formState.errors.password.message}</span>}
 
         <button type='submit'>Login</button>

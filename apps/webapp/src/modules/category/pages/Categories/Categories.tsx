@@ -2,9 +2,11 @@ import { Panel } from '@components/layout/Panel/Panel';
 import { Button } from '@components/ui/Button/Button';
 import { Heading } from '@components/ui/Heading/Heading';
 import { Text } from '@components/ui/Text/Text';
+import { Drawer } from '@components/ui/dialogs/Drawer/Drawer';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import { DialogTrigger } from 'react-aria-components';
 import { PiPlus } from 'react-icons/pi';
 import { useFragment } from '../../../../gql';
 import { GetMyCategoriesDocument, MyCategoryFragmentDoc } from '../../../../gql/graphql';
@@ -46,9 +48,12 @@ export const Categories = () => {
             Manage your spending and income categories
           </Text>
           <div className='col-start-2 row-start-1 row-span-2 self-end'>
-            <Button variant='primary' iconBefore={PiPlus}>
-              Create a new category
-            </Button>
+            <DialogTrigger>
+              <Button variant='primary' iconBefore={PiPlus}>
+                Create a new category
+              </Button>
+              <Drawer>something inside</Drawer>
+            </DialogTrigger>
           </div>
         </section>
 

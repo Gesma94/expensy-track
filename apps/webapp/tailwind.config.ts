@@ -21,7 +21,7 @@ export default {
     },
     extend: {
       height: {
-        input: '2.5rem'
+        input: '3.125rem'
       },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],

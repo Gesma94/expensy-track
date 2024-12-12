@@ -85,8 +85,6 @@ function DialogTriggerContent({ categoryToEdit, onEdit }: Props) {
     errorToast('error', 'couldnt edit category');
   }
 
-  console.log(formState);
-
   return (
     <>
       {isPending && <LoadingModal message={false} isTransparent={true} />}

@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import { type VariantProps, tv } from 'tailwind-variants';
 
 const buttonStyle = tv({
-  base: 'flex items-center font-medium',
+  base: 'flex items-center font-medium justify-center',
   variants: {
     variant: {
       ghost: '',
@@ -20,6 +20,10 @@ const buttonStyle = tv({
     },
     isDisabled: {
       true: 'bg-cultured text-metallic-silver',
+      false: ''
+    },
+    fullWidth: {
+      true: 'w-full',
       false: ''
     }
   },
@@ -43,7 +47,16 @@ type Props = VariantProps<typeof buttonStyle> &
   };
 
 export const Button = forwardRef<HTMLButtonElement, Props>(function _Button(
-  { className, variant = 'default', size = 'default', isDisabled = false, children, iconBefore, ...otherProps },
+  {
+    className,
+    variant = 'default',
+    size = 'default',
+    fullWidth = false,
+    isDisabled = false,
+    children,
+    iconBefore,
+    ...otherProps
+  },
   ref
 ) {
   function getAriaClassName(values: ButtonRenderProps & { defaultClassName: string | undefined }) {
@@ -55,7 +68,7 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function _Button(
       ref={ref}
       isDisabled={isDisabled}
       {...otherProps}
-      className={values => twMerge(buttonStyle({ variant, isDisabled, size }), getAriaClassName(values))}
+      className={values => twMerge(buttonStyle({ variant, isDisabled, size, fullWidth }), getAriaClassName(values))}
     >
       {values => (
         <>

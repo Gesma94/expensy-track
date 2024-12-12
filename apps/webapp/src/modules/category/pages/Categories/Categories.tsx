@@ -3,6 +3,7 @@ import { Button } from '@components/ui/Button/Button';
 import { Heading } from '@components/ui/Heading/Heading';
 import { Text } from '@components/ui/Text/Text';
 import { Drawer } from '@components/ui/dialogs/Drawer/Drawer';
+import { CreateCategoryDrawer } from '@modules/category/components/CreateCategoryDrawer/CreateCategoryDrawer';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
@@ -52,7 +53,7 @@ export const Categories = () => {
               <Button variant='primary' iconBefore={PiPlus}>
                 Create a new category
               </Button>
-              <Drawer>something inside</Drawer>
+              <CreateCategoryDrawer />
             </DialogTrigger>
           </div>
         </section>

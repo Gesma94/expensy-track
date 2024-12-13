@@ -52,7 +52,7 @@ export function CreateCategoryDrawer() {
   console.log(errors);
 
   return (
-    <Drawer dialogClassName='flex flex-col min-h-full'>
+    <Drawer dialogClassName='flex flex-col min-h-full p-drawer'>
       {({ close }) => (
         <>
           <section className='flex items-center justify-between'>

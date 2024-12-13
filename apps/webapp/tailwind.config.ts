@@ -20,6 +20,9 @@ export default {
       rhythm: '#77778F'
     },
     extend: {
+      padding: {
+        drawer: '2rem'
+      },
       height: {
         input: '3.125rem'
       },

@@ -5,7 +5,7 @@ import { tv } from 'tailwind-variants';
 import { ModalOverlay } from '../ModalOverlay/ModalOverlay';
 
 const modalStyle = tv({
-  base: 'w-5/6 max-w-[37.5rem] h-full bg-white p-8 motion-duration-500 overflow-y-auto',
+  base: 'w-5/6 max-w-[37.5rem] h-full bg-white motion-duration-500 overflow-y-auto',
   variants: {
     isEntering: {
       true: 'motion-translate-x-in-100',

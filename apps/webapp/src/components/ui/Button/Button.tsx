@@ -37,6 +37,11 @@ const buttonStyle = tv({
       variant: 'primary',
       size: 'large',
       className: 'font-bold'
+    },
+    {
+      variant: 'primary',
+      isDisabled: true,
+      className: 'bg-none'
     }
   ]
 });

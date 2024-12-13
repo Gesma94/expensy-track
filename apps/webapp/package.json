@@ -16,6 +16,7 @@
   "dependencies": {
     "@expensy-track/common": "workspace:^",
     "@hookform/resolvers": "^3.9.0",
+    "@react-aria/color": "^3.0.2",
     "@react-aria/interactions": "^3.22.4",
     "@react-aria/toast": "3.0.0-beta.16",
     "@react-stately/toast": "3.0.0-beta.6",

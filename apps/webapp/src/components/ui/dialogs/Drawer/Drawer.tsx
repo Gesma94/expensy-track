@@ -5,7 +5,7 @@ import { tv } from 'tailwind-variants';
 import { ModalOverlay } from '../ModalOverlay/ModalOverlay';
 
 const modalStyle = tv({
-  base: 'w-5/6 max-w-[37.5rem] h-full bg-white p-8 motion-duration-500',
+  base: 'w-5/6 max-w-[37.5rem] h-full bg-white p-8 motion-duration-500 overflow-y-auto',
   variants: {
     isEntering: {
       true: 'motion-translate-x-in-100',
@@ -27,7 +27,7 @@ export function Drawer({ children, dialogClassName, ...modalOverlayProps }: Prop
   return (
     <ModalOverlay {...modalOverlayProps} className='flex justify-end'>
       <AriaModal className={modalStyle}>
-        <AriaDialog className={twMerge('outline-none', dialogClassName)}>{children}</AriaDialog>
+        <AriaDialog className={twMerge('outline-none min-w-0', dialogClassName)}>{children}</AriaDialog>
       </AriaModal>
     </ModalOverlay>
   );

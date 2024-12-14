@@ -2,7 +2,8 @@ import { milliseconds } from 'date-fns';
 import { useContext } from 'react';
 import { ToastContext } from '../utils/toastContext';
 
-const timeout = milliseconds({ seconds: 5 });
+const timeout = milliseconds({ seconds: 15 });
+
 export function useToast() {
   const context = useContext(ToastContext);
 

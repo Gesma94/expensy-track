@@ -53,7 +53,7 @@ export const Categories = () => {
               <Button variant='primary' iconBefore={PiPlus}>
                 Create a new category
               </Button>
-              <CreateCategoryDrawer />
+              <CreateCategoryDrawer onSuccess={handleCreateCategorySuccess} />
             </DialogTrigger>
           </div>
         </section>

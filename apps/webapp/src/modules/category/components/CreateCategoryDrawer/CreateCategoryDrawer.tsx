@@ -5,7 +5,11 @@ import { Drawer } from '@components/ui/dialogs/Drawer/Drawer';
 import { Form } from '@components/ui/form/Form/Form';
 import { CategoryIcon as CategoryIconEnum, CategoryType } from '@gql/graphql';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Label, RadioGroup, TextField } from 'react-aria-components';
+import { createCategoryMutation } from '@modules/category/operations/create-category-mutation';
+import { useToast } from '@modules/toast/hooks/useToast';
+import { useMutation } from '@tanstack/react-query';
+import { useContext } from 'react';
+import { Label, OverlayTriggerStateContext, RadioGroup, TextField } from 'react-aria-components';
 import { Input } from 'react-aria-components';
 import { Button as AriaButton } from 'react-aria-components';
 import { Controller, type FieldErrors, useForm } from 'react-hook-form';
@@ -31,7 +35,21 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export function CreateCategoryDrawer() {
+type Props = {
+  onSuccess: () => void;
+};
+
+export function CreateCategoryDrawer({ onSuccess }: Props) {
+  const { successToast, errorToast } = useToast();
+
+  const { close: closeDrawer } = useContext(OverlayTriggerStateContext)!;
+  const { mutate } = useMutation({
+    mutationKey: ['create-category'],
+    mutationFn: createCategoryMutation,
+    onSuccess: onMutationSuccess,
+    onError: onMutationError
+  });
+
   const {
     handleSubmit,
     control,
@@ -42,14 +60,30 @@ export function CreateCategoryDrawer() {
   });
 
   function onValid(data: FormSchema) {
-    console.table(data);
+    const { icon, type } = { ...data };
+    if (icon === '' || type === '') {
+      return;
+    }
+
+    mutate({
+      input: {
+        color: data.color,
+        displayName: data.displayName,
+        icon,
+        type
+      }
+    });
   }
 
-  function onInvalid(errors: FieldErrors<FormSchema>) {
+  function onMutationSuccess() {
+    successToast('OK', 'category craeted!');
+    closeDrawer();
+    onSuccess();
+  }
+
+  function onMutationError() {
     console.error(errors);
   }
-
-  console.log(errors);
 
   return (
     <Drawer dialogClassName='flex flex-col min-h-full p-drawer'>
@@ -63,7 +97,7 @@ export function CreateCategoryDrawer() {
               <HiMiniXMark className='size-8 fill-eerie-black' />
             </AriaButton>
           </section>
-          <Form className='grid grow grid-rows-[auto_auto_1fr_auto]' onSubmit={handleSubmit(onValid, onInvalid)}>
+          <Form className='grid grow grid-rows-[auto_auto_1fr_auto]' onSubmit={handleSubmit(onValid)}>
             <div className='mt-12'>
               <InputSection title='What kind of category are you creating?'>
                 <Controller

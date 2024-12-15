@@ -8,7 +8,7 @@ const runCommand = (command, cwd) => {
 
 try {
   // Adjust the paths relative to the new location of deploy-bff.js
-  const rootDir = resolve(__dirname, '../'); // Move up to the monorepo root
+  const rootDir = resolve(import.meta.dirname, '../'); // Move up to the monorepo root
 
   console.log('Installing all dependencies...');
   runCommand('pnpm ci', rootDir);

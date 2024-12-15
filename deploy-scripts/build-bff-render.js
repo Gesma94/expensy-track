@@ -16,6 +16,9 @@ try {
   console.log('Building common package...');
   runCommand('pnpm build', join(rootDir, 'packages/common'));
 
+  console.log('Generating prisma client...');
+  runCommand('pnpm generate', join(rootDir, 'packages/prisma'));
+
   console.log('Building prisma package...');
   runCommand('pnpm build', join(rootDir, 'packages/prisma'));
 

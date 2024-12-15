@@ -38,7 +38,7 @@ export const CreateCategoryForm = ({ onSuccess: parentOnSuccess }: Props) => {
   const { mutate } = useMutation({ mutationKey: ['create-category'], mutationFn, onSuccess, onError: onInvalid });
   const { handleSubmit, control } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: { displayName: '', color: '#E86161', icon: CategoryIconEnum.Activity, type: CategoryType.Expanse }
+    defaultValues: { displayName: '', color: '#E86161', icon: CategoryIconEnum.Briefcase, type: CategoryType.Expanse }
   });
 
   function onValid(data: FormSchema) {
@@ -46,13 +46,13 @@ export const CreateCategoryForm = ({ onSuccess: parentOnSuccess }: Props) => {
   }
 
   function onSuccess() {
-    successToast('OK', 'category craeted!');
+    successToast('category craeted!');
     parentOnSuccess();
   }
 
   function onInvalid(errors: FieldErrors<FormSchema>) {
     console.error(errors);
-    errorToast('Error', 'Category could not be created');
+    errorToast('Category could not be created');
   }
 
   return (

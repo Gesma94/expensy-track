@@ -50,13 +50,13 @@ export function CreateWalletForm({ onSuccess: parentOnSuccess }: Props) {
   }
 
   function onSuccess() {
-    successToast('OK', 'wallet created');
+    successToast('wallet created');
     parentOnSuccess();
   }
 
   function onError() {
     console.error(error);
-    errorToast('Error', 'Category could not be created');
+    errorToast('Category could not be created');
   }
 
   return (

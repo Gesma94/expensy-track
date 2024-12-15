@@ -2,7 +2,6 @@ import { Panel } from '@components/layout/Panel/Panel';
 import { Button } from '@components/ui/Button/Button';
 import { Heading } from '@components/ui/Heading/Heading';
 import { Text } from '@components/ui/Text/Text';
-import { Drawer } from '@components/ui/dialogs/Drawer/Drawer';
 import { CreateCategoryDrawer } from '@modules/category/components/CreateCategoryDrawer/CreateCategoryDrawer';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useQuery } from '@tanstack/react-query';
@@ -12,7 +11,6 @@ import { PiPlus } from 'react-icons/pi';
 import { useFragment } from '../../../../gql';
 import { GetMyCategoriesDocument, MyCategoryFragmentDoc } from '../../../../gql/graphql';
 import { CategoryList } from '../../components/CategoryList/CategoryList';
-import { CreateCategoryForm } from '../../components/CreateCategoryForm/CreateCategoryForm';
 import { getGroupedCategories } from '../../utils/getGroupedCategories';
 
 async function queryFn() {

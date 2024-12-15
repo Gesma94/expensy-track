@@ -12,7 +12,7 @@ import { useContext } from 'react';
 import { Label, OverlayTriggerStateContext, RadioGroup, TextField } from 'react-aria-components';
 import { Input } from 'react-aria-components';
 import { Button as AriaButton } from 'react-aria-components';
-import { Controller, type FieldErrors, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { HiMiniXMark, HiOutlineWallet } from 'react-icons/hi2';
 import { z } from 'zod';
 import { CategoryTypeRadio } from './components/CategoryTypeRadio';
@@ -40,7 +40,7 @@ type Props = {
 };
 
 export function CreateCategoryDrawer({ onSuccess }: Props) {
-  const { successToast, errorToast } = useToast();
+  const { successToast } = useToast();
 
   const { close: closeDrawer } = useContext(OverlayTriggerStateContext)!;
   const { mutate } = useMutation({
@@ -76,7 +76,7 @@ export function CreateCategoryDrawer({ onSuccess }: Props) {
   }
 
   function onMutationSuccess() {
-    successToast('OK', 'category craeted!');
+    successToast('category craeted!');
     closeDrawer();
     onSuccess();
   }

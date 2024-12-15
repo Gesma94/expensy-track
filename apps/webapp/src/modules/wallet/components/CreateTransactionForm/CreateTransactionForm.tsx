@@ -73,14 +73,14 @@ export function CreateTransactionForm({ walletId, labels, categories, onSuccess:
   }
 
   function onSuccess() {
-    successToast('OK', 'wallet created');
+    successToast('wallet created');
     dialogState.close();
     parentOnSuccess();
   }
 
   function onError() {
     console.error(error);
-    errorToast('Error', 'Category could not be created');
+    errorToast('Category could not be created');
   }
 
   return (

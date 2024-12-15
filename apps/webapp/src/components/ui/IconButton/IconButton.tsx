@@ -1,10 +1,8 @@
 import type { Icon } from '@common/enums/icon';
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
-import { getAriaRenderChildren } from '@common/utils/get-aria-render-children';
 import { getIconComponent } from '@common/utils/get-icon-component';
-import { type ComponentProps, type PropsWithChildren, type ReactNode, forwardRef } from 'react';
-import { Button as AriaButton, type ButtonRenderProps } from 'react-aria-components';
-import type { IconType } from 'react-icons/lib';
+import { type ComponentProps, forwardRef } from 'react';
+import { Button as AriaButton } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 import { type VariantProps, tv } from 'tailwind-variants';
 

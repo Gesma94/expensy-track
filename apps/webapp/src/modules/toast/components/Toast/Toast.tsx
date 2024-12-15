@@ -25,9 +25,9 @@ const toastStyles = tv({
 
 export function Toast({ state, ...props }: Props) {
   const ref = useRef(null);
-  const { toastProps, contentProps, titleProps, closeButtonProps, descriptionProps } = useAriaToast(props, state, ref);
+  const { toastProps, contentProps, titleProps, closeButtonProps } = useAriaToast(props, state, ref);
 
-  const { message, title, type } = props.toast.content;
+  const { message, type } = props.toast.content;
 
   return (
     <div {...toastProps} className={toastStyles({ type })} ref={ref}>

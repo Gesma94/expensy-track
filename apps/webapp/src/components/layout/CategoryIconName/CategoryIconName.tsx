@@ -9,7 +9,7 @@ export function CategoryIconName({ icon }: Props) {
   const { t } = useTranslation('components', { keyPrefix: 'layout.category-icon-name' });
 
   switch (icon) {
-    case CategoryIcon.Activity:
+    case CategoryIcon.Briefcase:
       return t('activity');
     default:
       return icon.toString();

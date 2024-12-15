@@ -33,13 +33,13 @@ export function CreateLabelForm({ onSuccess: parentOnSuccess }: Props) {
   }
 
   function onSuccess() {
-    successToast('OK', 'label created!');
+    successToast('label created!');
     parentOnSuccess();
   }
 
   function onError() {
     console.error(error);
-    errorToast('Error', 'Category could not be created');
+    errorToast('Category could not be created');
   }
 
   return (

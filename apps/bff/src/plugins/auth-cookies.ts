@@ -24,11 +24,13 @@ export default fp(
         path: '/',
         signed: true,
         httpOnly: true,
+        sameSite: 'none',
         secure: fastify.env.NODE_ENV === 'production' || fastify.env.NODE_ENV === 'staging'
       });
 
       this.setCookie(CookieName.RefreshToken, refreshToken, {
         httpOnly: true,
+        sameSite: 'none',
         secure: fastify.env.NODE_ENV === 'production' || fastify.env.NODE_ENV === 'staging'
       });
 

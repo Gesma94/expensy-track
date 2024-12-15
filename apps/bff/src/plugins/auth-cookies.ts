@@ -24,12 +24,12 @@ export default fp(
         path: '/',
         signed: true,
         httpOnly: true,
-        secure: fastify.env.NODE_ENV === 'production'
+        secure: fastify.env.NODE_ENV === 'production' || fastify.env.NODE_ENV === 'staging'
       });
 
       this.setCookie(CookieName.RefreshToken, refreshToken, {
         httpOnly: true,
-        secure: fastify.env.NODE_ENV === 'production'
+        secure: fastify.env.NODE_ENV === 'production' || fastify.env.NODE_ENV === 'staging'
       });
 
       return this;

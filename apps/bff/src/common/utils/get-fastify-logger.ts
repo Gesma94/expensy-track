@@ -15,6 +15,7 @@ export function getFastifyLogger(nodeEnv: string | undefined): PinoLoggerOptions
         }
       };
     case 'e2e':
+    case 'staging':
     case 'production':
       return {
         level,

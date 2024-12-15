@@ -3,6 +3,7 @@ import { type Static, Type } from '@sinclair/typebox';
 export const EnvSchema = Type.Object({
   NODE_ENV: Type.Union([
     Type.Literal('production'),
+    Type.Literal('staging'),
     Type.Literal('test'),
     Type.Literal('development'),
     Type.Literal('e2e')

@@ -11,7 +11,7 @@ try {
   const rootDir = resolve(import.meta.dirname, '../'); // Move up to the monorepo root
 
   console.log('Installing all dependencies...');
-  runCommand('pnpm ci', rootDir);
+  runCommand('pnpm install', rootDir);
 
   console.log('Building common package...');
   runCommand('pnpm build', join(rootDir, 'packages/common'));

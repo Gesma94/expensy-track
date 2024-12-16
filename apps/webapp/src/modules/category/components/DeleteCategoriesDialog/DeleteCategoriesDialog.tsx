@@ -32,14 +32,14 @@ function DialogTriggerContent({ categoriesToDelete, onDelete }: Props) {
   });
 
   function onSuccess() {
-    successToast('OK', 'delete successfully');
+    successToast('delete successfully');
     onDelete();
 
     overlayTriggerStateContext.close();
   }
 
   function onError() {
-    errorToast('error', 'couldnt delete categories');
+    errorToast('couldnt delete categories');
   }
 
   function handleOnCancel() {

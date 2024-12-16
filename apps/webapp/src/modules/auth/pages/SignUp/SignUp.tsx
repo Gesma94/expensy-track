@@ -71,7 +71,13 @@ export function SignUp() {
         <input id='email-input' {...register('email')} defaultValue={''} placeholder='your email' />
 
         <label htmlFor='password-input'>password</label>
-        <input id='password-input' {...register('password')} defaultValue={''} placeholder='your password' />
+        <input
+          id='password-input'
+          {...register('password')}
+          type='password'
+          defaultValue={''}
+          placeholder='your password'
+        />
 
         <label htmlFor='first-name-input'>first name</label>
         <input id='first-name-input' {...register('firstName')} defaultValue={''} placeholder='first name' />

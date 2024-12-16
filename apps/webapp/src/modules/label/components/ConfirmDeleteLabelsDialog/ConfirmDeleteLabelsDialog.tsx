@@ -41,7 +41,7 @@ export function ConfirmDeleteLabelsDialog({ isOpen, setIsOpen, labelsToDelete, o
   }
 
   function onSuccess(data: DeleteLabelsMutation, variables: DeleteLabelsMutationVariables) {
-    successToast('Delete', `${labelsToDelete.length} labels deleted correctly`);
+    successToast(`${labelsToDelete.length} labels deleted correctly`);
     setIsOpen(false);
     cleanSelection();
     parentOnSuccess(data, variables);
@@ -49,7 +49,7 @@ export function ConfirmDeleteLabelsDialog({ isOpen, setIsOpen, labelsToDelete, o
 
   function onError() {
     console.error(error);
-    errorToast('Error', 'labels could not be deleted');
+    errorToast('labels could not be deleted');
     setIsOpen(false);
   }
 

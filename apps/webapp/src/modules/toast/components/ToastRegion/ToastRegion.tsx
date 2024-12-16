@@ -13,7 +13,7 @@ export function ToastRegion({ state, ...props }: Props) {
   const { regionProps } = useToastRegion(props, state, ref);
 
   return (
-    <div {...regionProps} ref={ref} className='fixed bottom-4 right-4 flex flex-col gap-2'>
+    <div {...regionProps} ref={ref} className='fixed bottom-4 left-0 right-0 flex items-center flex-col gap-2'>
       {state.visibleToasts.map(toast => (
         <Toast key={toast.key} toast={toast} state={state} />
       ))}

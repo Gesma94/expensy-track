@@ -1,26 +1,19 @@
 import type { ComponentProps } from 'react';
-import {
-  Dialog as AriaDialog,
-  Modal as AriaModal,
-  ModalOverlay as AriaModalOverlay,
-  type DialogProps
-} from 'react-aria-components';
+import { Dialog as AriaDialog, type DialogProps as AriaDialogProps, Modal as AriaModal } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
+import { ModalOverlay } from '../ModalOverlay/ModalOverlay';
 
-type Props = Omit<ComponentProps<typeof AriaModalOverlay>, 'children' | 'className'> & {
-  children: DialogProps['children'];
-  className?: DialogProps['className'];
+type Props = Omit<ComponentProps<typeof ModalOverlay>, 'children'> & {
+  children: AriaDialogProps['children'];
+  dialogClassName?: AriaDialogProps['className'];
 };
 
-export function Dialog({ children, className, ...modalOverlayProps }: Props) {
+export function Dialog({ children, dialogClassName, ...modalOverlayProps }: Props) {
   return (
-    <AriaModalOverlay
-      {...modalOverlayProps}
-      className='fixed inset-0 w-dvw h-dvh bg-black/20 flex justify-center items-center'
-    >
+    <ModalOverlay {...modalOverlayProps} className='flex justify-center items-center'>
       <AriaModal className='bg-white p-2'>
-        <AriaDialog className={twMerge('outline-none', className)}>{children}</AriaDialog>
+        <AriaDialog className={twMerge('outline-none', dialogClassName)}>{children}</AriaDialog>
       </AriaModal>
-    </AriaModalOverlay>
+    </ModalOverlay>
   );
 }

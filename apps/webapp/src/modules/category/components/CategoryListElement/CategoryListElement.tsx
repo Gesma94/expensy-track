@@ -1,12 +1,31 @@
-import { Button } from '@components/ui/Button/Button';
+import { Icon } from '@common/enums/icon';
+import { IconButton } from '@components/ui/IconButton/IconButton';
+import { Text } from '@components/ui/Text/Text';
 import { CategoryIcon } from '@components/ui/icon/CategoryIcon/CategoryIcon';
 import { Checkbox } from '@components/ui/input/Checkbox/Checkbox';
-import clsx from 'clsx';
 import { useMemo } from 'react';
-import { PiNotePencil, PiTrash } from 'react-icons/pi';
+import { tv } from 'tailwind-variants';
 import type { MyCategoryFragment } from '../../../../gql/graphql';
 import { DeleteCategoriesDialog } from '../DeleteCategoriesDialog/DeleteCategoriesDialog';
 import { EditCategoryFormDialog } from '../EditCategoryFormDialog/EditCategoryFormDialog';
+
+const checkboxStyle = tv({
+  base: 'h-14 px-4 rounded-lg bg-ghost-white border border-lavender-blue flex transition-colors duration-500',
+  variants: {
+    isSelected: {
+      true: 'border-celtic-blue',
+      false: ''
+    },
+    isHovered: {
+      true: 'border-celtic-blue',
+      false: ''
+    },
+    isFocused: {
+      true: 'border-celtic-blue',
+      false: ''
+    }
+  }
+});
 
 type Props = {
   isSelected: boolean;
@@ -18,6 +37,7 @@ type Props = {
 
 export const CategoryListElement = ({ category, onDelete, onEdit, onSelectionChange, isSelected }: Props) => {
   const { icon, displayName } = category;
+
   function handleDeleteCategories() {
     onDelete();
   }
@@ -38,29 +58,24 @@ export const CategoryListElement = ({ category, onDelete, onEdit, onSelectionCha
 
   return (
     <>
-      <li className='grid grid-cols-subgrid col-span-4 items-center gap-x-2'>
+      <li className='w-full'>
         <Checkbox
           isSelected={isSelected}
           onChange={handleOnChange}
-          className={values => clsx('grid grid-cols-subgrid col-span-4 py-2', values.isFocused && 'bg-blue-200')}
+          className={({ isFocused, isHovered, isSelected }) => checkboxStyle({ isFocused, isHovered, isSelected })}
         >
-          <div className='flex items-center gap-1 ml-1'>
-            <div className='size-6'>
-              <CategoryIcon icon={icon} />
+          <div className='grow ml-4 flex items-center'>
+            <CategoryIcon className='text-xl mr-2' icon={icon} />
+            <Text className='grow text-base font-medium'>{displayName}</Text>
+            <div className='flex gap-3'>
+              <EditCategoryFormDialog categoryToEdit={category} onEdit={handleOnEdit}>
+                <IconButton icon={Icon.NotePencil} isRounded={true} />
+              </EditCategoryFormDialog>
+              <DeleteCategoriesDialog onDelete={handleDeleteCategories} categoriesToDelete={categoriesToDeleteMemoized}>
+                <IconButton icon={Icon.Trash} isRounded={true} />
+              </DeleteCategoriesDialog>
             </div>
-            <p>{displayName}</p>
           </div>
-          <DeleteCategoriesDialog onDelete={handleDeleteCategories} categoriesToDelete={categoriesToDeleteMemoized}>
-            <Button variant='ghost'>
-              <PiTrash className='size-6' />
-            </Button>
-          </DeleteCategoriesDialog>
-
-          <EditCategoryFormDialog categoryToEdit={category} onEdit={handleOnEdit}>
-            <Button variant='ghost'>
-              <PiNotePencil className='size-6' />
-            </Button>
-          </EditCategoryFormDialog>
         </Checkbox>
       </li>
     </>

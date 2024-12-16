@@ -52,7 +52,7 @@ function DialogTriggerContent({ categoryToEdit, onEdit }: Props) {
     onSuccess,
     onError
   });
-  const { handleSubmit, control, formState } = useForm<FormSchema>({
+  const { handleSubmit, control } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       displayName: categoryToEdit.displayName,
@@ -71,21 +71,19 @@ function DialogTriggerContent({ categoryToEdit, onEdit }: Props) {
   }
 
   function onSuccess() {
-    successToast('OK', 'category craeted!');
+    successToast('category craeted!');
     onEdit();
     overlayTriggerStateContext.close();
   }
 
   function onInvalid(errors: FieldErrors<FormSchema>) {
     console.error(errors);
-    errorToast('Error', 'Category could not be created');
+    errorToast('Category could not be created');
   }
 
   function onError() {
-    errorToast('error', 'couldnt edit category');
+    errorToast('couldnt edit category');
   }
-
-  console.log(formState);
 
   return (
     <>

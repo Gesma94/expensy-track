@@ -67,12 +67,12 @@ export function CreateBudget() {
   }
 
   function onSuccess() {
-    successToast('OK', 'budget created');
+    successToast('budget created');
   }
 
   function onError() {
     console.error(error);
-    errorToast('Error', 'Category could not be created');
+    errorToast('Category could not be created');
   }
 
   return isLoading ? (

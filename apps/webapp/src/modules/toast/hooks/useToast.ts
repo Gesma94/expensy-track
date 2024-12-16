@@ -2,7 +2,8 @@ import { milliseconds } from 'date-fns';
 import { useContext } from 'react';
 import { ToastContext } from '../utils/toastContext';
 
-const timeout = milliseconds({ seconds: 5 });
+const timeout = milliseconds({ seconds: 15 });
+
 export function useToast() {
   const context = useContext(ToastContext);
 
@@ -10,20 +11,20 @@ export function useToast() {
     throw new Error('useToast must be used within ToastProvider');
   }
 
-  function successToast(title: string, message: string) {
-    context?.toastState.add({ message, title, type: 'success' }, { timeout });
+  function successToast(message: string) {
+    context?.toastState.add({ message, type: 'success' }, { timeout });
   }
 
-  function infoToast(title: string, message: string) {
-    context?.toastState.add({ message, title, type: 'info' }, { timeout });
+  function infoToast(message: string) {
+    context?.toastState.add({ message, type: 'info' }, { timeout });
   }
 
-  function warnToast(title: string, message: string) {
-    context?.toastState.add({ message, title, type: 'warn' }, { timeout });
+  function warnToast(message: string) {
+    context?.toastState.add({ message, type: 'warn' }, { timeout });
   }
 
-  function errorToast(title: string, message: string) {
-    context?.toastState.add({ message, title, type: 'error' });
+  function errorToast(message: string) {
+    context?.toastState.add({ message, type: 'error' });
   }
 
   return { successToast, infoToast, warnToast, errorToast };

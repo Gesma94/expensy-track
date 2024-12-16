@@ -1,4 +1,4 @@
-import { Button } from '@components/ui/Button/Button';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormMultiSelect } from '@components/ui/form/FormMultiSelect/FormMultiSelect';
 import { FormNumberInput } from '@components/ui/form/FormNumberInput/FormNumberInput';

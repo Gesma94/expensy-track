@@ -1,5 +1,5 @@
-import { Button } from '@components/ui/Button/Button';
 import { Heading } from '@components/ui/Heading/Heading';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { Dialog } from '@components/ui/dialogs/Dialog/Dialog';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormNumberInput } from '@components/ui/form/FormNumberInput/FormNumberInput';

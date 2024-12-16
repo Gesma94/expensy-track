@@ -1,4 +1,4 @@
-import { Button } from '@components/ui/Button/Button';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { CreateTransactionForm } from '@modules/wallet/components/CreateTransactionForm/CreateTransactionForm';
 import { getWalletQuery } from '@modules/wallet/operations/get-wallet';
 import { useQuery } from '@tanstack/react-query';

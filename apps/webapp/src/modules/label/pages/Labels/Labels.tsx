@@ -1,5 +1,5 @@
-import { Button } from '@components/ui/Button/Button';
 import { Heading } from '@components/ui/Heading/Heading';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { ConfirmDeleteLabelsDialog } from '@modules/label/components/ConfirmDeleteLabelsDialog/ConfirmDeleteLabelsDialog';
 import { CreateLabelForm } from '@modules/label/components/CreateLabelForm/CreateLabelForm';

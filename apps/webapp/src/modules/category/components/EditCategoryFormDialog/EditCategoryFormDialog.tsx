@@ -1,8 +1,8 @@
 import { CategoryIconName } from '@components/layout/CategoryIconName/CategoryIconName';
 import { CategoryTypeName } from '@components/layout/CategoryTypeName/CategoryTypeName';
-import { Button } from '@components/ui/Button/Button';
 import { Heading } from '@components/ui/Heading/Heading';
 import { LoadingModal } from '@components/ui/LoadingModal/LoadingModal';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { Dialog } from '@components/ui/dialogs/Dialog/Dialog';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormColorPicker } from '@components/ui/form/FormColorPicker/FormColorPicker';

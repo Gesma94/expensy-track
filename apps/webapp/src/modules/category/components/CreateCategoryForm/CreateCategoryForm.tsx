@@ -1,6 +1,6 @@
 import { CategoryIconName } from '@components/layout/CategoryIconName/CategoryIconName';
 import { CategoryTypeName } from '@components/layout/CategoryTypeName/CategoryTypeName';
-import { Button } from '@components/ui/Button/Button';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormColorPicker } from '@components/ui/form/FormColorPicker/FormColorPicker';
 import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';

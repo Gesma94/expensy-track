@@ -1,6 +1,6 @@
-import { Button } from '@components/ui/Button/Button';
 import { Heading } from '@components/ui/Heading/Heading';
 import { Text } from '@components/ui/Text/Text';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { Drawer } from '@components/ui/dialogs/Drawer/Drawer';
 import { Form } from '@components/ui/form/Form/Form';
 import { CategoryIcon as CategoryIconEnum, CategoryType } from '@gql/graphql';

@@ -1,4 +1,4 @@
-import { Button } from '@components/ui/Button/Button';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { forwardRef } from 'react';
 import {
   Group as AriaGroup,

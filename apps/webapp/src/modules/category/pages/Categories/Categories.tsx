@@ -1,7 +1,7 @@
 import { Panel } from '@components/layout/Panel/Panel';
-import { Button } from '@components/ui/Button/Button';
 import { Heading } from '@components/ui/Heading/Heading';
 import { Text } from '@components/ui/Text/Text';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { CreateCategoryDrawer } from '@modules/category/components/CreateCategoryDrawer/CreateCategoryDrawer';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useQuery } from '@tanstack/react-query';

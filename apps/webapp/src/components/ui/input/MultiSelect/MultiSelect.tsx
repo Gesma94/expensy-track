@@ -1,4 +1,4 @@
-import { Button } from '@components/ui/Button/Button';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { useKeyboard } from '@react-aria/interactions';
 import React, {
   forwardRef,

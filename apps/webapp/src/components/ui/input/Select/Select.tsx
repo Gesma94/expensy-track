@@ -1,5 +1,5 @@
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
-import { Button } from '@components/ui/Button/Button';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { type ComponentProps, forwardRef } from 'react';
 import {
   Label as AriaLabel,

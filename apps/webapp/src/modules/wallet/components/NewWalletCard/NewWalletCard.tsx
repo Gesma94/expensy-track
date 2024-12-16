@@ -1,4 +1,4 @@
-import { Button } from '@components/ui/Button/Button';
+import { Button } from '@components/ui/buttons/Button/Button';
 import { DialogTrigger } from 'react-aria-components';
 import { PiPlus } from 'react-icons/pi';
 import { CreateWalletForm } from '../CreateWalletForm/CreateWalletForm';

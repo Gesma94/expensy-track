@@ -12,7 +12,7 @@ export const mutationEditCategory: MutationResolvers<MercuriusContext>['editCate
   args,
   contextValue
 ) => {
-  const { color, displayName, icon, id } = args.input;
+  const { color, displayName, icon, id, parentCategoryId } = args.input;
   const prismaCategoryIcon = CategoryIconToPrisma(icon);
 
   if (!contextValue.user) {
@@ -21,7 +21,7 @@ export const mutationEditCategory: MutationResolvers<MercuriusContext>['editCate
 
   try {
     const updatedCategory = await contextValue.app.prisma.category.update({
-      data: { color, displayName, icon: prismaCategoryIcon },
+      data: { color, displayName, icon: prismaCategoryIcon, parentCategoryId },
       where: { id, userId: contextValue.user.id }
     });
 

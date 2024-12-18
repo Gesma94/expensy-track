@@ -16,7 +16,8 @@ export function CategoryToPrisma(category: CategoryGraphql | null): CategoryPris
     updatedAt: category.updatedAt,
     displayName: category.displayName,
     icon: CategoryIconToPrisma(category.icon),
-    type: CategoryTypeToPrisma(category.type)
+    type: CategoryTypeToPrisma(category.type),
+    parentCategoryId: category.parentCategoryId ?? null
   };
 }
 
@@ -33,6 +34,7 @@ export function CategoryToGraphql(category: CategoryPrisma | null): CategoryGrap
     updatedAt: category.updatedAt,
     displayName: category.displayName,
     icon: CategoryIconToGraphql(category.icon),
-    type: CategoryTypeToGraphql(category.type)
+    type: CategoryTypeToGraphql(category.type),
+    parentCategoryId: category.parentCategoryId
   };
 }

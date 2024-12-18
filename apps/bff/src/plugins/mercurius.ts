@@ -11,6 +11,7 @@ import { FastifyPluginName } from '#enums/fastify-plugin-name.js';
 import { authResolvers } from '../modules/auth/graphql/resolvers.js';
 import { budgetLoaders } from '../modules/budget/loaders.js';
 import { budgetResolvers } from '../modules/budget/resolvers.js';
+import { categoryLoaders } from '../modules/category/graphql/loaders.js';
 import { categoryResolvers } from '../modules/category/graphql/resolvers.js';
 import { labelResolvers } from '../modules/label/graphql/resolvers.js';
 import { transactionLoaders } from '../modules/transaction/loaders.js';
@@ -65,7 +66,7 @@ export default fp(
     fastify.register(mercurius, {
       schema,
       context: buildContext,
-      loaders: { ...transactionLoaders, ...walletLoaders, ...budgetLoaders },
+      loaders: { ...transactionLoaders, ...walletLoaders, ...budgetLoaders, ...categoryLoaders },
       graphiql: fastify.env.NODE_ENV === 'development' || fastify.env.NODE_ENV === 'e2e'
     });
 

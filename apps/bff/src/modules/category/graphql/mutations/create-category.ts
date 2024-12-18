@@ -11,7 +11,7 @@ export const mutationCreateCategory: MutationResolvers<MercuriusContext>['create
   args,
   contextValue
 ) => {
-  const { displayName, type, color, icon } = args.input;
+  const { displayName, type, color, icon, parentCategoryId } = args.input;
 
   if (!contextValue.user) {
     return getGqlUnauthorizedResponse();
@@ -21,6 +21,7 @@ export const mutationCreateCategory: MutationResolvers<MercuriusContext>['create
     data: {
       displayName,
       color: color,
+      parentCategoryId,
       userId: contextValue.user.id,
       icon: CategoryIconToPrisma(icon),
       type: CategoryTypeToPrisma(type)

@@ -18,16 +18,27 @@ export const mutationDeleteCategories: MutationResolvers<MercuriusContext>['dele
 
   try {
     const result = await contextValue.app.prisma.$transaction(async tx => {
+      // getting all subtransactions of removed transactions
+      const subTransactions = await tx.category.findMany({
+        where: {
+          userId: user.id,
+          parentCategoryId: { in: ids }
+        }
+      });
+
+      // merge the ids of the categories that we want to remove with the subcategories ids ones
+      const transactionsIdsToRemove = [...new Set(ids.concat(subTransactions.map(x => x.id)))];
+
       await tx.transaction.updateMany({
-        where: { userId: user.id, categoryId: { in: ids } },
+        where: { userId: user.id, categoryId: { in: transactionsIdsToRemove } },
         data: { categoryId: null }
       });
 
       await tx.budgetsOnCategories.deleteMany({
-        where: { userId: user.id, categoryId: { in: ids } }
+        where: { userId: user.id, categoryId: { in: transactionsIdsToRemove } }
       });
 
-      return await tx.category.deleteMany({ where: { userId: user.id, id: { in: ids } } });
+      return await tx.category.deleteMany({ where: { userId: user.id, id: { in: transactionsIdsToRemove } } });
     });
 
     return result

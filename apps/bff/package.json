@@ -11,10 +11,10 @@
     "lint": "pnpm biome lint --write .",
     "format": "pnpm biome format --write .",
     "typecheck": "tsc --noEmit",
-    "build": "pnpm run clean && tsc --project tsconfig.prod.json  && tsc-alias --project tsconfig.prod.json && copyfiles -u 1 src/**/*.graphql dist",
+    "build": "pnpm run clean && tsc --project tsconfig.prod.json && tsc-alias --project tsconfig.prod.json && copyfiles -u 1 src/**/*.graphql dist",
     "test": "vitest",
     "test:integration": "vitest --config ./vitest.integration.config.ts",
-    "graphql-codegen": "pnpm run clean:codegen && npx graphql-code-generator --config ./graphql.codegen.ts"
+    "graphql-codegen": "pnpm run clean:codegen && pnpm exec graphql-code-generator --config ./graphql.codegen.ts"
   },
   "keywords": [],
   "author": "Matteo Gesmundo",

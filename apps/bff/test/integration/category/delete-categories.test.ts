@@ -59,7 +59,7 @@ describe('delete category via GQL mutation', () => {
     expect(await app.prisma.category.count()).toBe(0);
   });
 
-  it<DbTestEnvironmentContext>('should delete categories owned by authenticated user when categories not owned are provided', async ({
+  it<DbTestEnvironmentContext>('should delete only categories owned by authenticated user when categories not owned are provided', async ({
     app,
     mercuriusClient,
     expect
@@ -144,6 +144,61 @@ describe('delete category via GQL mutation', () => {
     expect(await app.prisma.transaction.count()).toBe(4);
     expect(await app.prisma.transaction.findUnique({ where: { id: transaction1.id, categoryId: null } })).toBeTruthy();
     expect(await app.prisma.transaction.findUnique({ where: { id: transaction2.id, categoryId: null } })).toBeTruthy();
+    expect(await app.prisma.transaction.findUnique({ where: { id: transaction4.id, categoryId: null } })).toBeTruthy();
+  });
+
+  it<DbTestEnvironmentContext>('should delete all subtransactions and set null category to related transactions when a category is deleted', async ({
+    app,
+    mercuriusClient,
+    expect
+  }) => {
+    const { user } = await setGqlAuthTokens(app, mercuriusClient);
+
+    const wallet = createWalletUser({ ownerId: user.id });
+    const category1 = createFakeCategory({ userId: user.id, type: $Enums.CategoryType.EXPANSE });
+    const category2 = createFakeCategory({ userId: user.id, type: $Enums.CategoryType.INCOME });
+    const category3 = createFakeCategory({
+      userId: user.id,
+      type: $Enums.CategoryType.INCOME,
+      parentCategoryId: category2.id
+    });
+    const category4 = createFakeCategory({
+      userId: user.id,
+      type: $Enums.CategoryType.INCOME,
+      parentCategoryId: category2.id
+    });
+    const transaction1 = createFakeTransaction({ userId: user.id, categoryId: category1.id, walletId: wallet.id });
+    const transaction2 = createFakeTransaction({ userId: user.id, categoryId: category1.id, walletId: wallet.id });
+    const transaction3 = createFakeTransaction({ userId: user.id, categoryId: category3.id, walletId: wallet.id });
+    const transaction4 = createFakeTransaction({ userId: user.id, categoryId: category4.id, walletId: wallet.id });
+
+    await app.prisma.wallet.create({ data: wallet });
+    await app.prisma.category.createMany({ data: [category1, category2, category3, category4] });
+    await app.prisma.transaction.createMany({ data: [transaction1, transaction2, transaction3, transaction4] });
+
+    expect(await app.prisma.wallet.count()).toBe(1);
+    expect(await app.prisma.category.count()).toBe(4);
+    expect(await app.prisma.transaction.count()).toBe(4);
+
+    const mutationResponse = await mercuriusClient.mutate<
+      TestDeleteCategoryMutation,
+      TestDeleteCategoryMutationVariables
+    >(mutation, {
+      variables: {
+        input: {
+          ids: [category2.id]
+        }
+      }
+    });
+
+    expect(mutationResponse.errors).toBeUndefined();
+    expect(mutationResponse.data.deleteCategories?.error).toBeNull();
+    expect(mutationResponse.data.deleteCategories?.success).toBe(true);
+    expect(mutationResponse.data.deleteCategories?.result).toBe(3);
+    expect(await app.prisma.wallet.count()).toBe(1);
+    expect(await app.prisma.category.count()).toBe(1);
+    expect(await app.prisma.transaction.count()).toBe(4);
+    expect(await app.prisma.transaction.findUnique({ where: { id: transaction3.id, categoryId: null } })).toBeTruthy();
     expect(await app.prisma.transaction.findUnique({ where: { id: transaction4.id, categoryId: null } })).toBeTruthy();
   });
 });

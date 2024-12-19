@@ -11,6 +11,7 @@ export function createFakeCategory(override?: Partial<Category>): Category {
     userId: faker.string.uuid(),
     createdAt: new Date(),
     updatedAt: new Date(),
+    parentCategoryId: null,
     ...override
   };
 }

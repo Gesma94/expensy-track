@@ -48,6 +48,7 @@
     "graphql": "^16.9.0",
     "graphql-scalars": "^1.23.0",
     "mercurius": "^15.0.0",
+    "remeda": "^2.18.0",
     "type-fest": "^4.26.1"
   },
   "devDependencies": {

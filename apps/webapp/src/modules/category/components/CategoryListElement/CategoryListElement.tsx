@@ -1,6 +1,6 @@
 import { Icon } from '@common/enums/icon';
-import { IconButton } from '@components/ui/IconButton/IconButton';
 import { Text } from '@components/ui/Text/Text';
+import { IconButton } from '@components/ui/buttons/IconButton/IconButton';
 import { CategoryIcon } from '@components/ui/icon/CategoryIcon/CategoryIcon';
 import { Checkbox } from '@components/ui/input/Checkbox/Checkbox';
 import { useMemo } from 'react';

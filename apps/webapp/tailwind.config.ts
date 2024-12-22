@@ -18,7 +18,6 @@ export default {
       'ghost-white': '#F7FBFF',
       'lavender-blue': '#B8D2FF',
       rhythm: '#77778F',
-
       primary: {
         DEFAULT: '#4CAF50', // Main primary color
         hover: '#43A047', // Slightly darker shade for hover state
@@ -68,5 +67,10 @@ export default {
       }
     }
   },
+  safelist: [
+    {
+      pattern: /border-.+/ // used in SpinLoader
+    }
+  ],
   plugins: [tailwindCssMotion]
 } satisfies Config;

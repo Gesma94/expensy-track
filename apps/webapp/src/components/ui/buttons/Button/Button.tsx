@@ -1,4 +1,5 @@
 import { getAriaRenderChildren } from '@common/utils/get-aria-render-children';
+import { SpinLoader } from '@components/ui/loaders/SpinLoader/SpinLoader';
 import { type ComponentProps, forwardRef } from 'react';
 import { Button as AriaButton, type ButtonRenderProps } from 'react-aria-components';
 import type { IconType } from 'react-icons/lib';
@@ -6,24 +7,28 @@ import { twMerge } from 'tailwind-merge';
 import { type VariantProps, tv } from 'tailwind-variants';
 
 const buttonStyle = tv({
-  base: 'flex items-center font-medium justify-center',
+  base: 'flex items-center font-medium justify-center transition-colors duration-300',
   variants: {
+    size: {
+      small: 'gap-2 h-8 px-2 text-xs rounded',
+      default: 'gap-3 h-10 px-4 text-sm rounded-md',
+      large: 'gap-4 h-12 px-8 text-lg rounded-lg'
+    },
+    fullWidth: {
+      true: 'w-full',
+      false: ''
+    },
     variant: {
       ghost: '',
-      default: 'bg-white text-eerie-black border border-american-silver',
-      primary: 'bg-gradient-to-r from-blue-violet to-celtic-blue text-white'
-    },
-    size: {
-      small: 'gap-2 h-10 px-4 text-sm rounded',
-      default: 'gap-3 h-12 px-5 text-lg rounded-lg',
-      large: 'gap-4 h-14 px-6 text-xl rounded-lg'
+      outline: 'bg-white text-eerie-black border border-american-silver',
+      primary: ''
     },
     isDisabled: {
       true: 'bg-cultured text-metallic-silver',
       false: ''
     },
-    fullWidth: {
-      true: 'w-full',
+    isLoading: {
+      true: 'relative',
       false: ''
     }
   },
@@ -41,9 +46,39 @@ const buttonStyle = tv({
     {
       variant: 'primary',
       isDisabled: true,
-      className: 'bg-none'
+      isLoading: false,
+      className: 'bg-primary-disabled text-primary-text'
+    },
+    {
+      variant: 'primary',
+      isDisabled: true,
+      isLoading: true,
+      className: 'bg-primary-disabled text-primary-text'
+    },
+    {
+      variant: 'primary',
+      isLoading: false,
+      isDisabled: false,
+      className:
+        'bg-primary text-primary-text hover:bg-primary-hover active:bg-primary-active focus:outline-offset-2 focus:outline-primary-focus'
+    },
+    {
+      variant: 'primary',
+      isLoading: true,
+      isDisabled: false,
+      className: 'bg-primary cursor-auto'
     }
   ]
+});
+
+const childrenSpanStyle = tv({
+  base: '',
+  variants: {
+    isLoading: {
+      true: 'opacity-0',
+      false: 'opacity-100'
+    }
+  }
 });
 
 type Props = VariantProps<typeof buttonStyle> &
@@ -54,8 +89,9 @@ type Props = VariantProps<typeof buttonStyle> &
 export const Button = forwardRef<HTMLButtonElement, Props>(function _Button(
   {
     className,
-    variant = 'default',
+    variant = 'outline',
     size = 'default',
+    isLoading = false,
     fullWidth = false,
     isDisabled = false,
     children,
@@ -71,14 +107,22 @@ export const Button = forwardRef<HTMLButtonElement, Props>(function _Button(
   return (
     <AriaButton
       ref={ref}
-      isDisabled={isDisabled}
+      isDisabled={isDisabled || isLoading}
+      preventFocusOnPress={true}
       {...otherProps}
-      className={values => twMerge(buttonStyle({ variant, isDisabled, size, fullWidth }), getAriaClassName(values))}
+      className={values =>
+        twMerge(buttonStyle({ variant, isDisabled, isLoading, size, fullWidth }), getAriaClassName(values))
+      }
     >
       {values => (
         <>
           {iconBefore && <span>{iconBefore({})}</span>}
-          <span>{getAriaRenderChildren(values, children)}</span>
+          <span className={childrenSpanStyle({ isLoading })}>{getAriaRenderChildren(values, children)}</span>
+          {isLoading && (
+            <span className='absolute size-full flex items-center justify-center'>
+              <SpinLoader size='small' color='primary-text' />
+            </span>
+          )}
         </>
       )}
     </AriaButton>

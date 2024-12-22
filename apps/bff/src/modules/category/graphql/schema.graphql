@@ -32,10 +32,21 @@ type Category {
   subCategories: [Category!]
 }
 
+type CategoriesByType {
+  incomeCategories: [Category!]!
+  expanseCategories: [Category!]!
+}
+
 type CategoriesResult implements Response {
   success: Boolean!
   error: GraphqlError
   result: [Category!]
+}
+
+type CategoriesByTypeResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: CategoriesByType
 }
 
 type CreateCategoryResult implements Response {
@@ -78,6 +89,7 @@ input DeleteCategoriesInput {
 
 type Query {
   categories: CategoriesResult
+  categoriesByType: CategoriesByTypeResult
 }
 
 type Mutation {

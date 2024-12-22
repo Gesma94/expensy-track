@@ -17,7 +17,21 @@ export const Default: Story = {
 
 export const CustomColor: Story = {
   args: {
-    className: 'size-4 border-2 border-primary'
+    color: 'background-light'
+  },
+  decorators: story => <div className='bg-background-dark inline-block p-4'>{story()}</div>
+};
+
+export const SmallSize: Story = {
+  args: {
+    size: 'small'
+  },
+  decorators: story => <div className='bg-background-dark inline-block p-4'>{story()}</div>
+};
+
+export const LargeSize: Story = {
+  args: {
+    size: 'large'
   },
   decorators: story => <div className='bg-background-dark inline-block p-4'>{story()}</div>
 };

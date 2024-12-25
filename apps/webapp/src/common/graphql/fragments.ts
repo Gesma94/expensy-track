@@ -20,7 +20,7 @@ export const MY_CATEGORY_FRAGMENT = gql(`
     displayName
     type
     color
-    icon
+    icon    
   }
 `);
 

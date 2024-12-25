@@ -3,7 +3,7 @@
   "compilerOptions": {
     /* TSC transpiling */
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
 
     /* Strictness */

@@ -18,11 +18,15 @@ import { type PropsWithChildren, useContext } from 'react';
 import { DialogTrigger, OverlayTriggerStateContext } from 'react-aria-components';
 import { type FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { CategoryIcon as CategoryIconEnum, CategoryType, type MyCategoryFragment } from '../../../../gql/graphql';
+import {
+  CategoryIcon as CategoryIconEnum,
+  type CategoryListElementFragment,
+  CategoryType
+} from '../../../../gql/graphql';
 
 type Props = {
   onEdit: () => void;
-  categoryToEdit: MyCategoryFragment;
+  categoryToEdit: CategoryListElementFragment;
 };
 
 const formSchema = z.object({
@@ -63,7 +67,7 @@ function DialogTriggerContent({ categoryToEdit, onEdit }: Props) {
   });
 
   function handleCancel() {
-    overlayTriggerStateContext.close();
+    overlayTriggerStateContext?.close();
   }
 
   function onValid(data: FormSchema) {
@@ -73,7 +77,7 @@ function DialogTriggerContent({ categoryToEdit, onEdit }: Props) {
   function onSuccess() {
     successToast('category craeted!');
     onEdit();
-    overlayTriggerStateContext.close();
+    overlayTriggerStateContext?.close();
   }
 
   function onInvalid(errors: FieldErrors<FormSchema>) {

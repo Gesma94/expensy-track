@@ -5,25 +5,17 @@ import { Button } from '@components/ui/buttons/Button/Button';
 import { CreateCategoryDrawer } from '@modules/category/components/CreateCategoryDrawer/CreateCategoryDrawer';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
 import { DialogTrigger } from 'react-aria-components';
 import { PiPlus } from 'react-icons/pi';
-import { useFragment } from '../../../../gql';
-import { GetMyCategoriesDocument, MyCategoryFragmentDoc } from '../../../../gql/graphql';
+import { GetCategoriesByTypeDocument } from '../../../../gql/graphql';
 import { CategoryList } from '../../components/CategoryList/CategoryList';
-import { getGroupedCategories } from '../../utils/getGroupedCategories';
 
 async function queryFn() {
-  return getGqlClient().request(GetMyCategoriesDocument);
+  return getGqlClient().request(GetCategoriesByTypeDocument);
 }
 
 export const Categories = () => {
   const { data, refetch } = useQuery({ queryKey: ['user-categories'], queryFn });
-
-  const categoriesFragment = useFragment(MyCategoryFragmentDoc, data?.categories?.result);
-  const groupedCategories = useMemo(() => {
-    return getGroupedCategories(categoriesFragment);
-  }, [categoriesFragment]);
 
   function handleDeleteCategorySuccess() {
     refetch();
@@ -51,7 +43,11 @@ export const Categories = () => {
               <Button variant='primary' iconBefore={PiPlus}>
                 Create a new category
               </Button>
-              <CreateCategoryDrawer onSuccess={handleCreateCategorySuccess} />
+              <CreateCategoryDrawer
+                onSuccess={handleCreateCategorySuccess}
+                incomeRootCategories={[]}
+                expanseRootCategories={[]}
+              />
             </DialogTrigger>
           </div>
         </section>
@@ -60,16 +56,16 @@ export const Categories = () => {
           <div className='grid grid-cols-2 gap-4'>
             <Panel title='Spending Categories'>
               <CategoryList
-                categories={groupedCategories.EXPANSE}
-                onDelete={handleDeleteCategorySuccess}
                 onEdit={handleEditCategorySuccess}
+                onDelete={handleDeleteCategorySuccess}
+                groupedCategories={data?.categoriesByType?.result?.expanseCategories}
               />
             </Panel>
             <Panel title='Income categories'>
               <CategoryList
-                categories={groupedCategories.INCOME}
-                onDelete={handleDeleteCategorySuccess}
                 onEdit={handleEditCategorySuccess}
+                onDelete={handleDeleteCategorySuccess}
+                groupedCategories={data?.categoriesByType?.result?.incomeCategories}
               />
             </Panel>
           </div>

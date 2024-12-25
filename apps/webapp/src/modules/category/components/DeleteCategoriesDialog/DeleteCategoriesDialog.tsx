@@ -1,15 +1,15 @@
 import { LoadingModal } from '@components/ui/LoadingModal/LoadingModal';
 import { ConfirmDialog } from '@components/ui/dialogs/ConfirmDialog/ConfirmDialog';
+import type { CategoryListElementFragment } from '@gql/graphql';
 import { deleteCategoriesMutation } from '@modules/category/operations/delete-categories-mutation';
 import { useToast } from '@modules/toast/hooks/useToast';
 import { useMutation } from '@tanstack/react-query';
 import { type PropsWithChildren, useContext } from 'react';
 import { DialogTrigger, OverlayTriggerStateContext } from 'react-aria-components';
-import type { MyCategoryFragment } from '../../../../gql/graphql';
 
 type Props = {
   onDelete: () => void;
-  categoriesToDelete: Map<string, MyCategoryFragment>;
+  categoriesToDelete: CategoryListElementFragment[];
 };
 
 export function DeleteCategoriesDialog({ categoriesToDelete, onDelete, children }: PropsWithChildren<Props>) {
@@ -47,7 +47,7 @@ function DialogTriggerContent({ categoriesToDelete, onDelete }: Props) {
   }
 
   function handleOnConfirm() {
-    mutateAsync({ input: { ids: Array.from(categoriesToDelete.values()).map(category => category.id) } });
+    mutateAsync({ input: { ids: categoriesToDelete.map(category => category.id) } });
   }
 
   return (
@@ -58,7 +58,7 @@ function DialogTriggerContent({ categoriesToDelete, onDelete }: Props) {
         onConfirm={handleOnConfirm}
         confirmLabel='Yes'
         heading='Delete categories'
-        message={`Are you sure you want to delete ${categoriesToDelete.size} categories?`}
+        message={`Are you sure you want to delete ${categoriesToDelete.length} categories?`}
       />
     </>
   );

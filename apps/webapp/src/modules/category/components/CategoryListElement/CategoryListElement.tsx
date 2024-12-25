@@ -3,81 +3,154 @@ import { Text } from '@components/ui/Text/Text';
 import { IconButton } from '@components/ui/buttons/IconButton/IconButton';
 import { CategoryIcon } from '@components/ui/icon/CategoryIcon/CategoryIcon';
 import { Checkbox } from '@components/ui/input/Checkbox/Checkbox';
-import { useMemo } from 'react';
+import { useFragment } from '@gql/fragment-masking';
+import { useCategoryGroup } from '@modules/category/hooks/useCategoryGroup';
+import { useRef } from 'react';
+import { useDisclosure } from 'react-aria';
+import { useDisclosureState } from 'react-stately';
 import { tv } from 'tailwind-variants';
-import type { MyCategoryFragment } from '../../../../gql/graphql';
+import { CategoryListElementFragmentDoc, type CategoryListElementWithSubsFragment } from '../../../../gql/graphql';
+import { CategoryInnerListElement } from '../CategoryInnerListElement/CategoryInnerListElement';
 import { DeleteCategoriesDialog } from '../DeleteCategoriesDialog/DeleteCategoriesDialog';
 import { EditCategoryFormDialog } from '../EditCategoryFormDialog/EditCategoryFormDialog';
 
-const checkboxStyle = tv({
-  base: 'h-14 px-4 rounded-lg bg-ghost-white border border-lavender-blue flex transition-colors duration-500',
-  variants: {
-    isSelected: {
-      true: 'border-celtic-blue',
-      false: ''
-    },
-    isHovered: {
-      true: 'border-celtic-blue',
-      false: ''
-    },
-    isFocused: {
-      true: 'border-celtic-blue',
-      false: ''
-    }
-  }
-});
-
 type Props = {
-  isSelected: boolean;
-  category: MyCategoryFragment;
-  onSelectionChange: (category: MyCategoryFragment, isSelected: boolean) => void;
-  onDelete: () => void;
   onEdit: () => void;
+  onDelete: () => void;
+  category: CategoryListElementWithSubsFragment;
 };
 
-export const CategoryListElement = ({ category, onDelete, onEdit, onSelectionChange, isSelected }: Props) => {
-  const { icon, displayName } = category;
+export const CategoryListElement = ({ category, onDelete, onEdit }: Props) => {
+  const panelRef = useRef<HTMLUListElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+
+  const { toggleCategory, isSelected } = useCategoryGroup();
+
+  const hasSubCategories = !!category.subCategories && category.subCategories.length > 0;
+  const subCategories = useFragment(CategoryListElementFragmentDoc, category.subCategories);
+  const categoryListElement = useFragment(CategoryListElementFragmentDoc, category);
+  const { icon, displayName, color } = categoryListElement;
+
+  const state = useDisclosureState({ defaultExpanded: hasSubCategories });
+  const { buttonProps: expanderButtonProps, panelProps } = useDisclosure(
+    { defaultExpanded: hasSubCategories, isDisabled: !hasSubCategories },
+    state,
+    panelRef
+  );
 
   function handleDeleteCategories() {
     onDelete();
   }
 
-  function handleOnChange(isSelected: boolean): void {
-    onSelectionChange(category, isSelected);
+  function handleOnChange(): void {
+    toggleCategory(categoryListElement);
   }
 
   function handleOnEdit(): void {
     onEdit();
   }
 
-  const categoriesToDeleteMemoized = useMemo<Map<string, MyCategoryFragment>>(() => {
-    const result = new Map<string, MyCategoryFragment>();
-    result.set(category.id, category);
-    return result;
-  }, [category]);
-
   return (
     <>
-      <li className='w-full'>
+      <li
+        className='w-full rounded-lg shadow grid grid-rows-[auto_0px] overflow-hidden transition-all duration-500'
+        style={{ gridTemplateRows: state.isExpanded ? 'auto 80px' : '' }}
+      >
         <Checkbox
-          isSelected={isSelected}
           onChange={handleOnChange}
-          className={({ isFocused, isHovered, isSelected }) => checkboxStyle({ isFocused, isHovered, isSelected })}
+          isSelected={isSelected(categoryListElement)}
+          checkboxClassName='row-start-1 col-start-2'
+          className={({ isHovered, isSelected, isFocused }) =>
+            checkboxStyle({ isHovered, isSelected, isFocused, isExpanded: state.isExpanded })
+          }
         >
-          <div className='grow ml-4 flex items-center'>
-            <CategoryIcon className='text-xl mr-2' icon={icon} />
+          {/* span element that renders the category color */}
+          <span className='h-full w-2 absolute left-0' aria-label={color} style={{ background: color }} />
+
+          <IconButton
+            size='compact'
+            variant='ghost'
+            ref={triggerRef}
+            icon={Icon.PiCaretDown}
+            {...expanderButtonProps}
+            className={expanderButtonStyle({
+              isExpanded: state.isExpanded,
+              isDisabled: expanderButtonProps.isDisabled
+            })}
+          />
+
+          <div className='row-start-1 col-start-3 w-full flex items-center'>
+            <CategoryIcon className='text-xl w-8' icon={icon} />
             <Text className='grow text-base font-medium'>{displayName}</Text>
-            <div className='flex gap-3'>
-              <EditCategoryFormDialog categoryToEdit={category} onEdit={handleOnEdit}>
-                <IconButton icon={Icon.NotePencil} isRounded={true} />
+            <div className='flex gap-1'>
+              <EditCategoryFormDialog categoryToEdit={categoryListElement} onEdit={handleOnEdit}>
+                <IconButton icon={Icon.NotePencil} size='compact' variant='ghost' />
               </EditCategoryFormDialog>
-              <DeleteCategoriesDialog onDelete={handleDeleteCategories} categoriesToDelete={categoriesToDeleteMemoized}>
-                <IconButton icon={Icon.Trash} isRounded={true} />
+              <DeleteCategoriesDialog onDelete={handleDeleteCategories} categoriesToDelete={[categoryListElement]}>
+                <IconButton icon={Icon.Trash} size='compact' variant='ghost' />
               </DeleteCategoriesDialog>
             </div>
           </div>
         </Checkbox>
+        <ul ref={panelRef} {...panelProps}>
+          {subCategories?.map(subCategory => (
+            <CategoryInnerListElement key={subCategory.id} category={subCategory} onDelete={onDelete} onEdit={onEdit} />
+          ))}
+        </ul>
       </li>
     </>
   );
 };
+
+const checkboxStyle = tv({
+  base: 'relative h-14 px-6 bg-background-white grid grid-cols-[2.5rem_2.5rem_1fr] grid-rows-1 justify-items-center transition-colors duration-500',
+  variants: {
+    isSelected: {
+      true: '',
+      false: ''
+    },
+    isHovered: {
+      true: '',
+      false: ''
+    },
+    isFocused: {
+      true: 'shadow-[inset_0px_0px_0px_1px] shadow-primary-focus',
+      false: ''
+    },
+    isExpanded: {
+      true: 'rounded-t-lg rounded-b-none',
+      false: 'rounded-lg'
+    }
+  },
+  compoundVariants: [
+    {
+      isHovered: false,
+      isSelected: true,
+      className: 'bg-background-white-selected'
+    },
+    {
+      isHovered: true,
+      isSelected: false,
+      className: 'bg-background-white-hover'
+    },
+    {
+      isHovered: true,
+      isSelected: true,
+      className: 'bg-background-white-selected-hover'
+    }
+  ]
+});
+
+const expanderButtonStyle = tv({
+  base: 'row-start-1 col-start-1 transition-transform duration-500',
+  variants: {
+    isExpanded: {
+      true: 'rotate-180',
+      false: ''
+    },
+    isDisabled: {
+      true: 'invisible',
+      false: ''
+    }
+  }
+});

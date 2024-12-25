@@ -26,6 +26,29 @@ export default {
         disabled: '#A5D6A7', // Muted shade for disabled state
         text: '#FFFFFF' // Text color on primary background
       },
+      background: {
+        white: {
+          DEFAULT: '#FFFFFF',
+          hover: '#F1FFF3', // Light green hint on hover
+          selected: '#E8F5E9', // Subtle green background for selected state
+          'selected-hover': '#DFF0E2', // Slightly darker green for selected and hovered state
+          active: '#D0E8D5', // Vibrant greenish shade for active state
+          disabled: '#F9FBF7' // Muted and very light for disabled state
+        },
+        ghost: {
+          hover: 'rgba(0, 0, 0, 0.05)',
+          active: 'rgba(0, 0, 0, 0.15)',
+          disabled: 'rgba(0, 0, 0, 0.02)',
+          focus: 'rgba(0, 0, 0, 0.10)'
+        },
+        light: '#ECEFEC',
+        lighter: '#F9FBF7', // Almost white, with a hint of green for ultra-light shadow
+        shadow: '#E8F5E9', // A soft shadow color, complementary to primary
+        subtle: '#E3F2FD' // Subtle blueish background for secondary accents
+      },
+      foreground: {
+        dark: '#212121'
+      },
       'primary-light': '#81C784', // Lighter shade of primary
       'primary-dark': '#388E3C', // Darker shade of primary
       secondary: '#2196F3', // Blue, for links or secondary accents
@@ -36,7 +59,6 @@ export default {
       error: '#F44336', // Used for errors or negative trends
       'text-primary': '#212121', // Main text color
       'text-secondary': '#757575', // Secondary text
-      'background-light': '#FAFAFA', // Light background for cards and UI
       'background-dark': '#263238', // Darker background,
       transparent: '#FFFFFF00'
     },

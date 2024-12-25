@@ -1,9 +1,10 @@
 import { $Enums, type Category as PrismaCategory } from '@expensy-track/prisma';
 import type { MercuriusContext } from 'mercurius';
-import type { QueryResolvers } from '#gql/graphql-generated.js';
+import { type Category, CategoryType, type QueryResolvers } from '#gql/graphql-generated.js';
 import { NotNullOrUndefined } from '#utils/not-null-or-undefined.js';
 import { getGqlSuccessResponse } from '../../../../common/utils/get-gql-success-response.js';
 import { getGqlUnauthorizedResponse } from '../../../../common/utils/get-gql-unauthorized-response.js';
+import { getCategorySubCategories } from '../common/get-category-sub-categories.js';
 import { CategoryToGraphql } from '../mappers/category.js';
 
 export const categoriesByTypeQuery: QueryResolvers<MercuriusContext>['categoriesByType'] = async (
@@ -25,20 +26,38 @@ export const categoriesByTypeQuery: QueryResolvers<MercuriusContext>['categories
     }
   });
 
-  const incomePrismaCategories: PrismaCategory[] = [];
-  const expansePrismaCategories: PrismaCategory[] = [];
+  let incomeCategoriesCounter = 0;
+  let expanseCategoriesCounter = 0;
+  const incomeCategories: Category[] = [];
+  const expanseCategories: Category[] = [];
 
-  for (const category of categories) {
-    if (category.type === $Enums.CategoryType.INCOME) {
-      incomePrismaCategories.push(category);
+  for (const prismaCategory of categories) {
+    const gqlCategory = CategoryToGraphql(prismaCategory);
+
+    if (!gqlCategory) {
+      continue;
     }
-    if (category.type === $Enums.CategoryType.EXPANSE) {
-      expansePrismaCategories.push(category);
+
+    gqlCategory.subCategories = await getCategorySubCategories(gqlCategory, contextValue);
+
+    if (gqlCategory.type === CategoryType.Income) {
+      incomeCategories.push(gqlCategory);
+      incomeCategoriesCounter += 1 + (gqlCategory.subCategories?.length ?? 0);
+    }
+    if (gqlCategory.type === CategoryType.Expanse) {
+      expanseCategories.push(gqlCategory);
+      expanseCategoriesCounter += 1 + (gqlCategory.subCategories?.length ?? 0);
     }
   }
 
   return getGqlSuccessResponse({
-    incomeCategories: incomePrismaCategories.map(CategoryToGraphql).filter(NotNullOrUndefined),
-    expanseCategories: expansePrismaCategories.map(CategoryToGraphql).filter(NotNullOrUndefined)
+    incomeCategories: {
+      counter: incomeCategoriesCounter,
+      categories: incomeCategories
+    },
+    expanseCategories: {
+      counter: expanseCategoriesCounter,
+      categories: expanseCategories
+    }
   });
 };

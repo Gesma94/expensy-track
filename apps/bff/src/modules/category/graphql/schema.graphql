@@ -33,8 +33,13 @@ type Category {
 }
 
 type CategoriesByType {
-  incomeCategories: [Category!]!
-  expanseCategories: [Category!]!
+  counter: Int!
+  categories: [Category!]!
+}
+
+type GroupedCategories {
+  incomeCategories: CategoriesByType!
+  expanseCategories: CategoriesByType!
 }
 
 type CategoriesResult implements Response {
@@ -46,7 +51,7 @@ type CategoriesResult implements Response {
 type CategoriesByTypeResult implements Response {
   success: Boolean!
   error: GraphqlError
-  result: CategoriesByType
+  result: GroupedCategories
 }
 
 type CreateCategoryResult implements Response {

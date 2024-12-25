@@ -1,4 +1,5 @@
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
+import { getAriaRenderChildren } from '@common/utils/get-aria-render-children';
 import { type RefAttributes, forwardRef } from 'react';
 import { Checkbox as AriaCheckbox, type CheckboxProps } from 'react-aria-components';
 import { PiCheck } from 'react-icons/pi';
@@ -32,10 +33,13 @@ const checkboxStyle = tv({
   }
 });
 
-type Props = CheckboxProps & RefAttributes<HTMLLabelElement>;
+type Props = CheckboxProps &
+  RefAttributes<HTMLLabelElement> & {
+    checkboxClassName?: string;
+  };
 
 export const Checkbox = forwardRef<HTMLLabelElement, Props>(function _Checkbox(
-  { children, className, ...otherProps },
+  { children, checkboxClassName, className, ...otherProps },
   ref
 ) {
   return (
@@ -46,15 +50,18 @@ export const Checkbox = forwardRef<HTMLLabelElement, Props>(function _Checkbox(
       }
       ref={ref}
     >
-      {({ isSelected, isFocused }) => {
-        const { checkboxDiv, checkIcon } = checkboxStyle({ isSelected, isFocused });
+      {values => {
+        const { checkboxDiv, checkIcon } = checkboxStyle({
+          isSelected: values.isSelected,
+          isFocused: values.isFocused
+        });
 
         return (
           <>
-            <div className={checkboxDiv()}>
-              <PiCheck className={checkIcon()} aria-hidden={!isSelected} />
-            </div>
-            {children}
+            <span className={twMerge(checkboxDiv(), checkboxClassName)}>
+              <PiCheck className={checkIcon()} />
+            </span>
+            {getAriaRenderChildren(values, children)}
           </>
         );
       }}

@@ -1,5 +1,5 @@
 import { Icon } from '@common/enums/icon';
-import { PiNotePencil, PiTrash } from 'react-icons/pi';
+import { PiCaretDown, PiNotePencil, PiTrash } from 'react-icons/pi';
 
 export function getIconComponent(icon: Icon) {
   switch (icon) {
@@ -7,5 +7,7 @@ export function getIconComponent(icon: Icon) {
       return PiNotePencil;
     case Icon.Trash:
       return PiTrash;
+    case Icon.PiCaretDown:
+      return PiCaretDown;
   }
 }

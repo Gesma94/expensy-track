@@ -17,7 +17,7 @@ export const Default: Story = {
 
 export const CustomColor: Story = {
   args: {
-    color: 'background-light'
+    color: 'secondary'
   },
   decorators: story => <div className='bg-background-dark inline-block p-4'>{story()}</div>
 };

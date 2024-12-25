@@ -74,7 +74,7 @@ export function CreateTransactionForm({ walletId, labels, categories, onSuccess:
 
   function onSuccess() {
     successToast('wallet created');
-    dialogState.close();
+    dialogState?.close();
     parentOnSuccess();
   }
 

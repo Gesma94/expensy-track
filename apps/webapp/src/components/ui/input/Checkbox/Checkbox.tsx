@@ -9,7 +9,7 @@ import { tv } from 'tailwind-variants';
 const checkboxStyle = tv({
   slots: {
     checkboxDiv: 'size-6 rounded transition-colors duration-500 flex items-center justify-center',
-    checkIcon: 'fill-white size-4 transition-all duration-500'
+    checkIcon: 'fill-white size-2/3 transition-all duration-500'
   },
   variants: {
     isSelected: {

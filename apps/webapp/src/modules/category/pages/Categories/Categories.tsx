@@ -3,19 +3,14 @@ import { Heading } from '@components/ui/Heading/Heading';
 import { Text } from '@components/ui/Text/Text';
 import { Button } from '@components/ui/buttons/Button/Button';
 import { CreateCategoryDrawer } from '@modules/category/components/CreateCategoryDrawer/CreateCategoryDrawer';
-import { getGqlClient } from '@modules/fetch/utils/graphql-client';
+import { getCategoriesByTypeQuery } from '@modules/category/operations/get-categories-by-type-query';
 import { useQuery } from '@tanstack/react-query';
 import { DialogTrigger } from 'react-aria-components';
 import { PiPlus } from 'react-icons/pi';
-import { GetCategoriesByTypeDocument } from '../../../../gql/graphql';
 import { CategoryList } from '../../components/CategoryList/CategoryList';
 
-async function queryFn() {
-  return getGqlClient().request(GetCategoriesByTypeDocument);
-}
-
 export const Categories = () => {
-  const { data, refetch } = useQuery({ queryKey: ['user-categories'], queryFn });
+  const { data, refetch } = useQuery({ queryKey: ['user-categories'], queryFn: () => getCategoriesByTypeQuery({}) });
 
   function handleDeleteCategorySuccess() {
     refetch();
@@ -32,10 +27,10 @@ export const Categories = () => {
     <>
       <div className='w-full max-w-6xl mx-auto pt-14 px-4 md:px-10'>
         <section className='grid grid-cols-[1fr_auto] grid-rows-[auto_auto]'>
-          <Heading level={1} className='col-start-1 row-start-1 text-2xl text-eerie-black'>
+          <Heading level={1} className='col-start-1 row-start-1 text-2xl'>
             Categories
           </Heading>
-          <Text className='col-start-1 row-start-2 font-medium text-lg text-independence'>
+          <Text className='col-start-1 row-start-2 font-medium text-lg text-foreground-mediumPriority'>
             Manage your spending and income categories
           </Text>
           <div className='col-start-2 row-start-1 row-span-2 self-end'>

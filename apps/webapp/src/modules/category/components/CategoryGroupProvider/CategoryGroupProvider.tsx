@@ -19,6 +19,10 @@ export function CategoryGroupProvider({ children }: PropsWithChildren) {
     });
   }, []);
 
+  const resetSelection = useCallback(() => {
+    setSelectedCategories(new Map());
+  }, []);
+
   const isSelected = useCallback(
     (category: CategoryListElementFragment) => {
       return selectedCategories.has(category.id);
@@ -29,10 +33,11 @@ export function CategoryGroupProvider({ children }: PropsWithChildren) {
   const memoizedValue = useMemo<ContextType<typeof CategoryGroupContext>>(
     () => ({
       isSelected,
+      resetSelection,
       toggleCategory,
       selectedCategories
     }),
-    [selectedCategories, toggleCategory, isSelected]
+    [selectedCategories, toggleCategory, isSelected, resetSelection]
   );
 
   return <CategoryGroupContext.Provider value={memoizedValue}>{children}</CategoryGroupContext.Provider>;

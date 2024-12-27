@@ -39,7 +39,7 @@ export const CategoryInnerListElement = ({ category, onDelete, onEdit }: Props) 
           isSelected={isSelected(category)}
           checkboxClassName='row-start-1 col-start-2 size-4'
           data-before-bg={category.color}
-          className={({ isHovered, isSelected, isFocused }) => checkboxStyle({ isHovered, isSelected, isFocused })}
+          className={({ isHovered, isSelected }) => checkboxStyle({ isHovered, isSelected })}
         >
           {/* span element that renders the category color */}
           <span className='h-full w-2 absolute left-0' aria-label={color} style={{ background: color }} />
@@ -71,10 +71,6 @@ const checkboxStyle = tv({
     },
     isHovered: {
       true: '',
-      false: ''
-    },
-    isFocused: {
-      true: 'shadow-[inset_0px_0px_0px_1px] shadow-primary-focus',
       false: ''
     }
   },

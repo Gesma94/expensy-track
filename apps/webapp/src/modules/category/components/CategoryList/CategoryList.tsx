@@ -13,21 +13,21 @@ type Props = {
   groupedCategories: CategoriesGroupedByTypeFragment | undefined;
 };
 
-export const CategoryList = (props: Props) => {
+export function CategoryList(props: Props) {
   return (
     <CategoryGroupProvider>
-      <CategoryList2 {...props} />
+      <PrivateCategoryList {...props} />
     </CategoryGroupProvider>
   );
-};
+}
 
-const CategoryList2 = ({ groupedCategories, onDelete, onEdit }: Props) => {
-  const { selectedCategories } = useCategoryGroup();
+function PrivateCategoryList({ groupedCategories, onDelete, onEdit }: Props) {
+  const { selectedCategories, resetSelection } = useCategoryGroup();
   const categoriesWithSubs = useFragment(CategoryListElementWithSubsFragmentDoc, groupedCategories?.categories);
 
   function handleDeleteCategories() {
     onDelete();
-    // setSelectedCategories(new Map());
+    resetSelection();
   }
 
   return (
@@ -40,7 +40,7 @@ const CategoryList2 = ({ groupedCategories, onDelete, onEdit }: Props) => {
         </ul>
 
         <div className='mt-14 flex justify-between items-center gap-3'>
-          <Text className='font-medium text-independence text-sm'>
+          <Text className='font-medium text-foreground-mediumPriority text-sm'>
             {selectedCategories.size}/{groupedCategories?.counter} Selected
           </Text>
           <DeleteCategoriesDialog
@@ -55,4 +55,4 @@ const CategoryList2 = ({ groupedCategories, onDelete, onEdit }: Props) => {
       </div>
     </>
   );
-};
+}

@@ -1,4 +1,4 @@
-import { Icon } from '@common/enums/icon';
+import { IconType } from '@common/enums/icon';
 import { Text } from '@components/ui/Text/Text';
 import { IconButton } from '@components/ui/buttons/IconButton/IconButton';
 import { CategoryIcon } from '@components/ui/icon/CategoryIcon/CategoryIcon';
@@ -60,8 +60,8 @@ export const CategoryListElement = ({ category, onDelete, onEdit }: Props) => {
           onChange={handleOnChange}
           isSelected={isSelected(categoryListElement)}
           checkboxClassName='row-start-1 col-start-2'
-          className={({ isHovered, isSelected, isFocused }) =>
-            checkboxStyle({ isHovered, isSelected, isFocused, isExpanded: state.isExpanded })
+          className={({ isHovered, isSelected }) =>
+            checkboxStyle({ isHovered, isSelected, isExpanded: state.isExpanded })
           }
         >
           {/* span element that renders the category color */}
@@ -71,7 +71,7 @@ export const CategoryListElement = ({ category, onDelete, onEdit }: Props) => {
             size='compact'
             variant='ghost'
             ref={triggerRef}
-            icon={Icon.PiCaretDown}
+            icon={IconType.CaretDown}
             {...expanderButtonProps}
             className={expanderButtonStyle({
               isExpanded: state.isExpanded,
@@ -84,10 +84,10 @@ export const CategoryListElement = ({ category, onDelete, onEdit }: Props) => {
             <Text className='grow text-base font-medium'>{displayName}</Text>
             <div className='flex gap-1'>
               <EditCategoryFormDialog categoryToEdit={categoryListElement} onEdit={handleOnEdit}>
-                <IconButton icon={Icon.NotePencil} size='compact' variant='ghost' />
+                <IconButton icon={IconType.NotePencil} size='compact' variant='ghost' />
               </EditCategoryFormDialog>
               <DeleteCategoriesDialog onDelete={handleDeleteCategories} categoriesToDelete={[categoryListElement]}>
-                <IconButton icon={Icon.Trash} size='compact' variant='ghost' />
+                <IconButton icon={IconType.Trash} size='compact' variant='ghost' />
               </DeleteCategoriesDialog>
             </div>
           </div>
@@ -111,10 +111,6 @@ const checkboxStyle = tv({
     },
     isHovered: {
       true: '',
-      false: ''
-    },
-    isFocused: {
-      true: 'shadow-[inset_0px_0px_0px_1px] shadow-primary-focus',
       false: ''
     },
     isExpanded: {

@@ -73,7 +73,9 @@ export default {
       },
       animation: {
         'backdrop-blur': 'backdrop-blur 0.5s forwards',
-        'backdrop-blur-reverse': 'backdrop-blur-reverse 0.5s forwards'
+        'backdrop-blur-reverse': 'backdrop-blur-reverse 0.5s forwards',
+        'dialog-enter': 'dialog-enter 0.5s linear forwards',
+        'dialog-exit': 'dialog-exit 0.5s linear forwards'
       },
       keyframes: {
         'backdrop-blur': {
@@ -83,6 +85,14 @@ export default {
         'backdrop-blur-reverse': {
           '0%': { backdropFilter: 'blur(8px)' },
           '100%': { backdropFilter: 'blur(0px)' }
+        },
+        'dialog-enter': {
+          '0%': { position: 'relative', top: '-2rem', opacity: '0' },
+          '100%': { position: 'relative', top: '0', opacity: '1' }
+        },
+        'dialog-exit': {
+          '0%': { position: 'relative', top: '0', opacity: '1' },
+          '100%': { position: 'relative', top: '-2rem', opacity: '0' }
         }
       }
     }

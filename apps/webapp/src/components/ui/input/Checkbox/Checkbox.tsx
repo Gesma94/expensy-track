@@ -1,37 +1,11 @@
+import { IconType } from '@common/enums/icon';
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
 import { getAriaRenderChildren } from '@common/utils/get-aria-render-children';
+import { Icon } from '@components/ui/icon/Icon/Icon';
 import { type RefAttributes, forwardRef } from 'react';
 import { Checkbox as AriaCheckbox, type CheckboxProps } from 'react-aria-components';
-import { PiCheck } from 'react-icons/pi';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
-
-const checkboxStyle = tv({
-  slots: {
-    checkboxDiv: 'size-6 rounded transition-colors duration-500 flex items-center justify-center',
-    checkIcon: 'fill-white size-2/3 transition-all duration-500'
-  },
-  variants: {
-    isSelected: {
-      true: {
-        checkboxDiv: 'bg-celtic-blue border-none',
-        checkIcon: 'visible opacity-100 scale-100 rotate-[360deg]'
-      },
-      false: {
-        checkboxDiv: 'bg-white border border-american-silver',
-        checkIcon: 'opacity-0 invisible scale-0 rotate-180'
-      }
-    },
-    isFocused: {
-      true: {
-        checkboxDiv: ''
-      },
-      false: {
-        checkboxDiv: ''
-      }
-    }
-  }
-});
 
 type Props = CheckboxProps &
   RefAttributes<HTMLLabelElement> & {
@@ -52,14 +26,15 @@ export const Checkbox = forwardRef<HTMLLabelElement, Props>(function _Checkbox(
     >
       {values => {
         const { checkboxDiv, checkIcon } = checkboxStyle({
-          isSelected: values.isSelected,
-          isFocused: values.isFocused
+          isFocused: values.isFocused,
+          isDisabled: values.isDisabled,
+          isSelected: values.isSelected
         });
 
         return (
           <>
             <span className={twMerge(checkboxDiv(), checkboxClassName)}>
-              <PiCheck className={checkIcon()} />
+              <Icon icon={IconType.Check} className={checkIcon()} />
             </span>
             {getAriaRenderChildren(values, children)}
           </>
@@ -67,4 +42,61 @@ export const Checkbox = forwardRef<HTMLLabelElement, Props>(function _Checkbox(
       }}
     </AriaCheckbox>
   );
+});
+
+const checkboxStyle = tv({
+  slots: {
+    checkboxDiv: 'size-6 rounded border transition-colors duration-500 flex items-center justify-center',
+    checkIcon: 'fill-white size-3/4 transition-all duration-500'
+  },
+  variants: {
+    isDisabled: {
+      true: {},
+      false: {}
+    },
+    isSelected: {
+      true: {
+        checkIcon: 'visible opacity-100 scale-100 rotate-0'
+      },
+      false: {
+        checkIcon: 'invisible opacity-0 scale-50 -rotate-180'
+      }
+    },
+    isFocused: {
+      true: {
+        checkboxDiv: 'outline outline-2 outline-offset-2 outline-secondary-focus'
+      },
+      false: {}
+    }
+  },
+  compoundVariants: [
+    {
+      isDisabled: false,
+      isSelected: true,
+      className: {
+        checkboxDiv: 'bg-secondary border-secondary hover:bg-secondary-hover active:bg-secondary-active'
+      }
+    },
+    {
+      isDisabled: false,
+      isSelected: false,
+      className: {
+        checkboxDiv: 'bg-white border-edge-default hover:bg-background-white-hover active:bg-background-white-active'
+      }
+    },
+    {
+      isDisabled: true,
+      isSelected: true,
+      className: {
+        checkboxDiv: 'bg-secondary-disabled border-secondary-disabled'
+      }
+    },
+    {
+      isDisabled: true,
+      isSelected: false,
+      className: {
+        checkboxDiv: 'bg-background-white-disabled border-edge-disabled'
+      }
+    }
+  ]
 });

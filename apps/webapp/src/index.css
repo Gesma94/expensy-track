@@ -4,6 +4,6 @@
 
 @layer base {
   body {
-    @apply font-inter font-light text-eerie-black;
+    @apply font-inter font-light text-foreground-dark;
   }
 }

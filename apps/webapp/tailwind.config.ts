@@ -7,17 +7,12 @@ export default {
     colors: {
       white: '#FFFFFF',
       black: '#000000',
-      cultured: '#F4F4F8',
-      'metallic-silver': '#A8A9B2',
-      'american-silver': '#CACBD4',
-      'eerie-black': '#17171D',
-      independence: '#565668',
-      'blue-violet': '#8A28F4',
-      'celtic-blue': '#145DDA',
-      'alice-blue': '#E9F1FF',
-      'ghost-white': '#F7FBFF',
-      'lavender-blue': '#B8D2FF',
-      rhythm: '#77778F',
+      edge: {
+        default: '#607D66', // Neutral green-gray for general use
+        hover: '#4A6A51', // Slightly darker for hover state
+        active: '#3A5A41', // Rich green-gray for active state
+        disabled: '#DCE4DC' // Muted green-gray for disabled state
+      },
       primary: {
         DEFAULT: '#4CAF50', // Main primary color
         hover: '#43A047', // Slightly darker shade for hover state
@@ -25,6 +20,14 @@ export default {
         focus: '#81C784', // Lighter shade for focus outline
         disabled: '#A5D6A7', // Muted shade for disabled state
         text: '#FFFFFF' // Text color on primary background
+      },
+      secondary: {
+        DEFAULT: '#2196F3', // Main secondary color
+        hover: '#1E88E5', // Slightly darker shade for hover state
+        active: '#1976D2', // Even darker shade for active state
+        focus: '#64B5F6', // Lighter shade for focus outline
+        disabled: '#BBDEFB', // Muted shade for disabled state
+        text: '#FFFFFF' // Text color on secondary background
       },
       background: {
         white: {
@@ -47,19 +50,14 @@ export default {
         subtle: '#E3F2FD' // Subtle blueish background for secondary accents
       },
       foreground: {
-        dark: '#212121'
+        dark: '#212121',
+        mediumPriority: '#757575', // Medium gray for balanced emphasis
+        lowPriority: '#BDBDBD', // Light gray for muted or less important text
+        subtle: '#E0E0E0' // Very light gray for hints or placeholder text
       },
-      'primary-light': '#81C784', // Lighter shade of primary
-      'primary-dark': '#388E3C', // Darker shade of primary
-      secondary: '#2196F3', // Blue, for links or secondary accents
-      'secondary-light': '#64B5F6',
-      'secondary-dark': '#1976D2',
       success: '#4CAF50', // Used for success alerts or positive trends
       warning: '#FF9800', // Used for warnings or alerts
       error: '#F44336', // Used for errors or negative trends
-      'text-primary': '#212121', // Main text color
-      'text-secondary': '#757575', // Secondary text
-      'background-dark': '#263238', // Darker background,
       transparent: '#FFFFFF00'
     },
     extend: {

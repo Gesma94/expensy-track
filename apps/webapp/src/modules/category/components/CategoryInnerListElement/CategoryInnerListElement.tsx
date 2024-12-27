@@ -1,4 +1,4 @@
-import { Icon } from '@common/enums/icon';
+import { IconType } from '@common/enums/icon';
 import { Text } from '@components/ui/Text/Text';
 import { IconButton } from '@components/ui/buttons/IconButton/IconButton';
 import { CategoryIcon } from '@components/ui/icon/CategoryIcon/CategoryIcon';
@@ -49,10 +49,10 @@ export const CategoryInnerListElement = ({ category, onDelete, onEdit }: Props) 
             <Text className='grow text-xs font-medium'>{displayName}</Text>
             <span className='flex gap-1'>
               <EditCategoryFormDialog categoryToEdit={category} onEdit={handleOnEdit}>
-                <IconButton icon={Icon.NotePencil} size='compact' variant='ghost' />
+                <IconButton icon={IconType.NotePencil} size='compact' variant='ghost' />
               </EditCategoryFormDialog>
               <DeleteCategoriesDialog onDelete={handleDeleteCategories} categoriesToDelete={[category]}>
-                <IconButton icon={Icon.Trash} size='compact' variant='ghost' />
+                <IconButton icon={IconType.Trash} size='compact' variant='ghost' />
               </DeleteCategoriesDialog>
             </span>
           </span>

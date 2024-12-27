@@ -1,4 +1,4 @@
-import { Icon } from '@common/enums/icon';
+import { IconType } from '@common/enums/icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import { IconButton } from './IconButton';
 
@@ -15,6 +15,6 @@ type Story = StoryObj<typeof IconButton>;
 export const GhostVariant: Story = {
   args: {
     variant: 'ghost',
-    icon: Icon.NotePencil
+    icon: IconType.NotePencil
   }
 };

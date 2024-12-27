@@ -1,6 +1,6 @@
-import type { Icon } from '@common/enums/icon';
+import type { IconType as EnumIcon } from '@common/enums/icon';
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
-import { getIconComponent } from '@common/utils/get-icon-component';
+import { Icon } from '@components/ui/icon/Icon/Icon';
 import { type ComponentProps, forwardRef } from 'react';
 import { Button as AriaButton } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
@@ -44,15 +44,13 @@ const buttonStyle = tv({
 
 type Props = VariantProps<typeof buttonStyle> &
   Omit<ComponentProps<typeof AriaButton>, 'children'> & {
-    icon: Icon;
+    icon: EnumIcon;
   };
 
 export const IconButton = forwardRef<HTMLButtonElement, Props>(function _Button(
   { icon, className, variant = 'outline', size = 'default', isRounded = false, isDisabled = false, ...otherProps },
   ref
 ) {
-  const Icon = getIconComponent(icon);
-
   return (
     <AriaButton
       ref={ref}
@@ -63,7 +61,7 @@ export const IconButton = forwardRef<HTMLButtonElement, Props>(function _Button(
         twMerge(buttonStyle({ variant, isDisabled, size, isRounded }), getAriaCustomClassName(values, className))
       }
     >
-      <Icon className='w-2/3 h-2/3' />
+      <Icon icon={icon} className='w-2/3 h-2/3' />
     </AriaButton>
   );
 });

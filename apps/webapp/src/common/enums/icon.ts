@@ -1,5 +1,6 @@
-export enum Icon {
-  PiCaretDown = 'PiCaretDown',
+export enum IconType {
+  CaretDown = 'CaretDown',
   NotePencil = 'NotePencil',
-  Trash = 'Trash'
+  Trash = 'Trash',
+  Check = 'Check'
 }

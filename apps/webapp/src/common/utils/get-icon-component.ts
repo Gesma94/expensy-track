@@ -1,13 +1,15 @@
-import { Icon } from '@common/enums/icon';
-import { PiCaretDown, PiNotePencil, PiTrash } from 'react-icons/pi';
+import { IconType } from '@common/enums/icon';
+import { PiCaretDown, PiCheck, PiNotePencil, PiTrash } from 'react-icons/pi';
 
-export function getIconComponent(icon: Icon) {
+export function getIconComponent(icon: IconType) {
   switch (icon) {
-    case Icon.NotePencil:
+    case IconType.NotePencil:
       return PiNotePencil;
-    case Icon.Trash:
+    case IconType.Trash:
       return PiTrash;
-    case Icon.PiCaretDown:
+    case IconType.CaretDown:
       return PiCaretDown;
+    case IconType.Check:
+      return PiCheck;
   }
 }

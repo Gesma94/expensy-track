@@ -32,10 +32,10 @@ export default {
       background: {
         white: {
           DEFAULT: '#FFFFFF',
-          hover: '#F1FFF3', // Light green hint on hover
+          hover: '#F5F5F5', // Light green hint on hover
           selected: '#E8F5E9', // Subtle green background for selected state
           'selected-hover': '#DFF0E2', // Slightly darker green for selected and hovered state
-          active: '#D0E8D5', // Vibrant greenish shade for active state
+          active: '#ebebeb', // Vibrant greenish shade for active state
           disabled: '#F9FBF7' // Muted and very light for disabled state
         },
         ghost: {

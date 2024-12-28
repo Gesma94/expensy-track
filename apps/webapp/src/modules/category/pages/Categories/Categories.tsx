@@ -1,3 +1,4 @@
+import { IconType } from '@common/enums/icon';
 import { Panel } from '@components/layout/Panel/Panel';
 import { Heading } from '@components/ui/Heading/Heading';
 import { Text } from '@components/ui/Text/Text';
@@ -6,7 +7,6 @@ import { CreateCategoryDrawer } from '@modules/category/components/CreateCategor
 import { getCategoriesByTypeQuery } from '@modules/category/operations/get-categories-by-type-query';
 import { useQuery } from '@tanstack/react-query';
 import { DialogTrigger } from 'react-aria-components';
-import { PiPlus } from 'react-icons/pi';
 import { CategoryList } from '../../components/CategoryList/CategoryList';
 
 export const Categories = () => {
@@ -35,7 +35,7 @@ export const Categories = () => {
           </Text>
           <div className='col-start-2 row-start-1 row-span-2 self-end'>
             <DialogTrigger>
-              <Button variant='primary' iconBefore={PiPlus}>
+              <Button variant='primary' iconBefore={IconType.Plus}>
                 Create a new category
               </Button>
               <CreateCategoryDrawer

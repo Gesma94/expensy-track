@@ -17,6 +17,8 @@ type Props = VariantProps<typeof spinLoaderStyle> & {
   color?: TailwindColors;
 };
 
-export function SpinLoader({ color = 'primary', size = 'default' }: Props) {
-  return <span className={twMerge(spinLoaderStyle({ size }), `border-${color}`, 'border-b-transparent')} />;
+export function SpinLoader({ color, size = 'default' }: Props) {
+  return (
+    <span className={twMerge(spinLoaderStyle({ size }), color ? `border-${color}` : '', 'border-b-transparent')} />
+  );
 }

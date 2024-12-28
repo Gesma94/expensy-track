@@ -1,3 +1,4 @@
+import { IconType } from '@common/enums/icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 
@@ -58,21 +59,87 @@ export const Large: Story = {
   }
 };
 
-export const Disabled: Story = {
+export const DisabledPrimary: Story = {
   args: {
-    size: 'large',
     isDisabled: true,
     variant: 'primary',
-    children: 'Large button'
+    children: 'Disabled button'
   }
 };
 
-export const Loading: Story = {
+export const DisabledOutline: Story = {
   args: {
-    size: 'large',
+    isDisabled: true,
+    variant: 'outline',
+    children: 'Disabled button'
+  }
+};
+
+export const LoadingPrimary: Story = {
+  args: {
     isLoading: true,
     variant: 'primary',
-    children: 'Large button'
+    children: 'Loading button'
+  }
+};
+
+export const LoadingOutline: Story = {
+  args: {
+    isLoading: true,
+    variant: 'outline',
+    children: 'Loading button'
+  }
+};
+
+export const IconBeforePrimary: Story = {
+  args: {
+    iconBefore: IconType.NotePencil,
+    variant: 'primary',
+    children: 'button'
+  }
+};
+
+export const IconBeforeOutline: Story = {
+  args: {
+    iconBefore: IconType.NotePencil,
+    variant: 'outline',
+    children: 'button'
+  }
+};
+
+export const IconBeforeLoadingPrimary: Story = {
+  args: {
+    isLoading: true,
+    iconBefore: IconType.NotePencil,
+    variant: 'primary',
+    children: 'button'
+  }
+};
+
+export const IconBeforeLoadingOutline: Story = {
+  args: {
+    isLoading: true,
+    iconBefore: IconType.NotePencil,
+    variant: 'outline',
+    children: 'button'
+  }
+};
+
+export const LoadingDisabledPrimary: Story = {
+  args: {
+    isLoading: true,
+    isDisabled: true,
+    variant: 'primary',
+    children: 'Loading button'
+  }
+};
+
+export const LoadingDisabledOutline: Story = {
+  args: {
+    isLoading: true,
+    isDisabled: true,
+    variant: 'outline',
+    children: 'Loading button'
   }
 };
 

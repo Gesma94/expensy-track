@@ -29,3 +29,13 @@ export const EDIT_CATEGORY = gql(`
     }
   }  
 `);
+
+export const MERGE_CATEGORIES = gql(`
+  mutation MergeCategories($input: MergeCategoriesInput!) {
+    mergeCategories(input: $input) {
+      success
+      error { ... GraphqlError }
+      result { ... CategoryListElement }
+    }
+  }  
+`);

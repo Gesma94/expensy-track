@@ -8,14 +8,16 @@ import { tv } from 'tailwind-variants';
 import type { CategoryListElementFragment } from '../../../../gql/graphql';
 import { DeleteCategoriesDialog } from '../DeleteCategoriesDialog/DeleteCategoriesDialog';
 import { EditCategoryFormDialog } from '../EditCategoryFormDialog/EditCategoryFormDialog';
+import { MergeCategoriesFormDialog } from '../MergeCategoriesFormDialog/MergeCategoriesFormDialog';
 
 type Props = {
   category: CategoryListElementFragment;
   onDelete: () => void;
+  onMerge: () => void;
   onEdit: () => void;
 };
 
-export const CategoryInnerListElement = ({ category, onDelete, onEdit }: Props) => {
+export const CategoryInnerListElement = ({ category, onDelete, onEdit, onMerge }: Props) => {
   const { icon, displayName, color } = category;
   const { toggleCategory, isSelected } = useCategoryGroup();
 
@@ -25,6 +27,10 @@ export const CategoryInnerListElement = ({ category, onDelete, onEdit }: Props) 
 
   function handleOnChange(): void {
     toggleCategory(category);
+  }
+
+  function handleOnMerge(): void {
+    onMerge();
   }
 
   function handleOnEdit(): void {
@@ -48,6 +54,9 @@ export const CategoryInnerListElement = ({ category, onDelete, onEdit }: Props) 
             <CategoryIcon className='text-base text-center w-8' icon={icon} />
             <Text className='grow text-xs font-medium'>{displayName}</Text>
             <span className='flex gap-1'>
+              <MergeCategoriesFormDialog allCategories={[]} targetCategory={category} onSuccess={handleOnMerge}>
+                <IconButton icon={IconType.GitMerge} size='compact' variant='ghost' />
+              </MergeCategoriesFormDialog>
               <EditCategoryFormDialog categoryToEdit={category} onEdit={handleOnEdit}>
                 <IconButton icon={IconType.NotePencil} size='compact' variant='ghost' />
               </EditCategoryFormDialog>

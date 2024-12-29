@@ -20,6 +20,10 @@ export const Categories = () => {
     refetch();
   }
 
+  function handleMergeCategoriesSuccess() {
+    refetch();
+  }
+
   function handleCreateCategorySuccess() {
     refetch();
   }
@@ -52,6 +56,7 @@ export const Categories = () => {
             <Panel title='Spending Categories'>
               <CategoryList
                 onEdit={handleEditCategorySuccess}
+                onMerge={handleMergeCategoriesSuccess}
                 onDelete={handleDeleteCategorySuccess}
                 groupedCategories={data?.categoriesByType?.result?.expanseCategories}
               />
@@ -59,6 +64,7 @@ export const Categories = () => {
             <Panel title='Income categories'>
               <CategoryList
                 onEdit={handleEditCategorySuccess}
+                onMerge={handleMergeCategoriesSuccess}
                 onDelete={handleDeleteCategorySuccess}
                 groupedCategories={data?.categoriesByType?.result?.incomeCategories}
               />

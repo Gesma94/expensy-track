@@ -2,7 +2,11 @@ import type { CategoryListElementFragment } from '@gql/graphql';
 import { CategoryGroupContext } from '@modules/category/utils/categoryGroupContext';
 import { type ContextType, type PropsWithChildren, useCallback, useMemo, useState } from 'react';
 
-export function CategoryGroupProvider({ children }: PropsWithChildren) {
+type Props = {
+  categories: CategoryListElementFragment[];
+};
+
+export function CategoryGroupProvider({ children, categories }: PropsWithChildren<Props>) {
   const [selectedCategories, setSelectedCategories] = useState<Map<string, CategoryListElementFragment>>(new Map());
 
   const toggleCategory = useCallback((category: CategoryListElementFragment) => {
@@ -33,11 +37,12 @@ export function CategoryGroupProvider({ children }: PropsWithChildren) {
   const memoizedValue = useMemo<ContextType<typeof CategoryGroupContext>>(
     () => ({
       isSelected,
+      categories,
       resetSelection,
       toggleCategory,
       selectedCategories
     }),
-    [selectedCategories, toggleCategory, isSelected, resetSelection]
+    [categories, selectedCategories, toggleCategory, isSelected, resetSelection]
   );
 
   return <CategoryGroupContext.Provider value={memoizedValue}>{children}</CategoryGroupContext.Provider>;

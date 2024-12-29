@@ -13,14 +13,16 @@ import { CategoryListElementFragmentDoc, type CategoryListElementWithSubsFragmen
 import { CategoryInnerListElement } from '../CategoryInnerListElement/CategoryInnerListElement';
 import { DeleteCategoriesDialog } from '../DeleteCategoriesDialog/DeleteCategoriesDialog';
 import { EditCategoryFormDialog } from '../EditCategoryFormDialog/EditCategoryFormDialog';
+import { MergeCategoriesFormDialog } from '../MergeCategoriesFormDialog/MergeCategoriesFormDialog';
 
 type Props = {
   onEdit: () => void;
+  onMerge: () => void;
   onDelete: () => void;
   category: CategoryListElementWithSubsFragment;
 };
 
-export const CategoryListElement = ({ category, onDelete, onEdit }: Props) => {
+export const CategoryListElement = ({ category, onDelete, onEdit, onMerge }: Props) => {
   const panelRef = useRef<HTMLUListElement | null>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
 
@@ -38,16 +40,20 @@ export const CategoryListElement = ({ category, onDelete, onEdit }: Props) => {
     panelRef
   );
 
-  function handleDeleteCategories() {
-    onDelete();
-  }
-
   function handleOnChange(): void {
     toggleCategory(categoryListElement);
   }
 
+  function handleDeleteCategories() {
+    onDelete();
+  }
+
   function handleOnEdit(): void {
     onEdit();
+  }
+
+  function handleOnMerge(): void {
+    onMerge();
   }
 
   return (
@@ -83,6 +89,13 @@ export const CategoryListElement = ({ category, onDelete, onEdit }: Props) => {
             <CategoryIcon className='text-xl w-8' icon={icon} />
             <Text className='grow text-base font-medium'>{displayName}</Text>
             <div className='flex gap-1'>
+              <MergeCategoriesFormDialog
+                allCategories={[]}
+                targetCategory={categoryListElement}
+                onSuccess={handleOnMerge}
+              >
+                <IconButton icon={IconType.GitMerge} size='compact' variant='ghost' />
+              </MergeCategoriesFormDialog>
               <EditCategoryFormDialog categoryToEdit={categoryListElement} onEdit={handleOnEdit}>
                 <IconButton icon={IconType.NotePencil} size='compact' variant='ghost' />
               </EditCategoryFormDialog>

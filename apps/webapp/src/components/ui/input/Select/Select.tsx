@@ -1,5 +1,8 @@
+import { IconType } from '@common/enums/icon';
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
+import { getAriaRenderChildren } from '@common/utils/get-aria-render-children';
 import { Button } from '@components/ui/buttons/Button/Button';
+import { Icon } from '@components/ui/icon/Icon/Icon';
 import { type ComponentProps, forwardRef } from 'react';
 import {
   Label as AriaLabel,
@@ -12,30 +15,39 @@ import {
   type ListBoxItemProps
 } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
+import { tv } from 'tailwind-variants';
 
 export type SelectProps = {
   label: string;
   selectValueTemplate?: ComponentProps<typeof AriaSelectValue>['children'];
 };
 
-type Props<T extends object> = AriaSelectProps<T> & React.RefAttributes<HTMLSelectElement> & SelectProps;
+type Props<T extends object> = AriaSelectProps<T> & React.RefAttributes<HTMLButtonElement> & SelectProps;
 
-export const Select = forwardRef<HTMLSelectElement, Props<object>>(function _Select(
+export const Select = forwardRef<HTMLButtonElement, Props<object>>(function _Select(
   { label, children, className, selectValueTemplate, ...props },
   ref
 ) {
   return (
-    <AriaSelect className={values => twMerge('', getAriaCustomClassName(values, className))} {...props}>
-      <AriaLabel className='text-slate-800/50'>{label}</AriaLabel>
-      <Button className='w-full h-input px-2 flex items-center border-black/10'>
-        <AriaSelectValue className='flex items-center' ref={ref}>
-          {selectValueTemplate}
+    <AriaSelect
+      className={values => twMerge('flex flex-col gap-1', getAriaCustomClassName(values, className))}
+      {...props}
+    >
+      <AriaLabel className='font-medium text-foreground-mediumPriority text-xs uppercase'>{label}</AriaLabel>
+      <Button className='w-full h-input px-2 flex flex-col items-center border-edge-light-default *:w-full' ref={ref}>
+        <AriaSelectValue className='flex items-center justify-between text-foreground-dark text-sm font-light'>
+          {v => (
+            <>
+              {selectValueTemplate ? getAriaRenderChildren(v, selectValueTemplate) : v.defaultChildren}
+              <Icon icon={IconType.CaretDown} aria-hidden='true' />
+            </>
+          )}
         </AriaSelectValue>
-        <span aria-hidden='true' className='ml-auto'>
-          ▼
-        </span>
       </Button>
-      <AriaPopover className='min-w-[--trigger-width] border border-black/10 bg-white'>
+      <AriaPopover
+        offset={1}
+        className='min-w-[--trigger-width] border border-t-0 rounded-md border-edge-light-default bg-white'
+      >
         <AriaListBox>{children}</AriaListBox>
       </AriaPopover>
     </AriaSelect>
@@ -47,7 +59,7 @@ export function Option({ className, ...props }: ListBoxItemProps) {
     <AriaListBoxItem
       className={values =>
         twMerge(
-          'h-input flex items-center px-2 border-0 outline-none data-[hovered]:bg-slate-100 data-[focused]:bg-slate-100 data-[selected]:bg-slate-200',
+          optionStyle({ isDisabled: values.isDisabled, isSelected: values.isSelected, isHovered: values.isHovered }),
           getAriaCustomClassName(values, className)
         )
       }
@@ -55,3 +67,38 @@ export function Option({ className, ...props }: ListBoxItemProps) {
     />
   );
 }
+
+const optionStyle = tv({
+  base: 'h-input text-sm text-foreground-dark flex items-center px-2 border-0 outline-none focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:outline-secondary-focus',
+  variants: {
+    isHovered: {
+      true: '',
+      false: ''
+    },
+    isDisabled: {
+      false: 'cursor-pointer',
+      true: ''
+    },
+    isSelected: {
+      false: 'font-light',
+      true: 'font-medium'
+    }
+  },
+  compoundVariants: [
+    {
+      isHovered: true,
+      isSelected: false,
+      className: 'bg-background-white-hover'
+    },
+    {
+      isHovered: false,
+      isSelected: true,
+      className: 'bg-background-white-selected'
+    },
+    {
+      isHovered: true,
+      isSelected: true,
+      className: 'bg-background-white-selected-hover'
+    }
+  ]
+});

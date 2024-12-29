@@ -3,5 +3,7 @@ export enum IconType {
   NotePencil = 'NotePencil',
   Trash = 'Trash',
   Check = 'Check',
-  Plus = 'Plus'
+  Plus = 'Plus',
+  GitMerge = 'GitMerge',
+  Close = 'Close'
 }

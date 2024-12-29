@@ -1,5 +1,5 @@
 import { IconType } from '@common/enums/icon';
-import { PiCaretDown, PiCheck, PiNotePencil, PiPlus, PiTrash } from 'react-icons/pi';
+import { PiCaretDown, PiCheck, PiGitMerge, PiNotePencil, PiPlus, PiTrash, PiX } from 'react-icons/pi';
 
 export function getIconComponent(icon: IconType) {
   switch (icon) {
@@ -13,5 +13,9 @@ export function getIconComponent(icon: IconType) {
       return PiCheck;
     case IconType.Plus:
       return PiPlus;
+    case IconType.GitMerge:
+      return PiGitMerge;
+    case IconType.Close:
+      return PiX;
   }
 }

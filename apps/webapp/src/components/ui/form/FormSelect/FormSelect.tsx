@@ -22,9 +22,9 @@ export function FormSelect<
           {...fieldProps}
           selectedKey={value}
           isInvalid={invalid}
-          isDisabled={disabled}
           validationBehavior='aria'
           onSelectionChange={onChange}
+          isDisabled={disabled || selectProps.isDisabled}
         />
       )}
     />

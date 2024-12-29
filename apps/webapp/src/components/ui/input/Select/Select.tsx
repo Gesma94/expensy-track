@@ -35,11 +35,11 @@ export const Select = forwardRef<HTMLButtonElement, Props<object>>(function _Sel
     >
       <AriaLabel className='font-medium text-foreground-mediumPriority text-xs uppercase'>{label}</AriaLabel>
       <Button className='w-full h-input px-2 flex flex-col items-center border-edge-light-default *:w-full' ref={ref}>
-        <AriaSelectValue className='flex items-center justify-between text-foreground-dark text-sm font-light'>
+        <AriaSelectValue className='flex items-center justify-between text-foreground-dark text-sm font-light data-[placeholder]:text-foreground-lowPriority'>
           {v => (
             <>
               {selectValueTemplate ? getAriaRenderChildren(v, selectValueTemplate) : v.defaultChildren}
-              <Icon icon={IconType.CaretDown} aria-hidden='true' />
+              <Icon icon={IconType.CaretDown} aria-hidden='true' className='text-foreground-dark' />
             </>
           )}
         </AriaSelectValue>

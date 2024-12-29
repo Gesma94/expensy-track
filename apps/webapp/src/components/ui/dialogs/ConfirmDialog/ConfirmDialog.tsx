@@ -1,6 +1,6 @@
-import { Heading } from '@components/ui/Heading/Heading';
 import { Button } from '@components/ui/buttons/Button/Button';
 import type { PressEvent } from 'react-aria-components';
+import { ClosingHeadingDialog } from '../ClosingHeadingDialog/ClosingHeadingDialog';
 import { Dialog } from '../Dialog/Dialog';
 
 type Props = {
@@ -22,12 +22,16 @@ export function ConfirmDialog({ confirmLabel, isOpen, heading, message, onCancel
   }
 
   return (
-    <Dialog isOpen={isOpen}>
-      <Heading slot='title'>{heading}</Heading>
-      <p>{message}</p>
-      <div className='mt-2 flex gap-2'>
-        <Button onPress={handleCancelPress}>Cancel</Button>
-        <Button onPress={handleConfirmPress}>{confirmLabel}</Button>
+    <Dialog isOpen={isOpen} dialogClassName='p-dialog'>
+      <ClosingHeadingDialog heading={heading} />
+      <p className='mt-4 text-dialog-text'>{message}</p>
+      <div className='mt-10 justify-self-end flex gap-2'>
+        <Button size='small' className='w-32' variant='ghost' onPress={handleCancelPress}>
+          Cancel
+        </Button>
+        <Button size='small' className='w-32' variant='primary' onPress={handleConfirmPress}>
+          {confirmLabel}
+        </Button>
       </div>
     </Dialog>
   );

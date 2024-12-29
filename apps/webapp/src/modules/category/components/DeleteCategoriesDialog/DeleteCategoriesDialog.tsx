@@ -58,7 +58,7 @@ function DialogTriggerContent({ categoriesToDelete, onDelete }: Props) {
         onConfirm={handleOnConfirm}
         confirmLabel='Yes'
         heading='Delete categories'
-        message={`Are you sure you want to delete ${categoriesToDelete.length} categories?`}
+        message={'Are you sure you want to delete the selected categories?'}
       />
     </>
   );

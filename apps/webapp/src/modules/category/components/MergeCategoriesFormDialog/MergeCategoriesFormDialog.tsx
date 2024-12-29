@@ -4,6 +4,7 @@ import { LoadingModal } from '@components/ui/LoadingModal/LoadingModal';
 import { Text } from '@components/ui/Text/Text';
 import { Button } from '@components/ui/buttons/Button/Button';
 import { IconButton } from '@components/ui/buttons/IconButton/IconButton';
+import { ClosingHeadingDialog } from '@components/ui/dialogs/ClosingHeadingDialog/ClosingHeadingDialog';
 import { Dialog } from '@components/ui/dialogs/Dialog/Dialog';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';
@@ -99,57 +100,48 @@ function DialogTriggerContent({ onSuccess: propsOnSuccess, targetCategory }: Pro
     <>
       {isPending && <LoadingModal message={false} isTransparent={true} />}
       <Dialog dialogClassName='p-6 max-w-xl'>
-        {({ close }) => (
-          <>
-            <div className='flex items-center justify-between'>
-              <Heading slot='title' level={1} className='text-xl'>
-                Merge categories
-              </Heading>
-              <IconButton variant='ghost' className='size-8' icon={IconType.Close} onPress={close} />
+        <ClosingHeadingDialog heading='Merge categories' />
+
+        <div className='mt-4 flex flex-col'>
+          <Text className='text-dialog-text'>
+            Select two categories to merge: all transactions and subcategories from the source will be moved to the
+            target category.
+          </Text>
+          <Form onSubmit={handleSubmit(onValid, onInvalid)} className='min-w-96 mt-4'>
+            <FormSelect
+              control={control}
+              isDisabled={!!targetCategory}
+              placeholder='Select target category'
+              name='targetCategoryId'
+              label='Target category'
+            >
+              {categories.map(category => (
+                <CategoryOption key={category.id} category={category} otherCategoryId={sourceCategoryId} />
+              ))}
+            </FormSelect>
+
+            <FormSelect
+              control={control}
+              placeholder='Select source category'
+              name='sourceCategoryId'
+              label='Source category'
+              className='mt-4'
+            >
+              {categories.map(category => (
+                <CategoryOption key={category.id} category={category} otherCategoryId={targetCategoryId} />
+              ))}
+            </FormSelect>
+
+            <div className='mt-10 justify-self-end flex gap-2'>
+              <Button size='small' className='w-32' variant='ghost' onPress={overlayTriggerStateContext.close}>
+                Cancel
+              </Button>
+              <Button type='submit' size='small' className='w-32' variant='primary'>
+                Merge
+              </Button>
             </div>
-
-            <div className='mt-8 flex flex-col'>
-              <Text className='text-base'>
-                Select two categories to merge: all transactions and subcategories from the source will be moved to the
-                target category.
-              </Text>
-              <Form onSubmit={handleSubmit(onValid, onInvalid)} className='min-w-96 mt-4'>
-                <FormSelect
-                  control={control}
-                  isDisabled={!!targetCategory}
-                  placeholder='Select target category'
-                  name='targetCategoryId'
-                  label='Target category'
-                >
-                  {categories.map(category => (
-                    <CategoryOption key={category.id} category={category} otherCategoryId={sourceCategoryId} />
-                  ))}
-                </FormSelect>
-
-                <FormSelect
-                  control={control}
-                  placeholder='Select source category'
-                  name='sourceCategoryId'
-                  label='Source category'
-                  className='mt-4'
-                >
-                  {categories.map(category => (
-                    <CategoryOption key={category.id} category={category} otherCategoryId={targetCategoryId} />
-                  ))}
-                </FormSelect>
-
-                <div className='mt-10 justify-self-end flex gap-2'>
-                  <Button size='small' className='w-32' variant='ghost' onPress={close}>
-                    Cancel
-                  </Button>
-                  <Button type='submit' size='small' className='w-32' variant='primary'>
-                    Merge
-                  </Button>
-                </div>
-              </Form>
-            </div>
-          </>
-        )}
+          </Form>
+        </div>
       </Dialog>
     </>
   );

@@ -2,7 +2,7 @@ import { Heading } from '@components/ui/Heading/Heading';
 import clsx from 'clsx';
 import { Dialog, Modal, ModalOverlay, ProgressBar } from 'react-aria-components';
 import { useTranslation } from 'react-i18next';
-import { ClipLoader } from 'react-spinners';
+import { SpinLoader } from '../loaders/SpinLoader/SpinLoader';
 
 type Props = {
   isTransparent?: boolean;
@@ -22,7 +22,7 @@ export const LoadingModal = ({ message, isTransparent }: Props) => {
         <Modal isOpen={true} isDismissable={false}>
           <Dialog className='flex text-center' aria-label={message === false ? 'loading' : undefined}>
             <ProgressBar isIndeterminate={true} aria-label='loading progress bar'>
-              <ClipLoader size={16} speedMultiplier={0.68} />
+              <SpinLoader size='small' color='foreground-dark' />
               {message !== false && (
                 <Heading level={4} slot='title' className='text-xl'>
                   {message ?? t('default-message')}

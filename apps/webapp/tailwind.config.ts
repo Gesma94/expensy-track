@@ -71,6 +71,10 @@ export default {
         drawer: '2rem',
         dialog: '2rem'
       },
+      fontSize: {
+        'dialog-heading': '1.25rem',
+        'dialog-text': '0.875rem'
+      },
       height: {
         input: '2.75rem'
       },

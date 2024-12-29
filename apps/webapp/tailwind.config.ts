@@ -13,6 +13,12 @@ export default {
         active: '#3A5A41', // Rich green-gray for active state
         disabled: '#DCE4DC' // Muted green-gray for disabled state
       },
+      'edge-light': {
+        default: '#607D6640', // Neutral green-gray for general use
+        hover: '#4A6A5140', // Slightly darker for hover state
+        active: '#3A5A4140', // Rich green-gray for active state
+        disabled: '#DCE4DC40' // Muted green-gray for disabled state
+      },
       primary: {
         DEFAULT: '#4CAF50', // Main primary color
         hover: '#43A047', // Slightly darker shade for hover state
@@ -62,10 +68,11 @@ export default {
     },
     extend: {
       padding: {
-        drawer: '2rem'
+        drawer: '2rem',
+        dialog: '2rem'
       },
       height: {
-        input: '3.125rem'
+        input: '2.75rem'
       },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
@@ -73,9 +80,7 @@ export default {
       },
       animation: {
         'backdrop-blur': 'backdrop-blur 0.5s forwards',
-        'backdrop-blur-reverse': 'backdrop-blur-reverse 0.5s forwards',
-        'dialog-enter': 'dialog-enter 0.5s linear forwards',
-        'dialog-exit': 'dialog-exit 0.5s linear forwards'
+        'backdrop-blur-reverse': 'backdrop-blur-reverse 0.5s forwards'
       },
       keyframes: {
         'backdrop-blur': {

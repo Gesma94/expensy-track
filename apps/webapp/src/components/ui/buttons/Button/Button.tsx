@@ -73,7 +73,7 @@ const buttonStyle = tv({
       primary: ''
     },
     isLoading: {
-      true: 'relative',
+      true: '',
       false: ''
     },
     isDisabled: {
@@ -127,6 +127,18 @@ const buttonStyle = tv({
       isDisabled: false,
       isLoading: true,
       className: 'bg-background-white border text-foreground-dark border-edge-default'
+    },
+    {
+      variant: 'ghost',
+      isDisabled: true,
+      className: 'text-foreground-lowPriority'
+    },
+    {
+      variant: 'ghost',
+      isDisabled: false,
+      isLoading: false,
+      className:
+        'bg-background-white text-foreground-dark hover:bg-background-white-hover active:bg-background-white-active focus:outline-offset-4 focus:outline-secondary-focus'
     }
   ]
 });

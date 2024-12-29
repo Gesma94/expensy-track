@@ -1,3 +1,7 @@
+extend enum GraphqlErrorCode {
+  CANNOT_MERGE_SAME_CATEGORY
+}
+
 enum CategoryType {
   EXPANSE
   INCOME
@@ -66,6 +70,12 @@ type DeleteCategoriesResult implements Response {
   result: Int
 }
 
+type MergeCategoriesResult implements Response {
+  success: Boolean!
+  error: GraphqlError
+  result: Category
+}
+
 type EditCategoryResult implements Response {
   success: Boolean!
   error: GraphqlError
@@ -92,6 +102,11 @@ input DeleteCategoriesInput {
   ids: [ID!]!
 }
 
+input MergeCategoriesInput {
+  targetCategoryId: ID!
+  sourceCategoryId: ID!
+}
+
 type Query {
   categories: CategoriesResult
   categoriesByType: CategoriesByTypeResult
@@ -101,4 +116,5 @@ type Mutation {
   createCategory(input: CreateCategoryInput!): CreateCategoryResult
   editCategory(input: EditCategoryInput!): EditCategoryResult
   deleteCategories(input: DeleteCategoriesInput!): DeleteCategoriesResult
+  mergeCategories(input: MergeCategoriesInput!): MergeCategoriesResult
 }

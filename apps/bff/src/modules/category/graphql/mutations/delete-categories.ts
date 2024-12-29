@@ -19,7 +19,7 @@ export const mutationDeleteCategories: MutationResolvers<MercuriusContext>['dele
 
   try {
     const result = await contextValue.app.prisma.$transaction(async tx => {
-      // getting all subtransactions of removed transactions
+      // getting all sub-categories of removed categories
       const subCategories = await tx.category.findMany({
         where: {
           userId: user.id,

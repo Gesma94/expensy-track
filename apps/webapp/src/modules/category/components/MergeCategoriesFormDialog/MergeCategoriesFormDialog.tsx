@@ -2,6 +2,7 @@ import { LoadingModal } from '@components/ui/LoadingModal/LoadingModal';
 import { Text } from '@components/ui/Text/Text';
 import { Button } from '@components/ui/buttons/Button/Button';
 import { ClosingHeadingDialog } from '@components/ui/dialogs/ClosingHeadingDialog/ClosingHeadingDialog';
+import { CommonDialog } from '@components/ui/dialogs/CommonDialog/CommonDialog';
 import { Dialog } from '@components/ui/dialogs/Dialog/Dialog';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';
@@ -97,9 +98,7 @@ function DialogTriggerContent({ onSuccess: propsOnSuccess, targetCategory }: Pro
   return (
     <>
       {isPending && <LoadingModal message={false} isTransparent={true} />}
-      <Dialog dialogClassName='p-6 max-w-xl'>
-        <ClosingHeadingDialog heading='Merge categories' />
-
+      <CommonDialog heading='Merge categories' className='max-w-xl'>
         <div className='mt-4 flex flex-col'>
           <Text className='text-dialog-text'>
             Select two categories to merge: all transactions and subcategories from the source will be moved to the
@@ -140,7 +139,7 @@ function DialogTriggerContent({ onSuccess: propsOnSuccess, targetCategory }: Pro
             </div>
           </Form>
         </div>
-      </Dialog>
+      </CommonDialog>
     </>
   );
 }

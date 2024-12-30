@@ -1,13 +1,11 @@
-import { IconType } from '@common/enums/icon';
-import { Heading } from '@components/ui/Heading/Heading';
 import { LoadingModal } from '@components/ui/LoadingModal/LoadingModal';
 import { Text } from '@components/ui/Text/Text';
 import { Button } from '@components/ui/buttons/Button/Button';
-import { IconButton } from '@components/ui/buttons/IconButton/IconButton';
 import { ClosingHeadingDialog } from '@components/ui/dialogs/ClosingHeadingDialog/ClosingHeadingDialog';
 import { Dialog } from '@components/ui/dialogs/Dialog/Dialog';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';
+import { FormTextInput } from '@components/ui/form/FormTextInput/FormTextInput';
 import type { CategoryListElementFragment } from '@gql/graphql';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCategoryGroup } from '@modules/category/hooks/useCategoryGroup';
@@ -148,8 +146,8 @@ function DialogTriggerContent({ onSuccess: propsOnSuccess, targetCategory }: Pro
 }
 
 const formSchema = z.object({
-  targetCategoryId: z.string().min(1, 'is required'),
-  sourceCategoryId: z.string().min(1, 'is required')
+  targetCategoryId: z.string().min(1, 'Please select a target category'),
+  sourceCategoryId: z.string().min(1, 'Please select a source category')
 });
 
 type FormSchema = z.infer<typeof formSchema>;

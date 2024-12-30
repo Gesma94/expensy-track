@@ -63,7 +63,16 @@ export default {
       },
       success: '#4CAF50', // Used for success alerts or positive trends
       warning: '#FF9800', // Used for warnings or alerts
-      error: '#F44336', // Used for errors or negative trends
+      error: {
+        foreground: '#B00020', // High contrast error text
+        background: {
+          DEFAULT: '#FDECEA', // Subtle red tint for default error background
+          hover: '#FADBD9', // Slightly darker red for hover
+          selected: '#F9CCCC', // More prominent red for selected state
+          focus: '#FFE1E0', // Softer pinkish-red for focus outline
+          'selected-hover': '#F7B8B8' // Vibrant, noticeable red for selected + hover
+        }
+      },
       transparent: '#FFFFFF00'
     },
     extend: {

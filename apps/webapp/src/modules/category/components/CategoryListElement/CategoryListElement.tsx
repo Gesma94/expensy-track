@@ -60,7 +60,7 @@ export const CategoryListElement = ({ category, onDelete, onEdit, onMerge }: Pro
     <>
       <li
         className='w-full rounded-lg shadow grid grid-rows-[auto_0px] overflow-hidden transition-all duration-500'
-        style={{ gridTemplateRows: state.isExpanded ? 'auto 80px' : '' }}
+        style={{ gridTemplateRows: state.isExpanded ? `auto ${(category.subCategories?.length ?? 0) * 2.5}rem` : '' }}
       >
         <Checkbox
           onChange={handleOnChange}
@@ -107,7 +107,13 @@ export const CategoryListElement = ({ category, onDelete, onEdit, onMerge }: Pro
         </Checkbox>
         <ul ref={panelRef} {...panelProps}>
           {subCategories?.map(subCategory => (
-            <CategoryInnerListElement key={subCategory.id} category={subCategory} onDelete={onDelete} onEdit={onEdit} />
+            <CategoryInnerListElement
+              key={subCategory.id}
+              category={subCategory}
+              onDelete={onDelete}
+              onEdit={onEdit}
+              onMerge={handleOnMerge}
+            />
           ))}
         </ul>
       </li>

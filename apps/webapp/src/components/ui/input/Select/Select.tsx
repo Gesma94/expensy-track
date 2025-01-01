@@ -12,11 +12,11 @@ import {
   Select as AriaSelect,
   type SelectProps as AriaSelectProps,
   SelectValue as AriaSelectValue,
-  FieldError,
   type ListBoxItemProps
 } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
+import { FieldError } from '../FieldError/FieldError';
 
 export type SelectProps = {
   label: string;
@@ -48,7 +48,7 @@ export const Select = forwardRef<HTMLButtonElement, Props<object>>(function _Sel
               )}
             </AriaSelectValue>
           </Button>
-          <FieldError className='pl-2 block text-xs text-error-foreground font-medium'>{errorMessage}</FieldError>
+          <FieldError className='pl-2'>{errorMessage}</FieldError>
           <AriaPopover
             offset={1}
             className='min-w-[--trigger-width] border border-t-0 rounded-md border-edge-light-default bg-white'

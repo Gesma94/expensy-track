@@ -44,6 +44,14 @@ export default {
           active: '#ebebeb', // Vibrant greenish shade for active state
           disabled: '#F9FBF7' // Muted and very light for disabled state
         },
+        milk: {
+          DEFAULT: '#F9FBF7', // Base white with a greenish hint
+          hover: '#F2F8F1', // Slightly darker with a hint of green for hover
+          selected: '#E4F2E7', // Subtle green background for selected state
+          'selected-hover': '#e8efea', // Slightly darker green for selected and hovered state
+          active: '#EDF6EC', // Vibrant greenish shade for active state
+          disabled: '#FBFDFB' // Very muted and light for disabled state
+        },
         ghost: {
           hover: 'rgba(0, 0, 0, 0.05)',
           active: 'rgba(0, 0, 0, 0.15)',
@@ -51,12 +59,11 @@ export default {
           focus: 'rgba(0, 0, 0, 0.10)'
         },
         light: '#ECEFEC',
-        lighter: '#F9FBF7', // Almost white, with a hint of green for ultra-light shadow
         shadow: '#E8F5E9', // A soft shadow color, complementary to primary
         subtle: '#E3F2FD' // Subtle blueish background for secondary accents
       },
       foreground: {
-        dark: '#212121',
+        dark: '#4a534a',
         mediumPriority: '#757575', // Medium gray for balanced emphasis
         lowPriority: '#BDBDBD', // Light gray for muted or less important text
         subtle: '#E0E0E0' // Very light gray for hints or placeholder text

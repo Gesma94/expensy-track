@@ -9,10 +9,10 @@ type Props = {
 export function InputSection({ title, children }: PropsWithChildren<Props>) {
   return (
     <section>
-      <Heading level={2} className='text-lg text-eerie-black font-semibold'>
+      <Heading level={2} className='text-lg font-semibold'>
         {title}
       </Heading>
-      <AriaSeparator className='border-cultured mt-4' />
+      <AriaSeparator className='border-edge-light-default mt-4' />
       <div className='mt-7'>{children}</div>
     </section>
   );

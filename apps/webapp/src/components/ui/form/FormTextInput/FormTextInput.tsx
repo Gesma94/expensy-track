@@ -1,11 +1,11 @@
-import { TextInput } from '@components/ui/input/TextInput/TextInput';
+import { TextFieldInput } from '@components/ui/field-inputs/FieldTextInput/FieldTextInput';
 import type { ComponentProps } from 'react';
 import { Controller, type ControllerProps, type FieldPath, type FieldValues } from 'react-hook-form';
 
 type Props<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = Omit<ControllerProps<TFieldValues, TName>, 'render'> & ComponentProps<typeof TextInput>;
+> = Omit<ControllerProps<TFieldValues, TName>, 'render'> & ComponentProps<typeof TextFieldInput>;
 
 export function FormTextInput<
   TFieldValues extends FieldValues = FieldValues,
@@ -17,7 +17,7 @@ export function FormTextInput<
     <Controller
       {...controllerProps}
       render={({ field: { disabled, ...fieldProps }, fieldState: { invalid, error } }) => (
-        <TextInput
+        <TextFieldInput
           {...textProps}
           {...fieldProps}
           errorMessage={error?.message}

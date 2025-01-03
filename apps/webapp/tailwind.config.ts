@@ -63,7 +63,7 @@ export default {
         subtle: '#E3F2FD' // Subtle blueish background for secondary accents
       },
       foreground: {
-        dark: '#4a534a',
+        dark: '#424742',
         mediumPriority: '#757575', // Medium gray for balanced emphasis
         lowPriority: '#BDBDBD', // Light gray for muted or less important text
         subtle: '#E0E0E0' // Very light gray for hints or placeholder text
@@ -92,7 +92,7 @@ export default {
         'dialog-text': '0.875rem'
       },
       height: {
-        input: '2.75rem'
+        input: '2.5rem'
       },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],

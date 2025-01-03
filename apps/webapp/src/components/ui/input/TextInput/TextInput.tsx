@@ -1,25 +1,93 @@
+import type { IconType } from '@common/enums/icon';
+import type { WithDefaultClassName } from '@common/types/with-default-class-name';
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
+import { Icon } from '@components/ui/icon/Icon/Icon';
 import { type ComponentProps, forwardRef } from 'react';
-import { Input as AriaInput, Label as AriaLabel, TextField as AriaTextField, FieldError } from 'react-aria-components';
+import { Input as AriaInput, type InputRenderProps } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
+import { tv } from 'tailwind-variants';
 
-export type TextInputProps = {
-  label: string;
-  placeholder?: string;
-  errorMessage?: string;
-};
-
-type Props = ComponentProps<typeof AriaTextField> & React.RefAttributes<HTMLInputElement> & TextInputProps;
+type Props = ComponentProps<typeof AriaInput> &
+  React.RefAttributes<HTMLInputElement> & {
+    iconBefore?: IconType;
+  };
 
 export const TextInput = forwardRef<HTMLInputElement, Props>(function _TextInput(
-  { placeholder, className, label, errorMessage, ...props },
+  { className, type = 'text', iconBefore, ...props },
   ref
 ) {
-  return (
-    <AriaTextField className={values => twMerge('flex flex-col', getAriaCustomClassName(values, className))} {...props}>
-      <AriaLabel className='text-slate-800/50'>{label}</AriaLabel>
-      <AriaInput type='text' className='h-input border border-black/10' placeholder={placeholder} ref={ref} />
-      <FieldError className='block text-xs text-red-500'>{errorMessage}</FieldError>
-    </AriaTextField>
+  function getClassName(values: WithDefaultClassName<InputRenderProps>): string {
+    return getAriaCustomClassName(values, className);
+  }
+
+  const ariaInput = (
+    <AriaInput
+      ref={ref}
+      type={type}
+      className={values =>
+        twMerge(
+          tvStyle({
+            isReadonly: props.readOnly,
+            hasIconBefore: !!iconBefore,
+            isFocused: values.isFocused,
+            isInvalid: values.isInvalid,
+            isDisabled: values.isDisabled
+          }),
+          getClassName(values)
+        )
+      }
+      {...props}
+    />
   );
+
+  if (iconBefore) {
+    return (
+      <div className='inline-block relative'>
+        <span className='absolute left-2 top-1/2 -translate-y-1/2'>
+          <Icon icon={iconBefore} />
+        </span>
+        {ariaInput}
+      </div>
+    );
+  }
+
+  return ariaInput;
+});
+
+const tvStyle = tv({
+  base: 'h-input rounded-md border text-sm font-normal bg-background-white border-edge-light-default',
+  variants: {
+    hasIconBefore: {
+      true: 'pl-7 pr-2',
+      false: 'px-2'
+    },
+    isDisabled: {
+      true: 'bg-background-white-disabled text-foreground-lowPriority',
+      false: ''
+    },
+    isInvalid: {
+      true: 'bg-error-background',
+      false: ''
+    },
+    isFocused: {
+      true: ' outline-secondary',
+      false: ''
+    },
+    isReadonly: {
+      true: 'bg-background-white-disabled text-foreground-mediumPriority',
+      false: ''
+    }
+  },
+  compoundVariants: [
+    {
+      isInvalid: true,
+      isFocused: false,
+      className: 'bg-error-background'
+    },
+    {
+      isFocused: true,
+      isReadonly: false,
+      className: 'bg-background-white'
+    }
+  ]
 });

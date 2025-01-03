@@ -7,6 +7,7 @@ import {
   PiDownloadSimple,
   PiExport,
   PiGitMerge,
+  PiMagnifyingGlass,
   PiNotePencil,
   PiPlus,
   PiTrash,
@@ -37,5 +38,7 @@ export function getIconComponent(icon: IconType) {
       return PiExport;
     case IconType.Import:
       return PiDownloadSimple;
+    case IconType.Search:
+      return PiMagnifyingGlass;
   }
 }

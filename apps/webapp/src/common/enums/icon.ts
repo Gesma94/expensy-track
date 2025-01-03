@@ -9,5 +9,6 @@ export enum IconType {
   GitMerge = 'GitMerge',
   Close = 'Close',
   Export = 'Export',
-  Import = 'Import'
+  Import = 'Import',
+  Search = 'Search'
 }

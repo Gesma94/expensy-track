@@ -44,6 +44,14 @@ export default {
           active: '#ebebeb', // Vibrant greenish shade for active state
           disabled: '#F9FBF7' // Muted and very light for disabled state
         },
+        secondary: {
+          DEFAULT: 'rgba(33, 150, 243, 0.15)', // Light transparent blue for general background
+          hover: 'rgba(33, 150, 243, 0.18)', // Slightly more opaque blue for hover
+          selected: 'rgba(33, 150, 243, 0.21)', // More pronounced blue for selected state
+          'selected-hover': 'rgba(33, 150, 243, 0.25)', // Noticeable blue for selected + hover
+          active: 'rgba(33, 150, 243, 0.3)', // Even stronger blue for active state
+          disabled: 'rgba(33, 150, 243, 0.08)' // Very light blue for disabled state
+        },
         milk: {
           DEFAULT: '#F9FBF7', // Base white with a greenish hint
           hover: '#F2F8F1', // Slightly darker with a hint of green for hover

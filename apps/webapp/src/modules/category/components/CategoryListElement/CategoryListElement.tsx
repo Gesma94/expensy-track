@@ -141,7 +141,7 @@ const checkboxStyle = tv({
     {
       isHovered: false,
       isSelected: true,
-      className: 'bg-background-white-selected'
+      className: 'bg-background-secondary'
     },
     {
       isHovered: true,
@@ -151,7 +151,7 @@ const checkboxStyle = tv({
     {
       isHovered: true,
       isSelected: true,
-      className: 'bg-background-white-selected-hover'
+      className: 'bg-background-secondary-hover'
     }
   ]
 });

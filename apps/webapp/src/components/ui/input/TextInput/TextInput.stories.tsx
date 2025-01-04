@@ -51,3 +51,14 @@ export const Invalid: Story = {
     </TextField>
   )
 };
+
+export const InvalidDisabled: Story = {
+  args: {
+    disabled: true
+  },
+  decorators: story => (
+    <TextField defaultValue='Invalid' aria-label='Invalid' isInvalid={true}>
+      {story()}
+    </TextField>
+  )
+};

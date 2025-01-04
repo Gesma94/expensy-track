@@ -1,9 +1,8 @@
 import type { IconType } from '@common/enums/icon';
-import type { WithDefaultClassName } from '@common/types/with-default-class-name';
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
 import { Icon } from '@components/ui/icon/Icon/Icon';
 import type { ComponentProps } from 'react';
-import { Input as AriaInput, type InputRenderProps as AriaInputRenderProps } from 'react-aria-components';
+import { Input as AriaInput } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
@@ -13,10 +12,6 @@ type Props = ComponentProps<typeof AriaInput> &
   };
 
 export function TextInput({ className, type = 'text', iconBefore, ref, ...props }: Props) {
-  function getClassName(values: WithDefaultClassName<AriaInputRenderProps>): string {
-    return getAriaCustomClassName(values, className);
-  }
-
   const ariaInput = (
     <AriaInput
       ref={ref}
@@ -30,7 +25,7 @@ export function TextInput({ className, type = 'text', iconBefore, ref, ...props 
             isInvalid: values.isInvalid,
             isDisabled: values.isDisabled
           }),
-          getClassName(values)
+          getAriaCustomClassName(values, className)
         )
       }
       {...props}

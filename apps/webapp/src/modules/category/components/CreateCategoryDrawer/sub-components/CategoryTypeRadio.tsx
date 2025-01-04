@@ -65,16 +65,6 @@ const radioStyle = tv({
   ]
 });
 
-const iconStyle = tv({
-  base: 'size-12 transition-colors duration-500',
-  variants: {
-    isSelected: {
-      true: 'stroke-celtic-blue',
-      false: 'stroke-rhythm'
-    }
-  }
-});
-
 const checkboxStyle = tv({
   base: 'size-6 rounded-full flex justify-center items-center transition-colors duration-500 after:size-3 after:block after:rounded-full after:transition-colors after:duration-500',
   variants: {

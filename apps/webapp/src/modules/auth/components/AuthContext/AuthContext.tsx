@@ -14,7 +14,7 @@ async function fetchData(): Promise<ReplyAuthenticate> {
 }
 
 export function AuthProvider({ children }: React.PropsWithChildren) {
-  const refreshTokenInternalId = useRef<number>();
+  const refreshTokenInternalId = useRef<number | undefined>(undefined);
 
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const [user, setUser] = useState<UserPayload | undefined>(undefined);

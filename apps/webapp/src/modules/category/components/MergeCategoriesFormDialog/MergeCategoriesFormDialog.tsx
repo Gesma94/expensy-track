@@ -1,12 +1,9 @@
 import { LoadingModal } from '@components/ui/LoadingModal/LoadingModal';
 import { Text } from '@components/ui/Text/Text';
 import { Button } from '@components/ui/buttons/Button/Button';
-import { ClosingHeadingDialog } from '@components/ui/dialogs/ClosingHeadingDialog/ClosingHeadingDialog';
 import { CommonDialog } from '@components/ui/dialogs/CommonDialog/CommonDialog';
-import { Dialog } from '@components/ui/dialogs/Dialog/Dialog';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';
-import { FormTextInput } from '@components/ui/form/FormTextInput/FormTextInput';
 import type { CategoryListElementFragment } from '@gql/graphql';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCategoryGroup } from '@modules/category/hooks/useCategoryGroup';

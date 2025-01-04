@@ -14,7 +14,6 @@ import { useCallback, useContext, useEffect } from 'react';
 import { Label, OverlayTriggerStateContext, RadioGroup, TextField } from 'react-aria-components';
 import { Input } from 'react-aria-components';
 import { Controller, useForm } from 'react-hook-form';
-import { HiOutlineWallet } from 'react-icons/hi2';
 import { z } from 'zod';
 import { CategoryTypeRadio } from './sub-components/CategoryTypeRadio';
 import { ColorRadio } from './sub-components/ColorRadio';

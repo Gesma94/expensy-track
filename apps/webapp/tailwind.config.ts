@@ -95,6 +95,11 @@ export default {
         drawer: '2rem',
         dialog: '2rem'
       },
+      transitionDuration: {
+        long: '1000ms',
+        medium: '500ms',
+        short: '300ms'
+      },
       fontSize: {
         'dialog-heading': '1.25rem',
         'dialog-text': '0.875rem'

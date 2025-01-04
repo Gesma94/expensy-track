@@ -47,18 +47,18 @@ export function TextInput({ className, type = 'text', iconBefore, ref, ...props 
 }
 
 const tvStyle = tv({
-  base: 'h-input rounded-md border text-sm font-normal bg-background-white border-edge-light-default',
+  base: 'h-input w-full rounded-md border text-sm font-normal bg-background-white border-edge-light-default',
   variants: {
     hasIconBefore: {
       true: 'pl-7 pr-2',
       false: 'px-2'
     },
     isDisabled: {
-      true: 'bg-background-white-disabled text-foreground-lowPriority',
+      true: 'bg-background-white-disabled text-foreground-lowPriority border-edge-disabled',
       false: ''
     },
     isInvalid: {
-      true: 'bg-error-background',
+      true: 'border-error-foreground',
       false: ''
     },
     isFocused: {

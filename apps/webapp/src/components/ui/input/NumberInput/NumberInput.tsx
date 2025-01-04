@@ -1,20 +1,18 @@
 import { Button } from '@components/ui/buttons/Button/Button';
-import { forwardRef } from 'react';
+import type { ComponentProps } from 'react';
 import {
   Group as AriaGroup,
   Input as AriaInput,
   Label as AriaLabel,
-  NumberField as AriaNumberField,
-  type NumberFieldProps
+  NumberField as AriaNumberField
 } from 'react-aria-components';
 
-export type NumberInputProps = {
-  label: string;
-};
+type Props = ComponentProps<typeof AriaNumberField> &
+  React.RefAttributes<HTMLInputElement> & {
+    label: string;
+  };
 
-type Props = NumberFieldProps & React.RefAttributes<HTMLInputElement> & NumberInputProps;
-
-export const NumberInput = forwardRef<HTMLInputElement, Props>(function _TextInput({ label, ...props }, ref) {
+export function NumberInput({ label, ref, ...props }: Props) {
   return (
     <AriaNumberField {...props}>
       <AriaLabel>{label}</AriaLabel>
@@ -25,4 +23,4 @@ export const NumberInput = forwardRef<HTMLInputElement, Props>(function _TextInp
       </AriaGroup>
     </AriaNumberField>
   );
-});
+}

@@ -3,33 +3,36 @@ import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name
 import { getAriaRenderChildren } from '@common/utils/get-aria-render-children';
 import { Button } from '@components/ui/buttons/Button/Button';
 import { Icon } from '@components/ui/icon/Icon/Icon';
-import { type ComponentProps, forwardRef } from 'react';
+import type { ComponentProps } from 'react';
 import {
   Label as AriaLabel,
   ListBox as AriaListBox,
   ListBoxItem as AriaListBoxItem,
+  type ListBoxItemProps as AriaListBoxItemProps,
   Popover as AriaPopover,
   Select as AriaSelect,
-  type SelectProps as AriaSelectProps,
-  SelectValue as AriaSelectValue,
-  type ListBoxItemProps
+  SelectValue as AriaSelectValue
 } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 import { FieldError } from '../FieldError/FieldError';
 
-export type SelectProps = {
-  label: string;
-  errorMessage?: string;
-  selectValueTemplate?: ComponentProps<typeof AriaSelectValue>['children'];
-};
+type Props<T extends object> = ComponentProps<typeof AriaSelect<T>> &
+  React.RefAttributes<HTMLButtonElement> & {
+    label: string;
+    errorMessage?: string;
+    selectValueTemplate?: ComponentProps<typeof AriaSelectValue>['children'];
+  };
 
-type Props<T extends object> = AriaSelectProps<T> & React.RefAttributes<HTMLButtonElement> & SelectProps;
-
-export const Select = forwardRef<HTMLButtonElement, Props<object>>(function _Select(
-  { label, children, className, selectValueTemplate, errorMessage, ...props },
-  ref
-) {
+export function Select<T extends object>({
+  label,
+  children,
+  className,
+  selectValueTemplate,
+  ref,
+  errorMessage,
+  ...props
+}: Props<T>) {
   return (
     <AriaSelect
       className={values => twMerge('flex flex-col gap-1', getAriaCustomClassName(values, className))}
@@ -59,9 +62,9 @@ export const Select = forwardRef<HTMLButtonElement, Props<object>>(function _Sel
       )}
     </AriaSelect>
   );
-});
+}
 
-export function Option({ className, ...props }: ListBoxItemProps) {
+export function Option({ className, ...props }: AriaListBoxItemProps) {
   return (
     <AriaListBoxItem
       className={values =>

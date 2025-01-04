@@ -1,11 +1,11 @@
-import { HslColorPicker } from '@components/ui/input/ColorPicker/ColorPicker';
+import { ColorPicker } from '@components/ui/input/ColorPicker/ColorPicker';
 import type { ComponentProps } from 'react';
 import { Controller, type ControllerProps, type FieldPath, type FieldValues } from 'react-hook-form';
 
 type Props<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = Omit<ControllerProps<TFieldValues, TName>, 'render'> & ComponentProps<typeof HslColorPicker>;
+> = Omit<ControllerProps<TFieldValues, TName>, 'render'> & ComponentProps<typeof ColorPicker>;
 
 export function FormColorPicker<
   TFieldValues extends FieldValues = FieldValues,
@@ -16,7 +16,7 @@ export function FormColorPicker<
   return (
     <Controller
       {...controllerProps}
-      render={({ field: { disabled, ...fieldProps } }) => <HslColorPicker {...colorPickerProps} {...fieldProps} />}
+      render={({ field: { disabled, ...fieldProps } }) => <ColorPicker {...colorPickerProps} {...fieldProps} />}
     />
   );
 }

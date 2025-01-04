@@ -1,30 +1,22 @@
 import { Button } from '@components/ui/buttons/Button/Button';
 import { useKeyboard } from '@react-aria/interactions';
-import React, {
-  forwardRef,
-  useLayoutEffect,
-  useState,
-  type ComponentProps,
-  type ForwardedRef,
-  type KeyboardEvent,
-  type Ref
-} from 'react';
+import React, { useLayoutEffect, useState, type ComponentProps, type KeyboardEvent, type Ref } from 'react';
 import {
-  Collection,
-  Header,
-  Input,
-  type Key,
-  Label,
-  ListBox,
-  ListBoxItem,
-  type ListBoxItemProps,
-  Popover,
-  Section,
-  type Selection,
-  Tag,
-  TagGroup,
-  TagList,
-  TextField
+  Collection as AriaCollection,
+  Header as AriaHeader,
+  Input as AriaInput,
+  type Key as AriaKey,
+  Label as AriaLabel,
+  ListBox as AriaListBox,
+  ListBoxItem as AriaListBoxItem,
+  type ListBoxItemProps as AriaListBoxItemProps,
+  ListBoxSection as AriaListBoxSection,
+  Popover as AriaPopover,
+  type Selection as AriaSelection,
+  Tag as AriaTag,
+  TagGroup as AriaTagGroup,
+  TagList as AriaTagList,
+  TextField as AriaTextField
 } from 'react-aria-components';
 
 type GroupedItem<T extends object> = {
@@ -37,33 +29,32 @@ type GroupedItem<T extends object> = {
 type Props<T extends object> = {
   label: string;
   items: T[];
-  getId: (item: T) => Key;
+  getId: (item: T) => AriaKey;
   getTextValue: (item: T) => string;
   getTagTextValue: (item: T) => string;
   getSection?: (item: T) => string;
   isInvalid?: boolean;
   isDisabled?: boolean;
   selectedItems?: T[];
-  children?: ComponentProps<typeof ListBox<T>>['children'];
+  children?: ComponentProps<typeof AriaListBox<T>>['children'];
   onChange?: (newSelectionList: T[]) => void;
-  validationBehavior?: ComponentProps<typeof TextField>['validationBehavior'];
+  validationBehavior?: ComponentProps<typeof AriaTextField>['validationBehavior'];
+  ref?: Ref<HTMLInputElement>;
 };
 
-export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
-  {
-    label,
-    getId,
-    getTextValue,
-    items,
-    isDisabled,
-    getTagTextValue,
-    validationBehavior,
-    onChange,
-    getSection,
-    selectedItems: statelessSelectedItems
-  }: Props<T>,
-  ref: ForwardedRef<HTMLInputElement>
-) {
+export function MultiSelect<T extends object>({
+  label,
+  getId,
+  getTextValue,
+  items,
+  ref,
+  isDisabled,
+  getTagTextValue,
+  validationBehavior,
+  onChange,
+  getSection,
+  selectedItems: statelessSelectedItems
+}: Props<T>) {
   const labelId = React.useId();
   const triggerRef = React.useRef<HTMLDivElement>(null);
   const listBoxRef = React.useRef<HTMLDivElement>(null);
@@ -95,7 +86,7 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
     }
   }
 
-  function removeSelectedItemFromTagGroup(keys: Key[] | Set<Key>) {
+  function removeSelectedItemFromTagGroup(keys: AriaKey[] | Set<AriaKey>) {
     const newSelectedItems = [...selectedItems];
 
     keys.forEach(key => {
@@ -109,7 +100,7 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
     updateSelectedItems(newSelectedItems);
   }
 
-  function handleListBoxSelectionChange(keys: Selection) {
+  function handleListBoxSelectionChange(keys: AriaSelection) {
     let newSelectedItems: T[] = [];
 
     if (keys === 'all') {
@@ -151,23 +142,23 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
   }, [isPopoverOpen]);
 
   return (
-    <TextField validationBehavior={validationBehavior} isDisabled={isDisabled} ref={triggerRef}>
-      <Label id={labelId}>{label}</Label>
+    <AriaTextField validationBehavior={validationBehavior} isDisabled={isDisabled} ref={triggerRef}>
+      <AriaLabel id={labelId}>{label}</AriaLabel>
       <div className='flex border'>
         {selectedItems?.length > 0 && (
-          <TagGroup onRemove={removeSelectedItemFromTagGroup} aria-labelledby={labelId}>
-            <TagList items={selectedItems}>
+          <AriaTagGroup onRemove={removeSelectedItemFromTagGroup} aria-labelledby={labelId}>
+            <AriaTagList items={selectedItems}>
               {item => (
-                <Tag textValue={getTagTextValue(item)} className='bg-blue-400 rounded-lg inline-flex'>
+                <AriaTag textValue={getTagTextValue(item)} className='bg-blue-400 rounded-lg inline-flex'>
                   {getTagTextValue(item)}
                   <Button slot='remove'>X</Button>
-                </Tag>
+                </AriaTag>
               )}
-            </TagList>
-          </TagGroup>
+            </AriaTagList>
+          </AriaTagGroup>
         )}
         <div>
-          <Input
+          <AriaInput
             aria-labelledby={labelId}
             onBlur={handleBlurInput}
             ref={ref}
@@ -178,14 +169,14 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
           <Button excludeFromTabOrder={true} onPress={() => setIsPopoverOpen('open')}>
             ▼
           </Button>
-          <Popover
+          <AriaPopover
             placement='bottom start'
             triggerRef={triggerRef}
             isOpen={isPopoverOpen !== 'no'}
             className='bg-white'
             onOpenChange={e => setIsPopoverOpen(e ? 'open' : 'no')}
           >
-            <ListBox
+            <AriaListBox
               ref={listBoxRef}
               selectionMode='multiple'
               className='flex flex-col'
@@ -196,17 +187,17 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
             >
               {groupedItems !== null &&
                 Object.entries(groupedItems).map(sectionInfo => (
-                  <Section key={sectionInfo[0]} id={sectionInfo[0]}>
-                    <Header>{sectionInfo[0]}</Header>
-                    <Collection items={sectionInfo[1].selectedItems}>
+                  <AriaListBoxSection key={sectionInfo[0]} id={sectionInfo[0]}>
+                    <AriaHeader>{sectionInfo[0]}</AriaHeader>
+                    <AriaCollection items={sectionInfo[1].selectedItems}>
                       {item => (
                         <MultiSelectSelectedOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />
                       )}
-                    </Collection>
-                    <Collection items={sectionInfo[1].notSelectedItems}>
+                    </AriaCollection>
+                    <AriaCollection items={sectionInfo[1].notSelectedItems}>
                       {item => <MultiSelectOption textValue={getTextValue(item)} id={getId(item)} key={getId(item)} />}
-                    </Collection>
-                  </Section>
+                    </AriaCollection>
+                  </AriaListBoxSection>
                 ))}
 
               {groupedItems === null && (
@@ -219,24 +210,24 @@ export const MultiSelect = forwardRef(function _MultiSelect<T extends object>(
                   ))}
                 </>
               )}
-            </ListBox>
-          </Popover>
+            </AriaListBox>
+          </AriaPopover>
         </div>
       </div>
-    </TextField>
-  );
-}) as <T extends object>(props: Props<T> & { ref?: Ref<HTMLInputElement> }) => JSX.Element;
-
-function MultiSelectSelectedOption<T extends object>(props: ListBoxItemProps<T>) {
-  return (
-    <ListBoxItem {...props} className='flex bg-blue-500'>
-      {props.textValue} X
-    </ListBoxItem>
+    </AriaTextField>
   );
 }
 
-function MultiSelectOption<T extends object>(props: ListBoxItemProps<T>) {
-  return <ListBoxItem {...props}>{props.textValue}</ListBoxItem>;
+function MultiSelectSelectedOption<T extends object>(props: AriaListBoxItemProps<T>) {
+  return (
+    <AriaListBoxItem {...props} className='flex bg-blue-500'>
+      {props.textValue} X
+    </AriaListBoxItem>
+  );
+}
+
+function MultiSelectOption<T extends object>(props: AriaListBoxItemProps<T>) {
+  return <AriaListBoxItem {...props}>{props.textValue}</AriaListBoxItem>;
 }
 
 function groupBySection<T extends object>(

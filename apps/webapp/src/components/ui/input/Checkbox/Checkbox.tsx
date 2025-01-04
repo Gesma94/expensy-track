@@ -2,27 +2,23 @@ import { IconType } from '@common/enums/icon';
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
 import { getAriaRenderChildren } from '@common/utils/get-aria-render-children';
 import { Icon } from '@components/ui/icon/Icon/Icon';
-import { type RefAttributes, forwardRef } from 'react';
-import { Checkbox as AriaCheckbox, type CheckboxProps } from 'react-aria-components';
+import type { ComponentProps } from 'react';
+import { Checkbox as AriaCheckbox } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
-type Props = CheckboxProps &
-  RefAttributes<HTMLLabelElement> & {
-    checkboxClassName?: string;
-  };
+type Props = ComponentProps<typeof AriaCheckbox> & {
+  checkboxClassName?: string;
+};
 
-export const Checkbox = forwardRef<HTMLLabelElement, Props>(function _Checkbox(
-  { children, checkboxClassName, className, ...otherProps },
-  ref
-) {
+export function Checkbox({ children, checkboxClassName, ref, className, ...otherProps }: Props) {
   return (
     <AriaCheckbox
       {...otherProps}
+      ref={ref}
       className={values =>
         twMerge('flex items-center data-[hovered]:cursor-pointer', getAriaCustomClassName(values, className))
       }
-      ref={ref}
     >
       {values => {
         const { checkboxDiv, checkIcon } = checkboxStyle({
@@ -42,7 +38,7 @@ export const Checkbox = forwardRef<HTMLLabelElement, Props>(function _Checkbox(
       }}
     </AriaCheckbox>
   );
-});
+}
 
 const checkboxStyle = tv({
   slots: {

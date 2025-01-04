@@ -1,49 +1,43 @@
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
-import { type ComponentProps, forwardRef } from 'react';
+import type { ComponentProps } from 'react';
 import {
+  Button as AriaButton,
+  type Color as AriaColor,
+  ColorArea as AriaColorArea,
+  ColorField as AriaColorField,
+  type ColorFormat as AriaColorFormat,
   ColorPicker as AriaColorPicker,
-  Button,
-  type Color,
-  ColorArea,
-  ColorField,
-  type ColorFormat,
-  ColorSlider,
-  ColorSwatch,
-  ColorThumb,
-  Dialog,
-  DialogTrigger,
-  Input,
-  Label,
-  Popover,
-  SliderTrack
+  ColorSlider as AriaColorSlider,
+  ColorSwatch as AriaColorSwatch,
+  ColorThumb as AriaColorThumb,
+  Dialog as AriaDialog,
+  DialogTrigger as AriaDialogTrigger,
+  Input as AriaInput,
+  Label as AriaLabel,
+  Popover as AriaPopover,
+  SliderTrack as AriaSliderTrack
 } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 
-type ColorPickerProps = {
-  label: string;
-  colorFormat?: ColorFormat;
-  onChange?: (color: string) => void;
-  className?: ComponentProps<typeof Button>['className'];
-};
-
 type Props = Omit<ComponentProps<typeof AriaColorPicker>, 'onChange'> &
-  React.RefAttributes<HTMLButtonElement> &
-  ColorPickerProps;
+  React.RefAttributes<HTMLButtonElement> & {
+    label: string;
+    colorFormat?: AriaColorFormat;
+    onChange?: (color: string) => void;
+    className?: ComponentProps<typeof AriaButton>['className'];
+  };
 
-export const HslColorPicker = forwardRef<HTMLButtonElement, Props>(function _ColorPicker(
-  { className, colorFormat, value, onChange, label, ...props },
-  ref
-) {
-  function handleOnChange(value: Color): void {
+export function ColorPicker({ className, colorFormat, value, onChange, label, ref, ...props }: Props) {
+  function handleOnChange(value: AriaColor): void {
     onChange?.(value.toString(colorFormat));
   }
 
   return (
     <AriaColorPicker onChange={value && colorFormat ? handleOnChange : undefined} value={value} {...props}>
-      <DialogTrigger>
+      <AriaDialogTrigger>
         <div className='flex flex-col items-start'>
           <span className='text-slate-800/50'>{label}</span>
-          <Button
+          <AriaButton
             ref={ref}
             className={values =>
               twMerge(
@@ -52,26 +46,26 @@ export const HslColorPicker = forwardRef<HTMLButtonElement, Props>(function _Col
               )
             }
           >
-            <ColorSwatch className='size-[80%] rounded-full border border-black/10' />
-          </Button>
+            <AriaColorSwatch className='size-[80%] rounded-full border border-black/10' />
+          </AriaButton>
         </div>
-        <Popover placement='bottom start'>
-          <Dialog className='p-4 bg-white border border-black/10'>
-            <ColorArea colorSpace='hsb' xChannel='saturation' yChannel='brightness' className='size-48 rounded-lg'>
-              <ColorThumb className='border-2 border-white size-4 rounded-full' />
-            </ColorArea>
-            <ColorSlider className='w-full mt-2' colorSpace='hsb' channel='hue'>
-              <SliderTrack className='w-full h-5 rounded-lg'>
-                <ColorThumb className='border-2 border-white size-4 rounded-full top-1/2' />
-              </SliderTrack>
-            </ColorSlider>
-            <ColorField className='flex mt-4'>
-              <Label>HEX</Label>
-              <Input className='w-24 border border-black/10' />
-            </ColorField>
-          </Dialog>
-        </Popover>
-      </DialogTrigger>
+        <AriaPopover placement='bottom start'>
+          <AriaDialog className='p-4 bg-white border border-black/10'>
+            <AriaColorArea colorSpace='hsb' xChannel='saturation' yChannel='brightness' className='size-48 rounded-lg'>
+              <AriaColorThumb className='border-2 border-white size-4 rounded-full' />
+            </AriaColorArea>
+            <AriaColorSlider className='w-full mt-2' colorSpace='hsb' channel='hue'>
+              <AriaSliderTrack className='w-full h-5 rounded-lg'>
+                <AriaColorThumb className='border-2 border-white size-4 rounded-full top-1/2' />
+              </AriaSliderTrack>
+            </AriaColorSlider>
+            <AriaColorField className='flex mt-4'>
+              <AriaLabel>HEX</AriaLabel>
+              <AriaInput className='w-24 border border-black/10' />
+            </AriaColorField>
+          </AriaDialog>
+        </AriaPopover>
+      </AriaDialogTrigger>
     </AriaColorPicker>
   );
-});
+}

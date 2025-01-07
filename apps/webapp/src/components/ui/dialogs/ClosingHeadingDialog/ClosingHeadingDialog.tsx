@@ -12,7 +12,7 @@ export function ClosingHeadingDialog({ heading }: Props) {
   const overlayTriggerStateContext = useContext(AriaOverlayTriggerStateContext)!;
 
   return (
-    <div className='flex items-center justify-between'>
+    <div className='flex items-center gap-8 justify-between'>
       <Heading slot='title' level={1} className='text-dialog-heading'>
         {heading}
       </Heading>

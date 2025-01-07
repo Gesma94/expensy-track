@@ -96,11 +96,11 @@ function DialogTriggerContent({ onSuccess: propsOnSuccess, targetCategory }: Pro
     <>
       {isPending && <LoadingModal message={false} isTransparent={true} />}
       <CommonDialog heading='Merge categories' className='max-w-xl'>
-        <div className='mt-4 flex flex-col'>
-          <Text className='text-dialog-text'>
+        <div className='flex flex-col'>
+          <p className='text-dialog-text'>
             Select two categories to merge: all transactions and subcategories from the source will be moved to the
             target category.
-          </Text>
+          </p>
           <Form onSubmit={handleSubmit(onValid, onInvalid)} className='min-w-96 mt-4'>
             <FormSelect
               control={control}

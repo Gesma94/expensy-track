@@ -22,7 +22,7 @@ export function ConfirmDialog({ confirmLabel, isOpen, heading, message, onCancel
 
   return (
     <CommonDialog isOpen={isOpen} heading={heading}>
-      <p className='mt-4 text-dialog-text'>{message}</p>
+      <p className='text-dialog-text'>{message}</p>
       <div className='mt-10 justify-self-end flex gap-2'>
         <Button size='small' className='w-32' variant='ghost' onPress={handleCancelPress}>
           Cancel

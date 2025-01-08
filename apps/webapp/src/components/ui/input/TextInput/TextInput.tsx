@@ -23,9 +23,9 @@ export function TextInput({ className, type = 'text', iconBefore, ref, ...props 
             hasIconBefore: !!iconBefore,
             isFocused: values.isFocused,
             isInvalid: values.isInvalid,
-            isDisabled: values.isDisabled
-          }),
-          getAriaCustomClassName(values, className)
+            isDisabled: values.isDisabled,
+            className: getAriaCustomClassName(values, className)
+          })
         )
       }
       {...props}

@@ -74,7 +74,14 @@ export default {
         dark: '#424742',
         mediumPriority: '#757575', // Medium gray for balanced emphasis
         lowPriority: '#BDBDBD', // Light gray for muted or less important text
-        subtle: '#E0E0E0' // Very light gray for hints or placeholder text
+        subtle: '#E0E0E0', // Very light gray for hints or placeholder text,
+        action: {
+          DEFAULT: '#007BFF', // Vibrant blue for default state
+          hover: '#0056CC', // Slightly darker blue for hover state
+          active: '#003D99', // Even darker blue for active state
+          disabled: '#B3D7FF', // Muted blue for disabled state
+          text: '#FFFFFF' // Text color on action background
+        }
       },
       success: '#4CAF50', // Used for success alerts or positive trends
       warning: '#FF9800', // Used for warnings or alerts

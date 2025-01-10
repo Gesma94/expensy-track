@@ -8,23 +8,25 @@ import {
 } from 'react-aria-components';
 import { twJoin, twMerge } from 'tailwind-merge';
 import { InputLabel } from '../InputLabel/InputLabel';
+import { Option, Select } from '../Select/Select';
 import { TextInput } from '../TextInput/TextInput';
 
 type Props = {
   className?: string;
   isDisabled?: boolean;
   ref?: Ref<HTMLInputElement>;
+  colorAreaClassName?: string;
 };
 
-export function ColorPickerPieces({ className, isDisabled, ref }: Props) {
+export function ColorPickerPieces({ className, colorAreaClassName, isDisabled, ref }: Props) {
   return (
-    <div className={twMerge('w-full max-w-48 flex flex-col gap-2', className)}>
+    <div className={twMerge('w-full flex flex-col gap-2', className)}>
       <AriaColorArea
         colorSpace='hsb'
         xChannel='saturation'
         yChannel='brightness'
         isDisabled={isDisabled}
-        className={twJoin('w-full aspect-square rounded-md', isDisabled && 'opacity-60')}
+        className={twMerge('w-full aspect-square rounded-md', isDisabled && 'opacity-60', colorAreaClassName)}
       >
         <AriaColorThumb className='border-2 border-white size-4 rounded-full' />
       </AriaColorArea>
@@ -38,10 +40,14 @@ export function ColorPickerPieces({ className, isDisabled, ref }: Props) {
           <AriaColorThumb className='border-2 border-white size-4 rounded-full top-1/2' />
         </AriaSliderTrack>
       </AriaColorSlider>
-      <AriaColorField isDisabled={isDisabled} className='flex items-center gap-2'>
-        <InputLabel>HEX</InputLabel>
-        <TextInput ref={ref} className='h-6 text-xs' />
-      </AriaColorField>
+      <div className='flex items-center gap-2'>
+        <Select label='' defaultSelectedKey='HEX' isDisabled={true}>
+          <Option id='HEX'>HEX</Option>
+        </Select>
+        <AriaColorField isDisabled={isDisabled} aria-label='HEX' className='grow'>
+          <TextInput ref={ref} className='h-6 text-xs' />
+        </AriaColorField>
+      </div>
     </div>
   );
 }

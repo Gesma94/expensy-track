@@ -77,9 +77,14 @@ export function CategoryColorPicker({ control }: Props) {
 
             <DialogTrigger isOpen={isDialogOpen} onOpenChange={handleDialogOpenChange}>
               <ActionButton action='More' onPress={handleMorePress} />
-              <CommonDialog heading='Merge categories' className='min-w-[36rem] max-w-xl'>
+              <CommonDialog heading='Merge categories' className='min-w-[30rem] max-w-xl'>
                 <p className='text-dialog-text'>Pick the color you prefer for your category</p>
-                <ColorPicker className='mt-8 mx-auto' value={temporaryColor} onChange={setTemporaryColor} />
+                <ColorPicker
+                  colorAreaClassName='max-h-44'
+                  className='mt-4 mx-auto'
+                  value={temporaryColor}
+                  onChange={setTemporaryColor}
+                />
                 <div className='mt-10 justify-self-end flex gap-2'>
                   <Button size='small' className='w-32' variant='ghost' onPress={handleCancelPress}>
                     Cancel

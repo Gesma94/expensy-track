@@ -15,7 +15,7 @@ import {
 } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
-import { FieldError } from '../FieldError/FieldError';
+import { FieldError } from '../../input/FieldError/FieldError';
 
 type Props<T extends object> = ComponentProps<typeof AriaSelect<T>> &
   React.RefAttributes<HTMLButtonElement> & {
@@ -25,7 +25,7 @@ type Props<T extends object> = ComponentProps<typeof AriaSelect<T>> &
     selectValueTemplate?: ComponentProps<typeof AriaSelectValue>['children'];
   };
 
-export function Select<T extends object>({
+export function FieldSelect<T extends object>({
   label,
   children,
   className,

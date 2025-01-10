@@ -1,12 +1,12 @@
 import { CategoryIconName } from '@components/layout/CategoryIconName/CategoryIconName';
 import { CategoryTypeName } from '@components/layout/CategoryTypeName/CategoryTypeName';
 import { Button } from '@components/ui/buttons/Button/Button';
+import { Option } from '@components/ui/field-inputs/FieldSelect/FieldSelect';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormColorPicker } from '@components/ui/form/FormColorPicker/FormColorPicker';
 import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';
 import { FormTextInput } from '@components/ui/form/FormTextInput/FormTextInput';
 import { CategoryIcon } from '@components/ui/icon/CategoryIcon/CategoryIcon';
-import { Option } from '@components/ui/input/Select/Select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getGqlClient } from '@modules/fetch/utils/graphql-client';
 import { useToast } from '@modules/toast/hooks/useToast';

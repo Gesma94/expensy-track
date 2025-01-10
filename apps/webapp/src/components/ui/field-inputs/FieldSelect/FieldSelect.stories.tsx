@@ -1,10 +1,10 @@
 import { IconType } from '@common/enums/icon';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Option, Select } from './Select';
+import { FieldSelect, Option } from './FieldSelect';
 
-const meta: Meta<typeof Select> = {
+const meta: Meta<typeof FieldSelect> = {
   title: 'Components/UI/inputs/Select',
-  component: Select,
+  component: FieldSelect,
   tags: ['autodocs']
 };
 
@@ -19,7 +19,7 @@ const Options = (
 
 export default meta;
 
-type Story = StoryObj<typeof Select>;
+type Story = StoryObj<typeof FieldSelect>;
 
 export const Default: Story = {
   args: {

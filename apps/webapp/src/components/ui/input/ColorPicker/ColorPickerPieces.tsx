@@ -7,8 +7,8 @@ import {
   SliderTrack as AriaSliderTrack
 } from 'react-aria-components';
 import { twJoin, twMerge } from 'tailwind-merge';
+import { FieldSelect, Option } from '../../field-inputs/FieldSelect/FieldSelect';
 import { InputLabel } from '../InputLabel/InputLabel';
-import { Option, Select } from '../Select/Select';
 import { TextInput } from '../TextInput/TextInput';
 
 type Props = {
@@ -41,9 +41,9 @@ export function ColorPickerPieces({ className, colorAreaClassName, isDisabled, r
         </AriaSliderTrack>
       </AriaColorSlider>
       <div className='flex items-center gap-2'>
-        <Select label='' defaultSelectedKey='HEX' isDisabled={true}>
+        <FieldSelect label='' defaultSelectedKey='HEX' isDisabled={true}>
           <Option id='HEX'>HEX</Option>
-        </Select>
+        </FieldSelect>
         <AriaColorField isDisabled={isDisabled} aria-label='HEX' className='grow'>
           <TextInput ref={ref} className='h-6 text-xs' />
         </AriaColorField>

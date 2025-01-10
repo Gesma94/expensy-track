@@ -13,6 +13,12 @@ type Story = StoryObj<typeof ColorPicker>;
 
 export const Default: Story = {};
 
+export const Squared: Story = {
+  args: {
+    className: 'w-48'
+  }
+};
+
 export const Disabled: Story = {
   args: {
     value: '#957109',

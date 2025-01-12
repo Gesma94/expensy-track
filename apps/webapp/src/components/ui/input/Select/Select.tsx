@@ -5,36 +5,28 @@ import { Icon } from '@components/ui/icon/Icon/Icon';
 import type { ComponentProps } from 'react';
 import {
   Button as AriaButton,
-  Label as AriaLabel,
   ListBox as AriaListBox,
-  ListBoxItem as AriaListBoxItem,
-  type ListBoxItemProps as AriaListBoxItemProps,
   Popover as AriaPopover,
   Select as AriaSelect,
   SelectValue as AriaSelectValue
 } from 'react-aria-components';
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
-import { FieldError } from '../../input/FieldError/FieldError';
 
 type Props<T extends object> = ComponentProps<typeof AriaSelect<T>> &
   React.RefAttributes<HTMLButtonElement> & {
-    label: string;
     iconBefore?: IconType;
-    errorMessage?: string;
     selectValueTemplate?: ComponentProps<typeof AriaSelectValue>['children'];
   };
 
-export function FieldSelect<T extends object>({
-  label,
-  children,
-  className,
+export function Select<T extends object>({
   iconBefore,
-  selectValueTemplate,
   placeholder,
+  selectValueTemplate,
+  className,
   ref,
-  errorMessage,
-  ...props
+  children,
+  ...restProps
 }: Props<T>) {
   const defaultPlaceholder = placeholder ?? 'Select an element';
 
@@ -42,33 +34,31 @@ export function FieldSelect<T extends object>({
     <AriaSelect
       placeholder={defaultPlaceholder}
       className={values => twMerge('flex flex-col gap-1', getAriaCustomClassName(values, className))}
-      {...props}
+      {...restProps}
     >
       {({ isInvalid, isFocused }) => (
         <>
-          <AriaLabel className='font-medium text-foreground-mediumPriority text-xs uppercase'>{label}</AriaLabel>
           <AriaButton
-            isDisabled={props.isDisabled}
+            isDisabled={restProps.isDisabled}
             className={({ isHovered, isDisabled }) => buttonStyle({ isInvalid, isDisabled, isFocused, isHovered })}
             ref={ref}
           >
-            <AriaSelectValue className='flex items-center gap-2 text-sm font-normal data-[placeholder]:text-foreground-lowPriority'>
+            <AriaSelectValue className='flex items-center gap-2 text-sm w-full font-normal data-[placeholder]:text-foreground-lowPriority'>
               {values => (
                 <>
                   {iconBefore && (
-                    <Icon icon={iconBefore} className={iconBeforeStyle({ isDisabled: props.isDisabled })} />
+                    <Icon icon={iconBefore} className={iconBeforeStyle({ isDisabled: restProps.isDisabled })} />
                   )}
                   {selectValueTemplate ? getAriaRenderChildren(values, selectValueTemplate) : values.defaultChildren}
                   <Icon
                     icon={IconType.CaretDown}
                     aria-hidden='true'
-                    className={caretDownIconStyle({ isDisabled: props.isDisabled })}
+                    className={caretDownIconStyle({ isDisabled: restProps.isDisabled })}
                   />
                 </>
               )}
             </AriaSelectValue>
           </AriaButton>
-          <FieldError className='pl-2'>{errorMessage}</FieldError>
           <AriaPopover
             offset={1}
             className='min-w-[--trigger-width] border border-t-0 rounded-md border-edge-light-default bg-white'
@@ -82,16 +72,8 @@ export function FieldSelect<T extends object>({
 }
 
 const buttonStyle = tv({
-  base: 'h-input w-full bg-background-white border-edge-light-default border rounded-md text-sm font-normal flex items-center justify-center transition-colors duration-300 *:w-full',
+  base: 'h-input w-full px-2 rounded-md border text-sm font-normal bg-background-white border-edge-light-default flex items-center justify-center transition-colors duration-short',
   variants: {
-    hasIconBefore: {
-      true: 'pl-7 px-2',
-      false: 'px-2'
-    },
-    isHovered: {
-      true: 'bg-background-white-hover',
-      false: ''
-    },
     isDisabled: {
       true: 'bg-background-white-disabled text-foreground-lowPriority border-edge-light-disabled',
       false: ''
@@ -100,8 +82,12 @@ const buttonStyle = tv({
       true: 'border-error-foreground bg-error-background',
       false: ''
     },
+    isHovered: {
+      true: 'bg-background-white-hover',
+      false: ''
+    },
     isFocused: {
-      true: ' outline-secondary outline-2 outline-offset-0',
+      true: ' outline-secondary',
       false: ''
     }
   },

@@ -1,12 +1,12 @@
 import { Heading } from '@components/ui/Heading/Heading';
 import { Button } from '@components/ui/buttons/Button/Button';
 import { Dialog } from '@components/ui/dialogs/Dialog/Dialog';
-import { Option } from '@components/ui/field-inputs/FieldSelect/FieldSelect';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormNumberInput } from '@components/ui/form/FormNumberInput/FormNumberInput';
 import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';
 import { FormTextInput } from '@components/ui/form/FormTextInput/FormTextInput';
 import { WalletIcon } from '@components/ui/icon/WalletIcon/WalletIcon';
+import { Option } from '@components/ui/input/Select/Option';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@modules/toast/hooks/useToast';
 import { createWalletMutation } from '@modules/wallet/operations/create-wallet';

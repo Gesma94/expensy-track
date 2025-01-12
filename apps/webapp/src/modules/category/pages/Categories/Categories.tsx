@@ -3,6 +3,8 @@ import { Panel } from '@components/layout/Panel/Panel';
 import { Heading } from '@components/ui/Heading/Heading';
 import { Text } from '@components/ui/Text/Text';
 import { Button } from '@components/ui/buttons/Button/Button';
+import { useFragment } from '@gql/fragment-masking';
+import { CategoryListElementFragmentDoc, CategoryListElementWithSubsFragmentDoc } from '@gql/graphql';
 import { CreateCategoryDrawer } from '@modules/category/components/CreateCategoryDrawer/CreateCategoryDrawer';
 import { getCategoriesByTypeQuery } from '@modules/category/operations/get-categories-by-type-query';
 import { useQuery } from '@tanstack/react-query';
@@ -11,6 +13,16 @@ import { CategoryList } from '../../components/CategoryList/CategoryList';
 
 export const Categories = () => {
   const { data, refetch } = useQuery({ queryKey: ['user-categories'], queryFn: () => getCategoriesByTypeQuery({}) });
+  const expanseCategoriesWithSubs = useFragment(
+    CategoryListElementWithSubsFragmentDoc,
+    data?.categoriesByType?.result?.expanseCategories.categories
+  );
+  const expanseCategories = useFragment(CategoryListElementFragmentDoc, expanseCategoriesWithSubs);
+  const incomeCategoriesWithSubs = useFragment(
+    CategoryListElementWithSubsFragmentDoc,
+    data?.categoriesByType?.result?.expanseCategories.categories
+  );
+  const incomeCategories = useFragment(CategoryListElementFragmentDoc, expanseCategoriesWithSubs);
 
   function handleDeleteCategorySuccess() {
     refetch();
@@ -44,8 +56,8 @@ export const Categories = () => {
               </Button>
               <CreateCategoryDrawer
                 onSuccess={handleCreateCategorySuccess}
-                incomeRootCategories={[]}
-                expanseRootCategories={[]}
+                incomeRootCategories={incomeCategories ?? []}
+                expanseRootCategories={expanseCategories ?? []}
               />
             </DialogTrigger>
           </div>

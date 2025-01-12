@@ -1,11 +1,11 @@
 import { IconType } from '@common/enums/icon';
-import { Option } from '@components/ui/input/Select/Option';
 import type { Meta, StoryObj } from '@storybook/react';
-import { FieldSelect } from './FieldSelect';
+import { Option } from './Option';
+import { Select } from './Select';
 
-const meta: Meta<typeof FieldSelect> = {
-  title: 'Components/UI/FieldInputs/FieldSelect',
-  component: FieldSelect,
+const meta: Meta<typeof Select> = {
+  title: 'Components/UI/inputs/Select',
+  component: Select,
   tags: ['autodocs']
 };
 
@@ -20,18 +20,16 @@ const Options = (
 
 export default meta;
 
-type Story = StoryObj<typeof FieldSelect>;
+type Story = StoryObj<typeof Select>;
 
 export const Default: Story = {
   args: {
-    label: 'Default',
     children: Options
   }
 };
 
 export const WithIconBefore: Story = {
   args: {
-    label: 'With Icon',
     iconBefore: IconType.Search,
     children: Options
   }
@@ -39,7 +37,6 @@ export const WithIconBefore: Story = {
 
 export const Disabled: Story = {
   args: {
-    label: 'Disabled',
     iconBefore: IconType.Search,
     isDisabled: true,
     children: Options
@@ -48,19 +45,15 @@ export const Disabled: Story = {
 
 export const Invalid: Story = {
   args: {
-    label: 'Invalid',
     isInvalid: true,
-    children: Options,
-    errorMessage: 'Lorem Ipsum Error'
+    children: Options
   }
 };
 
 export const InvalidDisabled: Story = {
   args: {
-    label: 'Invalid Disabled',
     isInvalid: true,
     isDisabled: true,
-    children: Options,
-    errorMessage: 'Lorem Ipsum Error'
+    children: Options
   }
 };

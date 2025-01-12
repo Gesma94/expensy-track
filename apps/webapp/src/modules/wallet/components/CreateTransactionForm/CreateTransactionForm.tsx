@@ -1,7 +1,6 @@
 import { Heading } from '@components/ui/Heading/Heading';
 import { Button } from '@components/ui/buttons/Button/Button';
 import { Dialog } from '@components/ui/dialogs/Dialog/Dialog';
-import { Option } from '@components/ui/field-inputs/FieldSelect/FieldSelect';
 import { Form } from '@components/ui/form/Form/Form';
 import { FormCheckbox } from '@components/ui/form/FormCheckbox/FormCheckbox';
 import { FormMultiSelect } from '@components/ui/form/FormMultiSelect/FormMultiSelect';
@@ -9,6 +8,7 @@ import { FormNumberInput } from '@components/ui/form/FormNumberInput/FormNumberI
 import { FormSelect } from '@components/ui/form/FormSelect/FormSelect';
 import { FormTextInput } from '@components/ui/form/FormTextInput/FormTextInput';
 import { CategoryIcon } from '@components/ui/icon/CategoryIcon/CategoryIcon';
+import { Option } from '@components/ui/input/Select/Option';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@modules/toast/hooks/useToast';
 import { createTransactionMutation } from '@modules/wallet/operations/create-transaction';

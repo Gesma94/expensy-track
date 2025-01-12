@@ -6,8 +6,15 @@ import { IconButton } from '@components/ui/buttons/IconButton/IconButton';
 import { Drawer } from '@components/ui/dialogs/Drawer/Drawer';
 import { Form } from '@components/ui/form/Form/Form';
 import { FieldError } from '@components/ui/input/FieldError/FieldError';
+import { Option } from '@components/ui/input/Select/Option';
+import { Select } from '@components/ui/input/Select/Select';
 import { TextInput } from '@components/ui/input/TextInput/TextInput';
-import { CategoryIcon as CategoryIconEnum, type CategoryListElementFragment, CategoryType } from '@gql/graphql';
+import {
+  type CategoriesGroupedByTypeFragment,
+  CategoryIcon as CategoryIconEnum,
+  type CategoryListElementFragment,
+  CategoryType
+} from '@gql/graphql';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createCategoryMutation } from '@modules/category/operations/create-category-mutation';
 import {
@@ -30,7 +37,7 @@ type Props = {
   expanseRootCategories: CategoryListElementFragment[];
 };
 
-export function CreateCategoryDrawer({ onSuccess }: Props) {
+export function CreateCategoryDrawer({ onSuccess, incomeRootCategories, expanseRootCategories }: Props) {
   const { successToast } = useToast();
 
   const { close: closeDrawer, isOpen } = useContext(OverlayTriggerStateContext)!;
@@ -53,8 +60,10 @@ export function CreateCategoryDrawer({ onSuccess }: Props) {
     handleSubmit,
     control,
     reset,
+    watch,
     formState: { errors }
   } = { ...formHook };
+  const type = watch('type');
 
   function onValid(data: CreateCategoryDrawerSchema) {
     const { icon, type } = { ...data };
@@ -87,6 +96,9 @@ export function CreateCategoryDrawer({ onSuccess }: Props) {
       reset(getFormInitialValues());
     }
   }, [reset, getFormInitialValues, isOpen]);
+
+  const parentCategories =
+    type === CategoryType.Income ? incomeRootCategories : type === CategoryType.Expanse ? expanseRootCategories : null;
 
   return (
     <Drawer dialogClassName='flex flex-col min-h-full p-drawer'>
@@ -151,6 +163,25 @@ export function CreateCategoryDrawer({ onSuccess }: Props) {
                       <TextInput type='text' ref={ref} />
                       <FieldError>{error?.message}</FieldError>
                     </TextField>
+                  )}
+                />
+              </div>
+
+              <div className='flex flex-col gap-2'>
+                <Controller
+                  control={control}
+                  name='displayName'
+                  render={({ field: { disabled, ref, ...fieldProps }, fieldState: { invalid, error } }) => (
+                    <div>
+                      <Label className='font-medium'>What about a parent?</Label>
+                      <Select>
+                        {parentCategories?.map(category => (
+                          <Option key={category.id} id={category.id}>
+                            {category.displayName}
+                          </Option>
+                        ))}
+                      </Select>
+                    </div>
                   )}
                 />
               </div>

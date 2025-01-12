@@ -1,6 +1,6 @@
 import { getEmojiFromCategoryIcon } from '@common/utils/get-emoji-from-category-icon';
 import { Text } from '@components/ui/Text/Text';
-import { Option } from '@components/ui/field-inputs/FieldSelect/FieldSelect';
+import { Option } from '@components/ui/input/Select/Option';
 import type { CategoryListElementFragment } from '@gql/graphql';
 
 type Props = {

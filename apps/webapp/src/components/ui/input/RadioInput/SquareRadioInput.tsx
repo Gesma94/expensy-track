@@ -14,7 +14,8 @@ export function SquareRadioInput({ className, ...props }: ComponentProps<typeof 
             isHovered: values.isHovered,
             isPressed: values.isPressed,
             isDisabled: values.isDisabled,
-            isSelected: values.isSelected
+            isSelected: values.isSelected,
+            isFocusVisible: values.isFocusVisible
           }),
           getAriaCustomClassName(values, className)
         )
@@ -42,6 +43,9 @@ const tvStyle = tv({
     isPressed: {
       true: 'bg-background-white-active',
       false: ''
+    },
+    isFocusVisible: {
+      true: 'outline outline-2 outline-secondary-focus outline-offset-2'
     },
     isInvalid: {
       true: 'bg-error-background border-error-foreground',

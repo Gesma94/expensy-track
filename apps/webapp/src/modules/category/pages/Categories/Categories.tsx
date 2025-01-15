@@ -20,9 +20,9 @@ export const Categories = () => {
   const expanseCategories = useFragment(CategoryListElementFragmentDoc, expanseCategoriesWithSubs);
   const incomeCategoriesWithSubs = useFragment(
     CategoryListElementWithSubsFragmentDoc,
-    data?.categoriesByType?.result?.expanseCategories.categories
+    data?.categoriesByType?.result?.incomeCategories.categories
   );
-  const incomeCategories = useFragment(CategoryListElementFragmentDoc, expanseCategoriesWithSubs);
+  const incomeCategories = useFragment(CategoryListElementFragmentDoc, incomeCategoriesWithSubs);
 
   function handleDeleteCategorySuccess() {
     refetch();

@@ -18,7 +18,13 @@ export const CategoryTypeRadio = forwardRef<HTMLLabelElement, Props>(function _C
   return (
     <Radio
       ref={ref}
-      className={values => radioStyle({ isHovered: values.isHovered, isSelected: values.isSelected })}
+      className={values =>
+        radioStyle({
+          isHovered: values.isHovered,
+          isSelected: values.isSelected,
+          isFocusVisible: values.isFocusVisible
+        })
+      }
       value={value}
     >
       {({ isSelected }) => (
@@ -43,19 +49,22 @@ const radioStyle = tv({
   base: 'bg-background-milk p-4 flex flex-col gap-3 border rounded-lg transition-colors duration-500 cursor-pointer grow w-0',
   variants: {
     isSelected: {
-      true: 'border-secondary bg-secondary/10',
+      true: 'border-secondary bg-background-secondary',
       false: 'border-edge-light-default'
     },
     isHovered: {
       true: 'bg-background-milk-hover',
       false: ''
+    },
+    isFocusVisible: {
+      true: 'outline outline-secondary-focus outline-offset-4'
     }
   },
   compoundVariants: [
     {
       isHovered: true,
       isSelected: true,
-      className: 'bg-background-milk-selected-hover'
+      className: 'bg-background-secondary-hover'
     },
     {
       isHovered: true,

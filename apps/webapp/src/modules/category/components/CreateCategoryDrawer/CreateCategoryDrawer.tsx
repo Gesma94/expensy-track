@@ -25,7 +25,7 @@ import { useToast } from '@modules/toast/hooks/useToast';
 import { useMutation } from '@tanstack/react-query';
 import { useCallback, useContext, useEffect } from 'react';
 import { Label, OverlayTriggerStateContext, RadioGroup, TextField } from 'react-aria-components';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { CategoryColorPicker } from './sub-components/CategoryColorPicker';
 import { CategoryTypeRadio } from './sub-components/CategoryTypeRadio';
 import { EmojiSquareRadioInput } from './sub-components/EmojiSquareRadioInput';
@@ -49,10 +49,10 @@ export function CreateCategoryDrawer({ onSuccess, incomeRootCategories, expanseR
   });
 
   const getFormInitialValues = useCallback<() => CreateCategoryDrawerSchema>(() => {
-    return { displayName: '', color: '', icon: '', type: '' };
+    return { displayName: '', color: '', icon: '', type: '', parentId: '' };
   }, []);
 
-  const formHook = useForm<CreateCategoryDrawerSchema>({
+  const formMethods = useForm<CreateCategoryDrawerSchema>({
     resolver: zodResolver(createCategoryDrawerSchema),
     defaultValues: getFormInitialValues()
   });
@@ -62,7 +62,7 @@ export function CreateCategoryDrawer({ onSuccess, incomeRootCategories, expanseR
     reset,
     watch,
     formState: { errors }
-  } = { ...formHook };
+  } = { ...formMethods };
   const type = watch('type');
 
   function onValid(data: CreateCategoryDrawerSchema) {
@@ -75,10 +75,23 @@ export function CreateCategoryDrawer({ onSuccess, incomeRootCategories, expanseR
       input: {
         color: data.color,
         displayName: data.displayName,
+        parentCategoryId: data.parentId,
         icon,
         type
       }
     });
+  }
+
+  function hasAvailableParentCategory(): boolean {
+    return !!parentCategories && parentCategories.length > 0;
+  }
+
+  function getParentSelectPlaceholder() {
+    if (type === '') {
+      return 'Select the kind of category first';
+    }
+
+    return hasAvailableParentCategory() ? 'Select a parent' : 'no available category';
   }
 
   function onMutationSuccess() {
@@ -108,117 +121,125 @@ export function CreateCategoryDrawer({ onSuccess, incomeRootCategories, expanseR
         </Heading>
         <IconButton variant='ghost' icon={IconType.Close} onPress={closeDrawer} />
       </section>
-      <Form className='grid grow grid-rows-[auto_auto_1fr_auto]' onSubmit={handleSubmit(onValid)}>
-        <div className='mt-12'>
-          <InputSection title='What kind of category are you creating?'>
-            <Controller
-              name='type'
-              control={control}
-              render={({ field: { disabled, ref, ...fieldProps }, fieldState: { invalid, error } }) => (
-                <RadioGroup
-                  {...fieldProps}
-                  isInvalid={invalid}
-                  isDisabled={disabled}
-                  orientation='horizontal'
-                  className='flex flex-col gap-2'
-                  aria-label='What kind of category are you creating?'
-                >
-                  <div className='flex gap-4'>
-                    <CategoryTypeRadio
-                      ref={ref}
-                      value={CategoryType.Expanse}
-                      description='Money leaving your account'
-                      icon={IconType.Export}
-                      title='Spending'
-                    />
-                    <CategoryTypeRadio
-                      value={CategoryType.Income}
-                      description='Money coming into your account'
-                      icon={IconType.Import}
-                      title='Income'
-                    />
-                  </div>
-                  <FieldError>{error?.message}</FieldError>
-                </RadioGroup>
-              )}
-            />
-          </InputSection>
-        </div>
-
-        <div className='mt-12'>
-          <InputSection title='Customise your category...'>
-            <div className='flex flex-col gap-5'>
-              <div className='flex flex-col gap-2'>
-                <Controller
-                  control={control}
-                  name='displayName'
-                  render={({ field: { disabled, ref, ...fieldProps }, fieldState: { invalid, error } }) => (
-                    <TextField
-                      isDisabled={disabled}
-                      isInvalid={invalid}
-                      {...fieldProps}
-                      className='flex flex-col gap-2'
-                    >
-                      <Label className='font-medium'>Give it a name</Label>
-                      <TextInput type='text' ref={ref} />
-                      <FieldError>{error?.message}</FieldError>
-                    </TextField>
-                  )}
-                />
-              </div>
-
-              <div className='flex flex-col gap-2'>
-                <Controller
-                  control={control}
-                  name='displayName'
-                  render={({ field: { disabled, ref, ...fieldProps }, fieldState: { invalid, error } }) => (
-                    <div>
-                      <Label className='font-medium'>What about a parent?</Label>
-                      <Select>
-                        {parentCategories?.map(category => (
-                          <Option key={category.id} id={category.id}>
-                            {category.displayName}
-                          </Option>
-                        ))}
-                      </Select>
-                    </div>
-                  )}
-                />
-              </div>
-
+      <FormProvider {...formMethods}>
+        <Form className='grid grow grid-rows-[auto_auto_1fr_auto]' onSubmit={handleSubmit(onValid)}>
+          <div className='mt-12'>
+            <InputSection title='What kind of category are you creating?'>
               <Controller
+                name='type'
                 control={control}
-                name='icon'
-                render={({ field: { disabled, ...fieldProps }, fieldState: { invalid, error } }) => (
+                render={({ field: { disabled, ref, ...fieldProps }, fieldState: { invalid, error } }) => (
                   <RadioGroup
-                    orientation='horizontal'
-                    isInvalid={invalid}
                     {...fieldProps}
+                    isInvalid={invalid}
+                    isDisabled={disabled}
+                    orientation='horizontal'
                     className='flex flex-col gap-2'
+                    aria-label='What kind of category are you creating?'
                   >
-                    <Label className='font-medium'>Choose an emoji</Label>
-                    <div className='flex gap-2 items-center justify-between'>
-                      <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.Pizza} />
-                      <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.Confetti} />
-                      <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.Car} />
-                      <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.Home} />
-                      <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.SoccerBall} />
-                      <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.Popcorn} />
-                      <ActionButton action='More' isDisabled />
+                    <div className='flex gap-4'>
+                      <CategoryTypeRadio
+                        ref={ref}
+                        value={CategoryType.Expanse}
+                        description='Money leaving your account'
+                        icon={IconType.Export}
+                        title='Spending'
+                      />
+                      <CategoryTypeRadio
+                        value={CategoryType.Income}
+                        description='Money coming into your account'
+                        icon={IconType.Import}
+                        title='Income'
+                      />
                     </div>
                     <FieldError>{error?.message}</FieldError>
                   </RadioGroup>
                 )}
               />
+            </InputSection>
+          </div>
 
-              <CategoryColorPicker control={control} />
-            </div>
-          </InputSection>
-        </div>
-        <Button fullWidth={true} variant='primary' size='large' type='submit' className='row-start-4 mt-12 shrink-0'>
-          Create category
-        </Button>
-      </Form>
+          <div className='mt-12'>
+            <InputSection title='Customise your category...'>
+              <div className='flex flex-col gap-5'>
+                <div className='flex flex-col gap-2'>
+                  <Controller
+                    control={control}
+                    name='displayName'
+                    render={({ field: { disabled, ref, ...fieldProps }, fieldState: { invalid, error } }) => (
+                      <TextField
+                        isDisabled={disabled}
+                        isInvalid={invalid}
+                        {...fieldProps}
+                        className='flex flex-col gap-2'
+                      >
+                        <Label className='font-medium'>Give it a name</Label>
+                        <TextInput type='text' ref={ref} />
+                        <FieldError>{error?.message}</FieldError>
+                      </TextField>
+                    )}
+                  />
+                </div>
+
+                <div className='flex flex-col gap-2'>
+                  <Controller
+                    control={control}
+                    name='parentId'
+                    disabled={type === '' || !hasAvailableParentCategory()}
+                    render={({ field: { disabled, ref, onChange, ...fieldProps } }) => (
+                      <div>
+                        <Select
+                          label={<Label className='font-medium'>What about a parent?</Label>}
+                          isDisabled={disabled}
+                          onSelectionChange={onChange}
+                          {...fieldProps}
+                          placeholder={getParentSelectPlaceholder()}
+                        >
+                          {parentCategories?.map(category => (
+                            <Option key={category.id} id={category.id}>
+                              {category.displayName}
+                            </Option>
+                          ))}
+                        </Select>
+                      </div>
+                    )}
+                  />
+                </div>
+
+                <Controller
+                  control={control}
+                  name='icon'
+                  render={({ field: { disabled, ...fieldProps }, fieldState: { invalid, error } }) => (
+                    <RadioGroup
+                      orientation='horizontal'
+                      isInvalid={invalid}
+                      {...fieldProps}
+                      className='flex flex-col gap-2'
+                    >
+                      <Label className='font-medium'>Choose an emoji</Label>
+                      <div className='flex gap-2 items-center justify-between'>
+                        <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.Pizza} />
+                        <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.Confetti} />
+                        <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.Car} />
+                        <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.Home} />
+                        <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.SoccerBall} />
+                        <EmojiSquareRadioInput categoryIcon={CategoryIconEnum.Popcorn} />
+                        <ActionButton action='More' isDisabled />
+                      </div>
+                      <FieldError>{error?.message}</FieldError>
+                    </RadioGroup>
+                  )}
+                />
+
+                <CategoryColorPicker />
+              </div>
+            </InputSection>
+          </div>
+          <Button fullWidth={true} variant='primary' size='large' type='submit' className='row-start-4 mt-12 shrink-0'>
+            Create category
+          </Button>
+        </Form>
+      </FormProvider>
     </Drawer>
   );
 }

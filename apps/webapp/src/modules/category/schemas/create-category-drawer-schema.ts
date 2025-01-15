@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 export const createCategoryDrawerSchema = z.object({
   color: z.string().min(1, 'Please select a color'),
+  parentId: z.string().optional(),
   type: z
     .nativeEnum(CategoryType)
     .or(z.literal(''))

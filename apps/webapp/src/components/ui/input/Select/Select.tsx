@@ -2,7 +2,7 @@ import { IconType } from '@common/enums/icon';
 import { getAriaCustomClassName } from '@common/utils/get-aria-custom-class-name';
 import { getAriaRenderChildren } from '@common/utils/get-aria-render-children';
 import { Icon } from '@components/ui/icon/Icon/Icon';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import {
   Button as AriaButton,
   ListBox as AriaListBox,
@@ -16,6 +16,7 @@ import { tv } from 'tailwind-variants';
 type Props<T extends object> = ComponentProps<typeof AriaSelect<T>> &
   React.RefAttributes<HTMLButtonElement> & {
     iconBefore?: IconType;
+    label?: ReactNode;
     selectValueTemplate?: ComponentProps<typeof AriaSelectValue>['children'];
   };
 
@@ -25,6 +26,7 @@ export function Select<T extends object>({
   selectValueTemplate,
   className,
   ref,
+  label,
   children,
   ...restProps
 }: Props<T>) {
@@ -32,12 +34,14 @@ export function Select<T extends object>({
 
   return (
     <AriaSelect
+      isDisabled={restProps.isDisabled}
       placeholder={defaultPlaceholder}
       className={values => twMerge('flex flex-col gap-1', getAriaCustomClassName(values, className))}
       {...restProps}
     >
       {({ isInvalid, isFocused }) => (
         <>
+          {label}
           <AriaButton
             isDisabled={restProps.isDisabled}
             className={({ isHovered, isDisabled }) => buttonStyle({ isInvalid, isDisabled, isFocused, isHovered })}

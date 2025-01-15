@@ -7,14 +7,12 @@ import { FieldError } from '@components/ui/input/FieldError/FieldError';
 import type { CreateCategoryDrawerSchema } from '@modules/category/schemas/create-category-drawer-schema';
 import { useEffect, useState } from 'react';
 import { type Color, DialogTrigger, Label, RadioGroup, parseColor } from 'react-aria-components';
-import { type Control, Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { ColorSquareRadioInput } from './ColorSquareRadioInput';
 
-type Props = {
-  control: Control<CreateCategoryDrawerSchema>;
-};
+export function CategoryColorPicker() {
+  const formMethods = useFormContext<CreateCategoryDrawerSchema>();
 
-export function CategoryColorPicker({ control }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [availableColors, setAvailableColors] = useState(getDefaultAvailableColors());
   const [temporaryColor, setTemporaryColor] = useState<Color>(getDefaultTemporaryColor());
@@ -31,6 +29,7 @@ export function CategoryColorPicker({ control }: Props) {
     });
 
     setIsDialogOpen(false);
+    formMethods.setValue('color', hexTemporaryColor);
   }
 
   function getDefaultAvailableColors() {
@@ -65,10 +64,16 @@ export function CategoryColorPicker({ control }: Props) {
 
   return (
     <Controller
-      control={control}
+      control={formMethods.control}
       name='color'
       render={({ field: { disabled, ...fieldProps }, fieldState: { invalid, error } }) => (
-        <RadioGroup isDisabled={disabled} isInvalid={invalid} {...fieldProps} className='flex flex-col gap-2'>
+        <RadioGroup
+          orientation='horizontal'
+          isDisabled={disabled}
+          isInvalid={invalid}
+          {...fieldProps}
+          className='flex flex-col gap-2'
+        >
           <Label className='font-medium'>Choose a colour</Label>
           <div className='flex gap-2 items-center justify-between'>
             {availableColors.map(color => (

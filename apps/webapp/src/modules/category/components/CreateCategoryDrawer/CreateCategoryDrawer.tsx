@@ -75,7 +75,7 @@ export function CreateCategoryDrawer({ onSuccess, incomeRootCategories, expanseR
       input: {
         color: data.color,
         displayName: data.displayName,
-        parentCategoryId: data.parentId,
+        parentCategoryId: data.parentId || null,
         icon,
         type
       }

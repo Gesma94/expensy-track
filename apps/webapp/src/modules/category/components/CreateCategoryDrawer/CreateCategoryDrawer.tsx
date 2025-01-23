@@ -187,21 +187,20 @@ export function CreateCategoryDrawer({ onSuccess, incomeRootCategories, expanseR
                     name='parentId'
                     disabled={type === '' || !hasAvailableParentCategory()}
                     render={({ field: { disabled, ref, onChange, ...fieldProps } }) => (
-                      <div>
-                        <Select
-                          label={<Label className='font-medium'>What about a parent?</Label>}
-                          isDisabled={disabled}
-                          onSelectionChange={onChange}
-                          {...fieldProps}
-                          placeholder={getParentSelectPlaceholder()}
-                        >
-                          {parentCategories?.map(category => (
-                            <Option key={category.id} id={category.id}>
-                              {category.displayName}
-                            </Option>
-                          ))}
-                        </Select>
-                      </div>
+                      <Select
+                        beforeSlot={<Label className='font-medium'>What about a parent?</Label>}
+                        isDisabled={disabled}
+                        className='flex flex-col gap-2'
+                        onSelectionChange={onChange}
+                        {...fieldProps}
+                        placeholder={getParentSelectPlaceholder()}
+                      >
+                        {parentCategories?.map(category => (
+                          <Option key={category.id} id={category.id}>
+                            {category.displayName}
+                          </Option>
+                        ))}
+                      </Select>
                     )}
                   />
                 </div>

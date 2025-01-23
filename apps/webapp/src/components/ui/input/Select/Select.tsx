@@ -10,13 +10,12 @@ import {
   Select as AriaSelect,
   SelectValue as AriaSelectValue
 } from 'react-aria-components';
-import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
 type Props<T extends object> = ComponentProps<typeof AriaSelect<T>> &
   React.RefAttributes<HTMLButtonElement> & {
     iconBefore?: IconType;
-    label?: ReactNode;
+    beforeSlot?: ReactNode;
     selectValueTemplate?: ComponentProps<typeof AriaSelectValue>['children'];
   };
 
@@ -26,7 +25,7 @@ export function Select<T extends object>({
   selectValueTemplate,
   className,
   ref,
-  label,
+  beforeSlot,
   children,
   ...restProps
 }: Props<T>) {
@@ -36,12 +35,12 @@ export function Select<T extends object>({
     <AriaSelect
       isDisabled={restProps.isDisabled}
       placeholder={defaultPlaceholder}
-      className={values => twMerge('flex flex-col gap-1', getAriaCustomClassName(values, className))}
+      className={values => getAriaCustomClassName(values, className)}
       {...restProps}
     >
       {({ isInvalid, isFocused }) => (
         <>
-          {label}
+          {beforeSlot}
           <AriaButton
             isDisabled={restProps.isDisabled}
             className={({ isHovered, isDisabled }) => buttonStyle({ isInvalid, isDisabled, isFocused, isHovered })}
